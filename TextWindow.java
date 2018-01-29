@@ -31,8 +31,6 @@ public class TextWindow extends JTextArea{
 
   }
 
-
-
   public TextWindow(String map){
     this.loadMaptxt();
   }

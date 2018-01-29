@@ -17,7 +17,7 @@ public class Rogue extends JFrame implements KeyListener{
 
   public void init(){
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    textArea = new TextWindow("Map.txt");
+    textArea = new TextWindow(16,16);
     textArea.setFont(new Font("Arial", Font.BOLD, 100));
     this.addKeyListener(this);
     textArea.addKeyListener(this);
