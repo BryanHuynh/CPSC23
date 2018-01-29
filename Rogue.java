@@ -6,8 +6,10 @@ import java.awt.event.KeyEvent;
 
 public class Rogue extends JFrame implements KeyListener{
   private TextWindow textArea;
+  public Player player;
 
   public Rogue(){
+    player = new Player();
     init();
     render();
     //loop();
@@ -15,7 +17,7 @@ public class Rogue extends JFrame implements KeyListener{
 
   public void init(){
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    textArea = new TextWindow(10,5);
+    textArea = new TextWindow("Map.txt");
     textArea.setFont(new Font("Arial", Font.BOLD, 100));
     this.addKeyListener(this);
     textArea.addKeyListener(this);
@@ -31,7 +33,7 @@ public class Rogue extends JFrame implements KeyListener{
     }
   }
   public void render(){
-    textArea.render();
+    textArea.render(this);
   }
 
   public void update(){
@@ -40,20 +42,30 @@ public class Rogue extends JFrame implements KeyListener{
 
   public void keyPressed(KeyEvent e) {}
 
+  public void movePlayer(int dx, int dy){
+    int x = this.player.x + dx;
+    int y = this.player.y + dy;
+    char pos = textArea.getCharacter(x, y);
+    if(pos == '^') return;
+    this.player.setPosition(x,y);
+
+  }
+
   public void keyReleased(KeyEvent e) {
       if(e.getKeyCode()== KeyEvent.VK_D)
-        textArea.pX += 1;
+        this.movePlayer(1,0);
       else if(e.getKeyCode()== KeyEvent.VK_A)
-        textArea.pX -= 1;
+        this.movePlayer(-1,0);
       else if(e.getKeyCode()== KeyEvent.VK_S)
-        textArea.pY += 1;
+        this.movePlayer(0,+1);
       else if(e.getKeyCode()== KeyEvent.VK_W)
-        textArea.pY -= 1;
+        this.movePlayer(0,-1);
+
       this.render();
 
   }
   public void keyTyped(KeyEvent e) {
-      System.out.println("keyTyped");
+
   }
 
 }
