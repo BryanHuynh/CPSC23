@@ -73,7 +73,7 @@ public class TextWindow extends JTextArea{
     }
   }
 
-  public void render(Rogue rogue){
+  public void render(){
     this.selectAll();
     this.replaceSelection("");
     for(int y = 0; y < row; y++){

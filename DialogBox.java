@@ -2,27 +2,29 @@ import java.util.ArrayList;
 
 public class DialogBox {
 	TextWindow tw;
+	String str;
 
 	public DialogBox(TextWindow tw){
 		this.tw = tw;
 	}
 
-	public void render(String str){
+
+	public void render(){
 
 		String[] words = str.split(" ");
 		ArrayList<String> lines = new ArrayList<String>();
 		String bar = "-----------------------------------------------------";
-		System.out.println(bar.length());
+		//System.out.println(bar.length());
 		String sentence = "";
 
 
-		tw.append(bar + "\n-");
+		tw.append(bar + "\n");
 		for(String word: words){
 			if((sentence +" " + word).length() < bar.length()){
 				sentence += " "+  word;
 				tw.append(" "+word);
 			}else{
-				tw.append("\n-");
+				tw.append("\n");
 				lines.add(sentence);
 				sentence = word;
 			}

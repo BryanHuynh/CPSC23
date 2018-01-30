@@ -30,7 +30,7 @@ public class Entity{
     this.y = y;
   }
 
-  public void update(){
+  public void update(double delta){
 
   }
 
