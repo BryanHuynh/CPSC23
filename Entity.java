@@ -3,6 +3,7 @@ public class Entity{
   private int x, y;
   private char symbol = ' ';
 
+
   public Entity(int x, int y, char symbol){
     this.x = x;
     this.y = y;
@@ -27,10 +28,6 @@ public class Entity{
   public void setPosition(int x, int y){
     this.x = x;
     this.y = y;
-  }
-
-  public void render(){
-
   }
 
   public void update(){

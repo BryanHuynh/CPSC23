@@ -25,10 +25,13 @@ public class TextWindow extends JTextArea{
     this.setRows(rows);
     this.setColumns(cols);
 
+
     fillWithEmptySpace();
+
+
+
     updateEntityMap();
   }
-
 
   public void fillWithEmptySpace(){
     for(int y = 0; y < row; y++){
@@ -40,6 +43,7 @@ public class TextWindow extends JTextArea{
   }
 
   public void update(){
+
     updateEntityMap();
   }
 
@@ -48,8 +52,18 @@ public class TextWindow extends JTextArea{
     for(Entity en : rogue.em.entities){
       entityMap[en.getX()][en.getY()] = en;
     }
+    for(Entity en : rogue.em.entities){
+      if(en.getSymbol() == '^'){
+        entityMap[en.getX()][en.getY()] = en;
+      }
+    }
     entityMap[rogue.player.getX()][rogue.player.getY()] = rogue.player;
+
   }
+
+
+
+
 
   public Entity getCharacter(int x, int y){
     try {
@@ -70,7 +84,8 @@ public class TextWindow extends JTextArea{
       this.append(str);
       this.append("\n");
     }
-
-
   }
+
+
+
 }

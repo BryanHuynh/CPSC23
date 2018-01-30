@@ -1,13 +1,16 @@
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import java.awt.Font;
-import java.awt.event.KeyListener;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
+
 
 public class Rogue extends JFrame implements KeyListener{
-  private TextWindow textArea;
+  public TextWindow textArea;
   public EntityManager em = new EntityManager();
   public Player player;
+  public DialogBox db;
 
 
 
@@ -20,18 +23,40 @@ public class Rogue extends JFrame implements KeyListener{
 
   public void init(){
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    textArea = new TextWindow(20,5, this);
-    textArea.setFont(new Font("Arial", Font.BOLD, 20));
+    textArea = new TextWindow(10,20, this);
+    Font font = this.getProggyFont();
+    textArea.setFont(font);
     this.addKeyListener(this);
     textArea.addKeyListener(this);
     this.add(textArea);
     this.pack();
     this.setVisible(true);
+
+    db = new DialogBox(textArea);
+    generateRowOfObstacles();
+  }
+
+  public Font getProggyFont(){
+    Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 20);
+    try{
+      f = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN, 27);
+    }catch(Exception e){
+      System.out.println(e);
+
+    }
+    return f;
+  }
+
+  public void generateRowOfObstacles(){
+    for(int x = 0; x < 20; x++){
+      em.createObstacles(x,5, '#');
+    }
   }
 
 
   public void render(){
     textArea.render(this);
+    db.render("These fonts will be familiar to many programmers, as they’re commonly used for coding. Programming fonts are a natural place to look for good roguelike fonts, since they’re both monospaced and designed to facilitate character recognition.");
   }
 
   public void update(){
@@ -40,25 +65,17 @@ public class Rogue extends JFrame implements KeyListener{
 
   public void keyPressed(KeyEvent e) {}
 
-  public void movePlayer(int dx, int dy){
-    int x = this.player.getX() + dx;
-    int y = this.player.getY() + dy;
-    Entity pos = textArea.getCharacter(x, y);
-    if(pos == null) return;
-    this.player.setPosition(x,y);
 
-  }
 
   public void keyReleased(KeyEvent e) {
       if(e.getKeyCode()== KeyEvent.VK_D)
-        this.movePlayer(1,0);
+        em.movePlayer(1,0, textArea);
       else if(e.getKeyCode()== KeyEvent.VK_A)
-        this.movePlayer(-1,0);
+        em.movePlayer(-1,0, textArea);
       else if(e.getKeyCode()== KeyEvent.VK_S)
-        this.movePlayer(0,+1);
+        em.movePlayer(0,+1, textArea);
       else if(e.getKeyCode()== KeyEvent.VK_W)
-        this.movePlayer(0,-1);
-
+        em.movePlayer(0,-1, textArea);
 
       System.out.println(this.player.toString());
 

@@ -22,6 +22,23 @@ public class EntityManager{
     return es;
   }
 
+  public Obstacle createObstacles(int x, int y, char symbol){
+  	Obstacle ob = new Obstacle(x, y, symbol);
+  	entities.add(ob);
+  	return ob;
+  }
+
+
+  public void movePlayer(int dx, int dy, TextWindow textArea){
+	int x = this.player.getX() + dx;
+	int y = this.player.getY() + dy;
+	Entity pos = textArea.getCharacter(x, y);
+	if(pos == null) return;
+	if(pos.getSymbol() == '#')  return;
+	this.player.setPosition(x,y);
+  }
+
+
 	/**
 	* Returns value of player
 	* @return
