@@ -25,7 +25,7 @@ public class Rogue extends JFrame implements KeyListener{
   public void gameLoop()
   {
     long lastLoopTime = System.nanoTime();
-    final int TARGET_FPS = 30;
+    final int TARGET_FPS = 24;
     final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
     int lastFpsTime = 0;
     int fps = 0;
