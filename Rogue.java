@@ -1,4 +1,4 @@
-import javax.swing.*;
+﻿import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -21,20 +21,6 @@ public class Rogue extends JFrame implements KeyListener{
     runGameLoop();
   }
 
-
-
-
-  public void runGameLoop()
-  {
-    Thread loop = new Thread()
-    {
-      public void run()
-      {
-        gameLoop();
-      }
-    };
-    loop.start();
-  }
 
   private int fps = 60;
   private int frameCount = 0;
