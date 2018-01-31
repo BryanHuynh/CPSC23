@@ -74,8 +74,7 @@ public class TextWindow extends JTextArea{
   }
 
   public void render(){
-    this.selectAll();
-    this.replaceSelection("");
+    this.setText("");
     for(int y = 0; y < row; y++){
       String str = "";
       for(int x = 0; x < col; x++){
