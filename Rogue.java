@@ -18,51 +18,100 @@ public class Rogue extends JFrame implements KeyListener{
   public Rogue(){
     player = em.createPlayer(0,0);
     init();
-    gameLoop();
+    runGameLoop();
   }
 
 
-  public void gameLoop()
+
+
+  public void runGameLoop()
   {
-    long lastLoopTime = System.nanoTime();
-    final int TARGET_FPS = 60;
-    final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-    int lastFpsTime = 0;
-    int fps = 0;
-    // keep looping round til the game ends
+    Thread loop = new Thread()
+    {
+      public void run()
+      {
+        gameLoop();
+      }
+    };
+    loop.start();
+  }
+
+  private int fps = 60;
+  private int frameCount = 0;
+
+  private void gameLoop()
+  {
+    //This value would probably be stored elsewhere.
+    final double GAME_HERTZ = 30.0;
+    //Calculate how many ns each frame should take for our target game hertz.
+    final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
+    //At the very most we will update the game this many times before a new render.
+    //If you're worried about visual hitches more than perfect timing, set this to 1.
+    final int MAX_UPDATES_BEFORE_RENDER = 5;
+    //We will need the last update time.
+    double lastUpdateTime = System.nanoTime();
+    //Store the last time we rendered.
+    double lastRenderTime = System.nanoTime();
+
+    //If we are able to get as high as this FPS, don't render again.
+    final double TARGET_FPS = 60;
+    final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
+
+    //Simple way of finding FPS.
+    int lastSecondTime = (int) (lastUpdateTime / 1000000000);
+
     while (true)
     {
-      // work out how long its been since the last update, this
-      // will be used to calculate how far the entities should
-      // move this loop
-      long now = System.nanoTime();
-      long updateLength = now - lastLoopTime;
-      lastLoopTime = now;
-      double delta = updateLength / ((double)OPTIMAL_TIME);
+      double now = System.nanoTime();
+      int updateCount = 0;
 
-      // update the frame counter
-      lastFpsTime += updateLength;
-      fps++;
+      if (true) {
+        //Do as many game updates as we need to, potentially playing catchup.
+        while( now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER )
+        {
+          update(TIME_BETWEEN_UPDATES);
+          lastUpdateTime += TIME_BETWEEN_UPDATES;
+          updateCount++;
+        }
 
-      // update our FPS counter if a second has passed since
-      // we last recorded
-      if (lastFpsTime >= 1000000000)
-      {
-        this.setTitle("(FPS: "+fps+")");
-        lastFpsTime = 0;
-        fps = 0;
+        //If for some reason an update takes forever, we don't want to do an insane number of catchups.
+        //If you were doing some sort of game that needed to keep EXACT time, you would get rid of this.
+        if ( now - lastUpdateTime > TIME_BETWEEN_UPDATES)
+        {
+          lastUpdateTime = now - TIME_BETWEEN_UPDATES;
+        }
+
+        //Render. To do so, we need to calculate interpolation for a smooth render.
+        float interpolation = Math.min(1.0f, (float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES) );
+        render();
+        lastRenderTime = now;
+
+        //Update the frames we got.
+        int thisSecond = (int) (lastUpdateTime / 1000000000);
+        if (thisSecond > lastSecondTime)
+        {
+          System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+          fps = frameCount;
+          frameCount = 0;
+          lastSecondTime = thisSecond;
+        }
+
+        //Yield until it has been at least the target time between renders. This saves the CPU from hogging.
+        while ( now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < TIME_BETWEEN_UPDATES)
+        {
+          Thread.yield();
+
+          //This stops the app from consuming all your CPU. It makes this slightly less accurate, but is worth it.
+          //You can remove this line and it will still work (better), your CPU just climbs on certain OSes.
+          //FYI on some OS's this can cause pretty bad stuttering. Scroll down and have a look at different peoples' solutions to this.
+          try {Thread.sleep(1);} catch(Exception e) {}
+
+          now = System.nanoTime();
+        }
       }
-
-      this.update(delta);
-      render();
-
-      try{
-        Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000 );
-      }catch(Exception e){
-
-      };
     }
   }
+
 
   public void init(){
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -112,7 +161,8 @@ public class Rogue extends JFrame implements KeyListener{
 
   public void update(double delta){
     textArea.update();
-    totalTime += delta/100;
+    totalTime += delta/1000000000;
+    System.out.println(totalTime);
     em.update(delta);
     if(em.getDistanceBetweenEntities(player, c) == 1){
       db.str = ("wanna buy some drugs kid?");

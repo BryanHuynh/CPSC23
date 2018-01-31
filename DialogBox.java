@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class DialogBox {
 	TextWindow tw;
-	String str;
+	String str = "text";
 
 	public DialogBox(TextWindow tw){
 		this.tw = tw;

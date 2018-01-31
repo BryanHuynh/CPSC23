@@ -7,7 +7,7 @@ public class Player extends Entity{
 
   public void update(double delta){
     super.update(delta);
-    alternateXTime += delta/100;
+    alternateXTime += delta/1000000000;
 
     if(alternateXTime >= 0.2) {
       alternateXTime = 0;
