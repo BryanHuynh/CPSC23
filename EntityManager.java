@@ -3,12 +3,17 @@ import java.util.ArrayList;
 public class EntityManager{
 
   ArrayList<Entity> entities = new ArrayList<Entity>();
+  ArrayList<NPC> npcs = new ArrayList<NPC>();
+  ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+  ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
   private Player player;
 
   EntityManager(){
 
   }
+
+
 
   public Player createPlayer(int x, int y){
     player = new Player(x, y, 'x');
@@ -25,13 +30,22 @@ public class EntityManager{
   public Obstacle createObstacles(int x, int y, char symbol){
   	Obstacle ob = new Obstacle(x, y, symbol);
   	entities.add(ob);
+    obstacles.add(ob);
   	return ob;
   }
 
   public NPC createNPC(int x, int y, char symbol){
   	NPC npc = new NPC(x, y, symbol);
   	entities.add(npc);
+    npcs.add(npc);
   	return npc;
+  }
+
+  public Enemy createEnemy(int x, int y, char symbol){
+    Enemy enemy = new Enemy(x, y, symbol);
+    entities.add(enemy);
+    enemies.add(enemy);
+    return enemy;
   }
 
 
@@ -42,7 +56,24 @@ public class EntityManager{
 	if(pos == null) return;
 	if(pos.getSymbol() == '#')  return;
 	if(pos.getSymbol() == 'c' || pos.getSymbol() == 'C') return;
+  if(pos.getSymbol() == 'e' || pos.getSymbol() == 'E') return;
 	this.player.setPosition(x,y);
+  }
+
+  public void update(){
+    int[][] obs = new int[obstacles.size()][obstacles.size()];
+    if(obstacles.size() > 0){
+      for(int x = 0; x < obs[0].length; x++){
+        obs[x][0] = obstacles.get(x).getY();
+        obs[x][1] = obstacles.get(x).getX();
+      }
+    }
+
+
+    for(Enemy enemy: enemies){
+      enemy.setPath(AStar.test(0, Rogue.row, Rogue.col, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
+      enemy.step();
+    }
   }
 
   public void update(double delta){

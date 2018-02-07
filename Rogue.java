@@ -7,7 +7,10 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.lang.Runtime;
-
+import java.util.Scanner;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 public class Rogue extends JFrame implements KeyListener{
   public TextWindow textArea;
   public EntityManager em = new EntityManager();
@@ -16,8 +19,7 @@ public class Rogue extends JFrame implements KeyListener{
   public NPC c;
   public Scanner scanner;
   public boolean textVersion;
-  public final int row = 15;
-  public final int col = 25;
+  public static int row, col;
 
 
 
@@ -48,7 +50,7 @@ public void textVersionLoop(){
   textArea.printToConsole();
   db.renderToConsole();
   System.out.println();
-  
+
   while(textVersion){
     if(scanner.hasNext()){
       String input = scanner.nextLine();
@@ -73,9 +75,9 @@ public void textVersionLoop(){
                 " as they’re commonly used for coding. Programming fonts are a " +
                 "natural place to look for good roguelike fonts, since they’re both monospaced " +
                 "and designed to facilitate character recognition.");
-
       }
 
+      em.update();
       textArea.printToConsole();
       db.renderToConsole();
       System.out.println();
@@ -125,12 +127,34 @@ public void textVersionLoop(){
     this.pack();
     this.setVisible(true);
   }
+
   public void init(){
-    textArea = new TextWindow(15,25, this);
+    char[][] map = mapLoad();
+    Rogue.row = map.length;
+    Rogue.col = map[0].length;
+    textArea = new TextWindow(row, col, this);
     db = new DialogBox(textArea);
-    generateRowOfObstacles();
+    //generateRowOfObstacles();
     c = em.createNPC(5,4,'c');
+    Enemy e = em.createEnemy(24,14,'e');
   }
+
+
+  public char[][] mapLoad(){
+    File inFile = new File("Map.txt");
+    try{
+      scanner = new Scanner(inFile);
+    }catch(IOException e){
+
+    }
+    String[] size = scanner.nextLine().split("\\s");
+    char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
+    for(int i=0; i < 6; i++) {
+        array[i] = scanner.nextLine().toCharArray();
+    }
+    return array;
+  }
+
 
   public Font getProggyFont(){
     Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 20);

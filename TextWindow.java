@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.lang.Runtime;
 
 public class TextWindow extends JTextArea{
   Entity[][] entityMap;
@@ -27,9 +28,6 @@ public class TextWindow extends JTextArea{
 
 
     fillWithEmptySpace();
-
-
-
     updateEntityMap();
   }
 
@@ -63,11 +61,10 @@ public class TextWindow extends JTextArea{
 
 public void printToConsole(){
   for(int y = 0; y < row; y++){
-    String str = "";
     for(int x = 0; x < col; x++){
-      str += " " + String.valueOf(entityMap[x][y].getSymbol());
+      System.out.printf("%-2s ",String.valueOf(entityMap[x][y].getSymbol()));
     }
-    System.out.println(str);
+    System.out.println();
   }
 }
 
@@ -79,6 +76,7 @@ public void printToConsole(){
     }
   }
   public void clearConsole(){
+
     for (int i = 0; i < 100; ++i) System.out.println();
   }
   public void render(){
