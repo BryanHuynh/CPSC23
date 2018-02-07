@@ -10,7 +10,6 @@ public class DialogBox {
 
 
 	public void render(){
-
 		String[] words = str.split(" ");
 		ArrayList<String> lines = new ArrayList<String>();
 		String bar = "-----------------------------------------------------";
@@ -32,15 +31,27 @@ public class DialogBox {
 		tw.append("\n");
 
 		tw.append(bar + "\n");
+	}
 
-		/*
-		tw.append(bar + "\n");
+	public void renderToConsole(){
+		String[] words = str.split(" ");
+		ArrayList<String> lines = new ArrayList<String>();
+		String bar = "-----------------------------------------------------";
+		String sentence = "";
 
-		for(String line: lines){
-			System.out.println(line);
-			tw.append(line + "\n");
+		System.out.println(bar);
+		for(String word: words){
+			if((sentence +" " + word).length() < bar.length()){
+				sentence += " "+  word;
+				System.out.print(" "+word);
+			}else{
+				System.out.println();
+				lines.add(sentence);
+				sentence = word;
+			}
 		}
-		tw.append(bar + "\n");
-			*/
+
+		System.out.println();
+		System.out.println(bar);
 	}
 }

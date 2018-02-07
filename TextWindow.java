@@ -43,7 +43,6 @@ public class TextWindow extends JTextArea{
   }
 
   public void update(){
-
     updateEntityMap();
   }
 
@@ -58,12 +57,19 @@ public class TextWindow extends JTextArea{
       }
     }
     entityMap[rogue.player.getX()][rogue.player.getY()] = rogue.player;
-
   }
 
 
 
-
+public void printToConsole(){
+  for(int y = 0; y < row; y++){
+    String str = "";
+    for(int x = 0; x < col; x++){
+      str += " " + String.valueOf(entityMap[x][y].getSymbol());
+    }
+    System.out.println(str);
+  }
+}
 
   public Entity getCharacter(int x, int y){
     try {
@@ -72,7 +78,9 @@ public class TextWindow extends JTextArea{
       return null;
     }
   }
-
+  public void clearConsole(){
+    for (int i = 0; i < 100; ++i) System.out.println();
+  }
   public void render(){
     this.setText("");
     for(int y = 0; y < row; y++){
