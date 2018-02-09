@@ -46,23 +46,30 @@ public class TextWindow extends JTextArea{
 
 
   public void updateEntityMap(){
-    for(Entity en : rogue.em.entities){
-      entityMap[en.getX()][en.getY()] = en;
+    fillWithEmptySpace();
+    for(NPC n: rogue.em.npcs){
+      entityMap[n.getY()][n.getX()] = n;
     }
-    for(Entity en : rogue.em.entities){
-      if(en.getSymbol() == '^'){
-        entityMap[en.getX()][en.getY()] = en;
-      }
+
+    for(Obstacle ob: rogue.em.obstacles){
+      entityMap[ob.getY()][ob.getX()] = ob;
     }
-    entityMap[rogue.player.getX()][rogue.player.getY()] = rogue.player;
+
+    for(Enemy en: rogue.em.enemies){
+      entityMap[en.getY()][en.getX()] = en;
+    }
+
+    entityMap[rogue.player.getY()][rogue.player.getX()] = rogue.player;
+    System.out.println();
+    printToConsole();
   }
 
 
 
 public void printToConsole(){
-  for(int y = 0; y < row; y++){
-    for(int x = 0; x < col; x++){
-      System.out.printf("%-2s ",String.valueOf(entityMap[x][y].getSymbol()));
+  for(int y = 0; y < col; y++){
+    for(int x = 0; x < row; x++){
+      System.out.printf("%-2s ",String.valueOf(entityMap[y][x].getSymbol()));
     }
     System.out.println();
   }
@@ -85,10 +92,10 @@ public void printToConsole(){
 
   public void render(){
     this.setText("");
-    for(int y = 0; y < row; y++){
+    for(int y = 0; y < col; y++){
       String str = "";
-      for(int x = 0; x < col; x++){
-        str += " " + String.valueOf(entityMap[x][y].getSymbol());
+      for(int x = 0; x < row; x++){
+        str += " " + String.valueOf(entityMap[y][x].getSymbol());
       }
       this.append(str);
       this.append("\n");
