@@ -3,11 +3,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Manages map: load and generate entities
+ */
 public class MapManager {
     private Scanner scanner = new Scanner(System.in);
     private Rogue rogue;
     private char[][] map;
 
+    /**
+     *
+     * @param rogue the game
+     */
     MapManager(Rogue rogue){
         this.rogue = rogue;
         map = mapLoad();
@@ -22,26 +29,30 @@ public class MapManager {
         return map[0].length;
     }
 
-    public void createMapEntities(){
+    /**
+     * with the map, create all the entities using entityManager from Rogue
+     */
+    public void createMapEntities() {
         Entity[][] entityMap = new Entity[map.length][map[0].length];
-
-        for(int j = 0; j < map.length ; j++ ){
-            for(int i = 0; i <  map[0].length; i++){
-
-                if(map[j][i] =='#'){
-                    entityMap[j][i] = rogue.em.createObstacles(i,j,'#');
-                }else if(map[j][i] == '.'){
-                    entityMap[j][i] = rogue.em.createEmptySpace(i,j);
-
+        EntityManager em = rogue.getEm();
+        for (int j = 0; j < map.length; j++) {
+            for (int i = 0; i < map[0].length; i++) {
+                if (map[j][i] == '#') {
+                    entityMap[j][i] = em.createObstacles(i, j, '#');
                 }
             }
         }
     }
 
 
+    /**
+     * loads a map
+     * map requires the first line to be the number of rows followed by the number of columns
+     * @return
+     */
     public char[][] mapLoad(){
 
-        File inFile = new File("src/Map.txt");
+        File inFile = new File("Map.txt");
         try{
             scanner = new Scanner(inFile);
         }catch(IOException e){
@@ -49,8 +60,8 @@ public class MapManager {
         }
         String[] size = scanner.nextLine().split("\\s");
 
-        Rogue.row = Integer.parseInt(size[0]);
-        Rogue.col = Integer.parseInt(size[1]);
+        Rogue.setRow(Integer.parseInt(size[0]));
+        Rogue.setCol(Integer.parseInt(size[1]));
 
         char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
         for(int i=0; i < Integer.parseInt(size[0]); i++) {
@@ -58,11 +69,7 @@ public class MapManager {
         }
         System.out.println(Arrays.deepToString(array).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
         return array;
-
-
     }
-
-
 
 
 }

@@ -10,14 +10,14 @@ import java.util.Scanner;
 import java.io.*;
 
 public class Rogue extends JFrame implements KeyListener{
-  public TextWindow textArea;
-  public EntityManager em = new EntityManager();
-  public Player player;
-  public DialogBox db;
-  public NPC c;
-  public Scanner scanner;
-  public boolean textVersion;
-  public static int row, col;
+  private TextWindow textArea;
+  private EntityManager em = new EntityManager();
+  private Player player;
+  private DialogBox db;
+  private NPC c;
+  private Scanner scanner;
+  private boolean textVersion;
+  private static int row, col;
   private MapManager mm;
 
 
@@ -45,7 +45,10 @@ public Rogue(){
   }
 }
 
-public void textVersionLoop(){
+  /**
+   * game loop used for the text version of the game
+   */
+  public void textVersionLoop(){
   textArea.clearConsole();
   textArea.update();
   textArea.printToConsole();
@@ -66,17 +69,23 @@ public void textVersionLoop(){
   }
 }
 
+  /**
+   * a temporary system to test out the dialog system mixed with the player proximate, [TO BE REMOVED]
+   */
   public void playerTalk(){
     if(em.getDistanceBetweenEntities(player, c) == 1){
-      db.str = ("wanna buy some drugs kid?");
+      db.setStr("This NPC is talking to you because you are only a block away");
     }else{
-      db.str = ("These fonts will be familiar to many programmers," +
-              " as they’re commonly used for coding. Programming fonts are a " +
-              "natural place to look for good roguelike fonts, since they’re both monospaced " +
-              "and designed to facilitate character recognition.");
+      db.setStr("There is a theory which states that if ever anyone discovers exactly " +
+              "what the Universe is for and why it is here, it will instantly disappear " +
+              "and be replaced by something even more bizarre and inexplicable. There is " +
+              "another theory which states that this has already happened.");
     }
   }
 
+  /**
+   * recieves input from the console and moves the player by an increment
+   */
   public void textPlayerControl(){
     String input = scanner.nextLine();
 
@@ -92,7 +101,9 @@ public void textVersionLoop(){
   }
 
 
-
+  /**
+   * system to start the gui game loop
+   */
   public void runGameLoop() {
     Thread loop = new Thread() {
       public void run(){
@@ -102,6 +113,10 @@ public void textVersionLoop(){
     loop.start();
   }
 
+
+  /**
+   * gameloop for the gui
+   */
   private void gameLoop() {
     long now = System.currentTimeMillis();
     long delta = 0;
@@ -121,11 +136,13 @@ public void textVersionLoop(){
   }
 
 
+  /**
+   * initiates the frames required to used the gui
+   */
   public void initGUI(){
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    Font font = this.getProggyFont();
-    textArea.setFont(font);
+    textArea.setFont(textArea.getProggyFont());
     this.addKeyListener(this);
     textArea.addKeyListener(this);
     this.add(textArea);
@@ -133,6 +150,9 @@ public void textVersionLoop(){
     this.setVisible(true);
   }
 
+  /**
+   * starts basic things required to run the game, console or gui
+   */
   public void init(){
 
     mm = new MapManager(this);
@@ -151,26 +171,9 @@ public void textVersionLoop(){
   }
 
 
-  public Font getProggyFont(){
-    Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 40);
-    try{
-      f = Font.createFont(Font.TRUETYPE_FONT,
-              new FileInputStream(new File("src/ProggyClean.ttf"))).deriveFont(Font.PLAIN, 40);
-    }catch(Exception e){
-      System.out.println(e);
-
-    }
-    return f;
-  }
-
-  public void generateRowOfObstacles(){
-    for(int x = 0; x < 20; x++){
-      if(x == 5 || x == 10) continue;
-      em.createObstacles(x,5, '#');
-    }
-  }
-
-
+  /**
+   * rendering the game
+   */
   public void render(){
     textArea.render();
     db.render();
@@ -178,19 +181,16 @@ public void textVersionLoop(){
 
   double totalTime = 0.0;
 
+
+  /**
+   * this update method is used exclusively for the GUI
+   * @param delta
+   */
   public void update(double delta){
     textArea.update();
     totalTime += delta/1000000000;
     em.update(delta);
-    if(em.getDistanceBetweenEntities(player, c) == 1){
-      db.str = ("wanna buy some drugs kid?");
-    }else{
-      db.str = ("These fonts will be familiar to many programmers," +
-              " as they’re commonly used for coding. Programming fonts are a " +
-              "natural place to look for good roguelike fonts, since they’re both monospaced " +
-              "and designed to facilitate character recognition.");
-    }
-
+    playerTalk();
   }
 
   public void keyPressed(KeyEvent e) {}
@@ -211,6 +211,97 @@ public void textVersionLoop(){
   }
   public void keyTyped(KeyEvent e) {
 
+  }
+
+
+
+
+  public TextWindow getTextArea() {
+    return textArea;
+  }
+
+  public void setTextArea(TextWindow textArea) {
+    this.textArea = textArea;
+  }
+
+  public EntityManager getEm() {
+    return em;
+  }
+
+  public void setEm(EntityManager em) {
+    this.em = em;
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  public DialogBox getDb() {
+    return db;
+  }
+
+  public void setDb(DialogBox db) {
+    this.db = db;
+  }
+
+  public NPC getC() {
+    return c;
+  }
+
+  public void setC(NPC c) {
+    this.c = c;
+  }
+
+  public Scanner getScanner() {
+    return scanner;
+  }
+
+  public void setScanner(Scanner scanner) {
+    this.scanner = scanner;
+  }
+
+  public boolean isTextVersion() {
+    return textVersion;
+  }
+
+  public void setTextVersion(boolean textVersion) {
+    this.textVersion = textVersion;
+  }
+
+  public static int getRow() {
+    return row;
+  }
+
+  public static void setRow(int row) {
+    Rogue.row = row;
+  }
+
+  public static int getCol() {
+    return col;
+  }
+
+  public static void setCol(int col) {
+    Rogue.col = col;
+  }
+
+  public MapManager getMm() {
+    return mm;
+  }
+
+  public void setMm(MapManager mm) {
+    this.mm = mm;
+  }
+
+  public double getTotalTime() {
+    return totalTime;
+  }
+
+  public void setTotalTime(double totalTime) {
+    this.totalTime = totalTime;
   }
 
 }

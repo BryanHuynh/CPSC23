@@ -1,5 +1,6 @@
 public class Player extends Entity{
 
+
   public Player(int x, int y, char symbol){
     super(x ,y , symbol);
   }
@@ -12,10 +13,10 @@ public class Player extends Entity{
     if(alternateXTime >= 0.2) {
       alternateXTime = 0;
       //System.out.println("SWITCH");
-      if (this.getSymbol() == 'x') {
-        this.setSymbol('X');
+      if (Character.isLowerCase(this.getSymbol())) {
+        this.setSymbol(Character.toUpperCase(this.getSymbol()));
       } else {
-        this.setSymbol('x');
+        this.setSymbol(Character.toLowerCase(this.getSymbol()));
       }
     }
   }
