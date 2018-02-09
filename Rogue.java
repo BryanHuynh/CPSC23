@@ -105,11 +105,11 @@ public void textVersionLoop(){
       delta = System.currentTimeMillis() - now;
       now = System.currentTimeMillis();
       totalTime += delta;
-      System.out.println((double) totalTime/1000);
+      //System.out.println((double) totalTime/1000);
       update(delta);
       render();
       try {
-        Thread.sleep(10);
+        Thread.sleep(15);
       }catch(Exception e){
       }
      }
@@ -130,13 +130,40 @@ public void textVersionLoop(){
 
   public void init(){
     char[][] map = mapLoad();
+    //map = transposeMap(map);
     Rogue.row = map.length;
     Rogue.col = map[0].length;
-    textArea = new TextWindow(row, col, this);
+
+    textArea = new TextWindow(row + 1, col + 1, this);
+    mapToEntity(map);
     db = new DialogBox(textArea);
     //generateRowOfObstacles();
     c = em.createNPC(5,4,'c');
-    Enemy e = em.createEnemy(24,14,'e');
+    Enemy e = em.createEnemy(24,24,'e');
+  }
+
+  public void mapToEntity(char[][] map){
+    Entity[][] entityMap = new Entity[map.length][map[0].length];
+    for(int j = 0; j < map.length; j++ ){
+      for(int i = 0; i < map[0].length; i++){
+        if(map[j][i] =='#'){
+          entityMap[j][i] = em.createObstacles(i,j,'#');
+        }else if(map[j][i] == '.'){
+          entityMap[j][i] = em.createEmptySpace(i,j);
+        }
+      }
+    }
+  }
+
+  public char[][] transposeMap(char[][] map){
+    char[][] nmap = new char[map[0].length][map.length];
+
+    for(int j = 0; j < map.length; j++ ){
+      for(int i = 0; i < map[0].length; i++){
+        nmap[i][j] = map[j][i];
+      }
+    }
+    return nmap;
   }
 
 
@@ -147,9 +174,15 @@ public void textVersionLoop(){
     }catch(IOException e){
 
     }
+
+
     String[] size = scanner.nextLine().split("\\s");
+
+    Rogue.row = Integer.parseInt(size[0]);
+    Rogue.col = Integer.parseInt(size[1]);
+
     char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
-    for(int i=0; i < 6; i++) {
+    for(int i=0; i < Integer.parseInt(size[0]); i++) {
         array[i] = scanner.nextLine().toCharArray();
     }
     return array;
@@ -157,10 +190,10 @@ public void textVersionLoop(){
 
 
   public Font getProggyFont(){
-    Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 20);
+    Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 40);
     try{
       f = Font.createFont(Font.TRUETYPE_FONT,
-              new FileInputStream(new File("etc\\ProggyClean.ttf"))).deriveFont(Font.PLAIN, 27);
+              new FileInputStream(new File("etc\\ProggyClean.ttf"))).deriveFont(Font.PLAIN, 40);
     }catch(Exception e){
       System.out.println(e);
 
@@ -186,7 +219,6 @@ public void textVersionLoop(){
   public void update(double delta){
     textArea.update();
     totalTime += delta/1000000000;
-    System.out.println(totalTime);
     em.update(delta);
     if(em.getDistanceBetweenEntities(player, c) == 1){
       db.str = ("wanna buy some drugs kid?");
@@ -213,7 +245,7 @@ public void textVersionLoop(){
       else if(e.getKeyCode()== KeyEvent.VK_W)
         em.movePlayer(0,-1, textArea);
       //System.out.println(this.player.toString());
-
+      em.update();
   }
   public void keyTyped(KeyEvent e) {
 

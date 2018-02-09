@@ -75,10 +75,14 @@ public void printToConsole(){
       return null;
     }
   }
+
+
+
   public void clearConsole(){
 
     for (int i = 0; i < 100; ++i) System.out.println();
   }
+
   public void render(){
     this.setText("");
     for(int y = 0; y < row; y++){

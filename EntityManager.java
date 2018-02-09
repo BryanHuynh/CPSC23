@@ -14,7 +14,6 @@ public class EntityManager{
   }
 
 
-
   public Player createPlayer(int x, int y){
     player = new Player(x, y, 'x');
     entities.add(player);
@@ -71,7 +70,7 @@ public class EntityManager{
 
 
     for(Enemy enemy: enemies){
-      enemy.setPath(AStar.test(0, Rogue.row, Rogue.col, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
+      enemy.setPath(AStar.test(0, Rogue.row + 1, Rogue.col + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
       enemy.step();
     }
   }
