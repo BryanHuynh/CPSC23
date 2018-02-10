@@ -26,7 +26,7 @@ public Rogue(){
 
   init();
   scanner = new Scanner(System.in);
-  System.out.println("play the text[yes/no]");
+  System.out.println("play the text [yes/no]");
 
 
   if(scanner.hasNext()){
@@ -56,6 +56,8 @@ public Rogue(){
   System.out.println();
 
   while(textVersion){
+    System.out.print("W moves forward           A moves Left            Q-quit \n");
+    System.out.print("S moves Down              D moves Right");
     if(scanner.hasNext()){
       textPlayerControl();
       textArea.clearConsole();
@@ -97,7 +99,10 @@ public Rogue(){
       em.movePlayer(0,+1, textArea);
     }else if(input.equals("d")){
       em.movePlayer(1,0, textArea);
+    }else if(input.equals("q")){
+      textVersion = false;
     }
+    System.out.println(em.getPlayer().toString());
   }
 
 
@@ -208,6 +213,7 @@ public Rogue(){
         em.movePlayer(0,-1, textArea);
       //System.out.println(this.player.toString());
       em.update();
+      System.out.println(em.getPlayer().toString());
   }
   public void keyTyped(KeyEvent e) {
 

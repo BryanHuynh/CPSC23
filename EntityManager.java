@@ -84,7 +84,6 @@ public class EntityManager{
 	int x = this.player.getX() + dx;
 	int y = this.player.getY() + dy;
 	Character character = textArea.getCharacter(x, y);
-    System.out.println(character);
 	if(character == null) return;
 	if(character.equals('#'))  return;
 	if(character.equals('c') || character.equals('C')) return;
