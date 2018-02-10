@@ -1,4 +1,7 @@
 import java.util.*;
+//This is not out code.
+//this is from http://www.codebytes.in/2015/02/a-shortest-path-finding-algorithm.html by Jatin Thakur
+// we are currently using this as a temporary subsitute while we get out version of the algorithm done
 
 public class AStar {
     public static final int DIAGONAL_COST = 14;
