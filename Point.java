@@ -1,5 +1,8 @@
+
+
 public class Point{
-  private int x,y;
+
+	private int x,y;
   /**
   * a class that stores x,y integers
   *@param x
@@ -8,6 +11,13 @@ public class Point{
   Point(int x, int y){
     this.x = x;
     this.y = y;
+  }
+
+
+  public double getDistance(Point point){
+  	double dx = Math.pow(point.getX() - x, 2);
+	double dy = Math.pow(point.getY() - y, 2);
+  	return Math.sqrt(dx + dy);
   }
 
 	/**

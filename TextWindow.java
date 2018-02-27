@@ -31,7 +31,7 @@ public class TextWindow extends JTextArea{
     this.rogue = rogue;
     this.row = rows;
     this.col = cols;
-    entityMap = new Entity[col][row];
+    entityMap = new Entity[row][col];
     this.setRows(rows);
     this.setColumns(cols);
     updateEntityMap();
@@ -48,23 +48,27 @@ public class TextWindow extends JTextArea{
    * player>enemy>npc>obstacles
    */
   private void updateEntityMap(){
-    entityMap = new Entity[entityMap.length][entityMap[0].length];
+    entityMap = new Entity[row][col];
 
     EntityManager em = rogue.getEm();
 
-    for(Obstacle ob: em.getObstacles()){
-      entityMap[ob.getY()][ob.getX()] = ob;
-    }
 
     for(NPC n: em.getNpcs()){
       entityMap[n.getY()][n.getX()] = n;
     }
 
     for(Enemy en: em.getEnemies()){
+
+        System.out.println("enemy at       |x:" + en.getX() + "        |y:       " + en.getY()      );
       entityMap[en.getY()][en.getX()] = en;
     }
 
-    entityMap[rogue.getPlayer().getY()][rogue.getPlayer().getX()] = rogue.getPlayer();
+
+    for(Obstacle ob: em.getObstacles()){
+      System.out.println("Ob at       |" + ob.getX() + "        |       " + ob.getY()      );
+      entityMap[ob.getY()][ob.getX()] = ob;
+    }
+    entityMap[em.getPlayer().getY()][em.getPlayer().getX()] = em.getPlayer();
   }
 
   /**
@@ -102,10 +106,10 @@ public class TextWindow extends JTextArea{
    * prints the entityMap to the console. null spaces are filled with '.'s
    */
   public void printToConsole(){
-    for(int y = 0; y < col; y++){
-      for(int x = 0; x < row; x++){
+    for(int y = 0; y < row; y++){
+      for(int x = 0; x < col; x++){
         if(entityMap[y][x] == null){
-          System.out.printf("%-2s ",'.');
+          System.out.printf("%-2s ",' ');
         }else {
           System.out.printf("%-2s ", String.valueOf(entityMap[y][x].getSymbol()));
         }

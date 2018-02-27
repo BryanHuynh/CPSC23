@@ -80,15 +80,7 @@ public class AStar {
                 t = grid[current.i-1][current.j];
                 checkAndUpdateCost(current, t, current.finalCost+V_H_COST);
 
-                if(current.j-1>=0){
-                    t = grid[current.i-1][current.j-1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
-                }
 
-                if(current.j+1<grid[0].length){
-                    t = grid[current.i-1][current.j+1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
-                }
             }
 
             if(current.j-1>=0){
@@ -105,15 +97,7 @@ public class AStar {
                 t = grid[current.i+1][current.j];
                 checkAndUpdateCost(current, t, current.finalCost+V_H_COST);
 
-                if(current.j-1>=0){
-                    t = grid[current.i+1][current.j-1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
-                }
 
-                if(current.j+1<grid[0].length){
-                   t = grid[current.i+1][current.j+1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
-                }
             }
         }
     }
@@ -127,43 +111,43 @@ public class AStar {
     int[][] blocked = array containing inaccessible cell coordinates
     */
     public static ArrayList<Point> test(int tCase, int x, int y, int si, int sj, int ei, int ej, int[][] blocked){
-           //System.out.println("\n\nTest Case #"+tCase);
-            //Reset
-            ArrayList<Point> path = new ArrayList<Point>();
-           grid = new Cell[x][y];
-           closed = new boolean[x][y];
-           open = new PriorityQueue<>((Object o1, Object o2) -> {
-                Cell c1 = (Cell)o1;
-                Cell c2 = (Cell)o2;
+        //System.out.println("\n\nTest Case #"+tCase);
+        //Reset
+        ArrayList<Point> path = new ArrayList<Point>();
+        grid = new Cell[x][y];
+        closed = new boolean[x][y];
+        open = new PriorityQueue<>((Object o1, Object o2) -> {
+            Cell c1 = (Cell)o1;
+            Cell c2 = (Cell)o2;
 
-                return c1.finalCost<c2.finalCost?-1:
-                        c1.finalCost>c2.finalCost?1:0;
-            });
-           //Set start position
-           setStartCell(si, sj);  //Setting to 0,0 by default. Will be useful for the UI part
+            return c1.finalCost<c2.finalCost?-1:
+                    c1.finalCost>c2.finalCost?1:0;
+        });
+        //Set start position
+        setStartCell(si, sj);  //Setting to 0,0 by default. Will be useful for the UI part
 
-           //Set End Location
-           setEndCell(ei, ej);
+        //Set End Location
+        setEndCell(ei, ej);
 
-           for(int i=0;i<x;++i){
-              for(int j=0;j<y;++j){
-                  grid[i][j] = new Cell(i, j);
-                  grid[i][j].heuristicCost = Math.abs(i-endI)+Math.abs(j-endJ);
+        for(int i=0;i<x;++i){
+            for(int j=0;j<y;++j){
+                grid[i][j] = new Cell(i, j);
+                grid[i][j].heuristicCost = Math.abs(i-endI)+Math.abs(j-endJ);
 //                  System.out.print(grid[i][j].heuristicCost+" ");
-              }
+            }
 //              System.out.println();
-           }
-           grid[si][sj].finalCost = 0;
+        }
+        grid[si][sj].finalCost = 0;
 
            /*
              Set blocked cells. Simply set the cell values to null
              for blocked cells.
            */
-           for(int i=0;i<blocked.length;++i){
-               setBlocked(blocked[i][0], blocked[i][1]);
-           }
+        for(int i=0;i<blocked.length;++i){
+            setBlocked(blocked[i][0], blocked[i][1]);
+        }
 
-           //Display initial map
+        //Display initial map
            /*
            *
            *
@@ -182,7 +166,7 @@ public class AStar {
             *
             */
 
-           AStar();
+        AStar();
 
            /*
            *
@@ -203,22 +187,22 @@ public class AStar {
            *
            *
            */
-           if(closed[endI][endJ]){
-               //Trace back the path
-                //System.out.println("Path: ");
-                Cell current = grid[endI][endJ];
-                //System.out.print(current);
-                while(current.parent!=null){
-                    //System.out.print(" -> "+current.parent);
-                    path.add(new Point(current.j, current.i));
-                    current = current.parent;
-                }
-                System.out.println();
-           }else System.out.println("No possible path");
-          // System.out.println();
-          // System.out.println();
-           //System.out.println();
-           return path;
+        if(closed[endI][endJ]){
+            //Trace back the path
+            //System.out.println("Path: ");
+            Cell current = grid[endI][endJ];
+            //System.out.print(current);
+            while(current.parent!=null){
+                //System.out.print(" -> "+current.parent);
+                path.add(new Point(current.j, current.i));
+                current = current.parent;
+            }
+            System.out.println();
+        }else System.out.println("No possible path");
+        // System.out.println();
+        // System.out.println();
+        //System.out.println();
+        return path;
     }
 
     public static void main(String[] args) throws Exception{

@@ -17,7 +17,18 @@ public class MapManager {
      */
     MapManager(Rogue rogue){
         this.rogue = rogue;
-        map = mapLoad();
+        map = randomlyGenMap();
+        //map = mapLoad();
+    }
+
+    public char[][] randomlyGenMap(){
+      char[][] m;
+      try{
+        m = convertMap(new MapGenerator().map);
+      }catch(Exception e){
+        return randomlyGenMap();
+      }
+      return m;
     }
 
 
@@ -38,10 +49,34 @@ public class MapManager {
         for (int j = 0; j < map.length; j++) {
             for (int i = 0; i < map[0].length; i++) {
                 if (map[j][i] == '#') {
+                    System.out.println("creating ob      |" + i + "       |    " + j);
                     entityMap[j][i] = em.createObstacles(i, j, '#');            //if the 2d char map has an obstacle, turn that obstacle into an actual entity using the entity manager
+                }else if(map[j][i] == 'x'){
+                  entityMap[j][i] = em.createPlayer(i, j);
+                }else if(map[j][i] == 'e'){
+                  System.out.println("creating enemy      |" + i + "       |    " + j);
+
+                  entityMap[j][i] = em.createEnemy(i, j, 'e');
                 }
             }
         }
+
+    }
+
+    /**
+    * converts the . on the map from the generater to obs
+    */
+    public char[][] convertMap(char[][] map){
+      for(int j = 0; j < map.length;j++){
+        for(int i = 0;i < map[0].length;i++){
+          if(map[j][i] == '.') map[j][i] = '#';
+        }
+      }
+      return map;
+    }
+
+    public char[][] getMap(){
+      return this.map;
     }
 
 

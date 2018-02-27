@@ -8,7 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.io.*;
-
+import java.util.ArrayList;
+import java.util.Random;
 public class Rogue extends JFrame implements KeyListener{
   private TextWindow textArea;
   private EntityManager em = new EntityManager();
@@ -22,7 +23,6 @@ public class Rogue extends JFrame implements KeyListener{
 
 
 public Rogue(){
-  player = em.createPlayer(0,0);
 
   init();
   scanner = new Scanner(System.in);
@@ -45,6 +45,32 @@ public Rogue(){
   }
 }
 
+public void randomlyPlacePlayer(){
+  ArrayList<Point> free = new ArrayList<>();
+  for(int j = 1; j < row - 1; j ++){
+    for(int i = 1; i < col - 1; i++){
+      if(mm.getMap()[j][i] == ' '){
+        free.add(new Point(j,i));
+      }
+    }
+  }
+  Random randomizer = new Random();
+  Point freept = free.get(randomizer.nextInt(free.size()));
+  player = em.createPlayer(freept.getX(), freept.getY());
+}
+public void randomlyPlaceEnemy(){
+  ArrayList<Point> free = new ArrayList<>();
+  for(int j = 1; j < row - 1; j ++){
+    for(int i = 1; i < col - 1; i++){
+      if(mm.getMap()[j][i] == ' '){
+        free.add(new Point(j,i));
+      }
+    }
+  }
+  Random randomizer = new Random();
+  Point freept = free.get(randomizer.nextInt(free.size()));
+  em.createEnemy(freept.getX(), freept.getY(),'e');
+}
   /**
    * game loop used for the text version of the game
    */
@@ -75,7 +101,7 @@ public Rogue(){
    * a temporary system to test out the dialog system mixed with the player proximate, [TO BE REMOVED]
    */
   public void playerTalk(){
-    if(em.getDistanceBetweenEntities(player, c) == 1){
+    if(em.getDistanceBetweenEntities(em.getPlayer(), c) == 1){
       db.setStr("This NPC is talking to you because you are only a block away");
     }else{
       db.setStr("There is a theory which states that if ever anyone discovers exactly " +
@@ -165,7 +191,8 @@ public Rogue(){
     Rogue.row = mm.getMapLength();
     Rogue.col = mm.getMapHeight();
     mm.createMapEntities();
-
+    //randomlyPlacePlayer();
+    //randomlyPlaceEnemy();
     textArea = new TextWindow(row + 1, col + 1, this);
 
     db = new DialogBox(textArea);

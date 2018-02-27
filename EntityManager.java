@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class EntityManager{
 
-    private ArrayList<Entity> entities = new ArrayList<Entity>();
+  private ArrayList<Entity> entities = new ArrayList<Entity>();
   private ArrayList<NPC> npcs = new ArrayList<NPC>();
   private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
   private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
@@ -103,13 +103,14 @@ public class EntityManager{
       int[][] obs = new int[obstacles.size()][obstacles.size()];
       if(obstacles.size() > 0){
           for(int x = 0; x < obs[0].length; x++){
-              obs[x][0] = obstacles.get(x).getY();
-              obs[x][1] = obstacles.get(x).getX();
+              obs[x][1] = obstacles.get(x).getY();
+              obs[x][0] = obstacles.get(x).getX();
           }
       }
-
+      if(player.equals(null)) System.out.println("player is null");
       for(Enemy enemy: enemies){
-          enemy.setPath(AStar.test(0, Rogue.getRow() + 1, Rogue.getCol() + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
+          if(enemy.equals(null)) System.out.println("enemy is null");
+          enemy.setPath(AStar.test(0, Rogue.getCol(), Rogue.getRow(), enemy.getX(), enemy.getY(), player.getX(), player.getY(), obs));
           enemy.step();
       }
   }

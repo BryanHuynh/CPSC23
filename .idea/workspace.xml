@@ -2,11 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5d34ce0-dc56-440a-9b6c-7c3370f8c217" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/AStar$Cell.class" afterPath="$PROJECT_DIR$/AStar$Cell.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/MapGenerator.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/AStar.class" afterPath="$PROJECT_DIR$/AStar.class" />
-      <change beforePath="$PROJECT_DIR$/MapGenlib/MapGen.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/MapGenlib/MapGen.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/AStar.java" afterPath="$PROJECT_DIR$/AStar.java" />
+      <change beforePath="$PROJECT_DIR$/EntityManager.class" afterPath="$PROJECT_DIR$/EntityManager.class" />
+      <change beforePath="$PROJECT_DIR$/EntityManager.java" afterPath="$PROJECT_DIR$/EntityManager.java" />
+      <change beforePath="$PROJECT_DIR$/MapGen.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/MapGen.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/MapManager.class" afterPath="$PROJECT_DIR$/MapManager.class" />
+      <change beforePath="$PROJECT_DIR$/MapManager.java" afterPath="$PROJECT_DIR$/MapManager.java" />
+      <change beforePath="$PROJECT_DIR$/Point.class" afterPath="$PROJECT_DIR$/Point.class" />
+      <change beforePath="$PROJECT_DIR$/Point.java" afterPath="$PROJECT_DIR$/Point.java" />
+      <change beforePath="$PROJECT_DIR$/Rogue$1.class" afterPath="$PROJECT_DIR$/Rogue$1.class" />
+      <change beforePath="$PROJECT_DIR$/Rogue.class" afterPath="$PROJECT_DIR$/Rogue.class" />
+      <change beforePath="$PROJECT_DIR$/Rogue.java" afterPath="$PROJECT_DIR$/Rogue.java" />
+      <change beforePath="$PROJECT_DIR$/Room.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Room.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/TextWindow.class" afterPath="$PROJECT_DIR$/TextWindow.class" />
+      <change beforePath="$PROJECT_DIR$/TextWindow.java" afterPath="$PROJECT_DIR$/TextWindow.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,24 +30,36 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="DialogBox.java" pinned="false" current-in-tab="true">
+    <leaf>
+      <file leaf-file-name="DialogBox.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DialogBox.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="420">
+              <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Rogue.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rogue.java">
+      <file leaf-file-name="AStar.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AStar.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="17" />
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MapGenerator.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MapGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#7693#7694#0" expanded="true" />
+                <element signature="e#7727#7728#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,8 +82,9 @@
         <option value="$PROJECT_DIR$/Map.txt" />
         <option value="$PROJECT_DIR$/Rogue.java" />
         <option value="$PROJECT_DIR$/TextWindow.java" />
-        <option value="$PROJECT_DIR$/DialogBox.java" />
         <option value="$PROJECT_DIR$/MapGenlib/MapGen.java" />
+        <option value="$PROJECT_DIR$/DialogBox.java" />
+        <option value="$PROJECT_DIR$/MapGenerator.java" />
       </list>
     </option>
   </component>
@@ -70,8 +97,8 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-13" />
     <option name="y" value="-13" />
-    <option name="width" value="2762" />
-    <option name="height" value="1770" />
+    <option name="width" value="2734" />
+    <option name="height" value="1742" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -89,6 +116,9 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -100,9 +130,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -111,6 +138,11 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Apoll\Documents\CPSC_233" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -304,18 +336,20 @@
       <workItem from="1517293562705" duration="68000" />
       <workItem from="1517293640991" duration="1256000" />
       <workItem from="1518638698475" duration="239000" />
+      <workItem from="1519632553503" duration="52000" />
+      <workItem from="1519677055398" duration="1419000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3906000" />
+    <option name="totallyTimeSpent" value="5377000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-13" y="-13" width="2762" height="1770" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -339,6 +373,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297491" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -368,9 +403,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DialogBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rogue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -413,9 +460,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="42" column="41" lean-forward="false" selection-start-line="42" selection-start-column="41" selection-end-line="42" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -430,9 +474,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="625">
           <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -537,17 +578,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MapGenlib/Room.class" />
+    <entry file="file://$PROJECT_DIR$/MapGenlib/Room.java" />
+    <entry file="file://$PROJECT_DIR$/MapGenlib/MapGen.java" />
     <entry file="file://$PROJECT_DIR$/Rogue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DialogBox.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1519698830390" expanded="true" signature="0:104" ph="/.../" />
+            <marker date="1519698830390" expanded="false" signature="113:160" ph="..." />
+            <marker date="1519698830390" expanded="false" signature="285:296" ph=" { " />
+            <marker date="1519698830390" expanded="false" signature="311:317" ph=" }" />
+            <marker date="1519698830390" expanded="true" signature="344:1018" ph="{...}" />
+            <marker date="1519698830390" expanded="true" signature="1054:1917" ph="{...}" />
+            <marker date="1519698830390" expanded="false" signature="1948:1959" ph=" { " />
+            <marker date="1519698830390" expanded="false" signature="1974:1980" ph=" }" />
+            <marker date="1519698830390" expanded="false" signature="2020:2031" ph=" { " />
+            <marker date="1519698830390" expanded="false" signature="2046:2052" ph=" }" />
+            <marker date="1519698830390" expanded="false" signature="2080:2091" ph=" { " />
+            <marker date="1519698830390" expanded="false" signature="2107:2113" ph=" }" />
+            <marker date="1519698830390" expanded="false" signature="2150:2161" ph=" { " />
+            <marker date="1519698830390" expanded="false" signature="2177:2183" ph=" }" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MapGenlib/Room.class">
+    <entry file="file://$PROJECT_DIR$/DialogBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AStar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -555,27 +627,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MapGenlib/Room.java">
+    <entry file="file://$PROJECT_DIR$/MapGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="5" column="8" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MapGenlib/MapGen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="18" column="3" lean-forward="true" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DialogBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7693#7694#0" expanded="true" />
+            <element signature="e#7727#7728#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
