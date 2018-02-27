@@ -18,7 +18,7 @@ public class Rogue extends JFrame implements KeyListener{
   private NPC c;
   private Scanner scanner;
   private boolean textVersion;
-  private static int row, col;
+  private static int height, width;
   private MapManager mm;
 
 
@@ -47,8 +47,8 @@ public Rogue(){
 
 public void randomlyPlacePlayer(){
   ArrayList<Point> free = new ArrayList<>();
-  for(int j = 1; j < row - 1; j ++){
-    for(int i = 1; i < col - 1; i++){
+  for(int j = 1; j < height - 1; j ++){
+    for(int i = 1; i < width - 1; i++){
       if(mm.getMap()[j][i] == ' '){
         free.add(new Point(j,i));
       }
@@ -60,8 +60,8 @@ public void randomlyPlacePlayer(){
 }
 public void randomlyPlaceEnemy(){
   ArrayList<Point> free = new ArrayList<>();
-  for(int j = 1; j < row - 1; j ++){
-    for(int i = 1; i < col - 1; i++){
+  for(int j = 1; j < height - 1; j ++){
+    for(int i = 1; i < width - 1; i++){
       if(mm.getMap()[j][i] == ' '){
         free.add(new Point(j,i));
       }
@@ -188,15 +188,15 @@ public void randomlyPlaceEnemy(){
 
     mm = new MapManager(this);
 
-    Rogue.row = mm.getMapLength();
-    Rogue.col = mm.getMapHeight();
+    Rogue.height = mm.getMapLength();
+    Rogue.width = mm.getMapHeight();
     mm.createMapEntities();
     //randomlyPlacePlayer();
     //randomlyPlaceEnemy();
-    textArea = new TextWindow(row + 1, col + 1, this);
+    textArea = new TextWindow(height + 1, width + 1, this);
 
     db = new DialogBox(textArea);
-    //generateRowOfObstacles();
+    //generateheightOfObstacles();
     c = em.createNPC(5,4,'c');
     Enemy e = em.createEnemy(24,24,'e');
 
@@ -305,20 +305,20 @@ public void randomlyPlaceEnemy(){
     this.textVersion = textVersion;
   }
 
-  public static int getRow() {
-    return row;
+  public static int getheight() {
+    return height;
   }
 
-  public static void setRow(int row) {
-    Rogue.row = row;
+  public static void setheight(int height) {
+    Rogue.height = height;
   }
 
-  public static int getCol() {
-    return col;
+  public static int getwidth() {
+    return width;
   }
 
-  public static void setCol(int col) {
-    Rogue.col = col;
+  public static void setwidth(int width) {
+    Rogue.width = width;
   }
 
   public MapManager getMm() {

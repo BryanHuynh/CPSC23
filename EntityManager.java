@@ -103,14 +103,20 @@ public class EntityManager{
       int[][] obs = new int[obstacles.size()][obstacles.size()];
       if(obstacles.size() > 0){
           for(int x = 0; x < obs[0].length; x++){
-              obs[x][1] = obstacles.get(x).getY();
-              obs[x][0] = obstacles.get(x).getX();
+              obs[x][0] = obstacles.get(x).getY();
+              obs[x][1] = obstacles.get(x).getX();
           }
       }
-      if(player.equals(null)) System.out.println("player is null");
       for(Enemy enemy: enemies){
-          if(enemy.equals(null)) System.out.println("enemy is null");
-          enemy.setPath(AStar.test(0, Rogue.getCol(), Rogue.getRow(), enemy.getX(), enemy.getY(), player.getX(), player.getY(), obs));
+          System.out.print(Rogue.getwidth() + "|");
+          System.out.print(Rogue.getheight() + "|");
+          System.out.print(enemy.getX() + "|");
+          System.out.print(enemy.getY() + "|");
+          System.out.print(player.getX() + "|");
+          System.out.print(player.getY() + "|");
+          System.out.println();
+
+          enemy.setPath(AStar.test(0, Rogue.getwidth() + 1, Rogue.getheight() + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
           enemy.step();
       }
   }

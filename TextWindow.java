@@ -18,22 +18,22 @@ import java.lang.Runtime;
 public class TextWindow extends JTextArea{
   private Entity[][] entityMap;
   private Rogue rogue;
-  private int row, col;
+  private int height, width;
 
   /**
    *
-   * @param rows
-   * @param cols
+   * @param heights
+   * @param widths
    * @param rogue
    */
-  public TextWindow(int rows, int cols, Rogue rogue){
+  public TextWindow(int heights, int widths, Rogue rogue){
     super();
     this.rogue = rogue;
-    this.row = rows;
-    this.col = cols;
-    entityMap = new Entity[row][col];
-    this.setRows(rows);
-    this.setColumns(cols);
+    this.height = heights;
+    this.width = widths;
+    entityMap = new Entity[height][width];
+    this.setheight(heights);
+    this.setwidth(widths);
     updateEntityMap();
   }
 
@@ -48,7 +48,7 @@ public class TextWindow extends JTextArea{
    * player>enemy>npc>obstacles
    */
   private void updateEntityMap(){
-    entityMap = new Entity[row][col];
+    entityMap = new Entity[height][width];
 
     EntityManager em = rogue.getEm();
 
@@ -58,14 +58,11 @@ public class TextWindow extends JTextArea{
     }
 
     for(Enemy en: em.getEnemies()){
-
-        System.out.println("enemy at       |x:" + en.getX() + "        |y:       " + en.getY()      );
       entityMap[en.getY()][en.getX()] = en;
     }
 
 
     for(Obstacle ob: em.getObstacles()){
-      System.out.println("Ob at       |" + ob.getX() + "        |       " + ob.getY()      );
       entityMap[ob.getY()][ob.getX()] = ob;
     }
     entityMap[em.getPlayer().getY()][em.getPlayer().getX()] = em.getPlayer();
@@ -76,7 +73,7 @@ public class TextWindow extends JTextArea{
    * @return a 2d array of entity symbols that are currently on the EntityMap
    */
   public char[][] getCharacterMap(){
-    char[][] characterMap = new char[entityMap.length][entityMap[0].length];
+    char[][] characterMap = new char[height][width];
 
     for(int j= 0; j < characterMap.length; j++){
       for(int i= 0; i < characterMap[0].length; i++){
@@ -106,8 +103,8 @@ public class TextWindow extends JTextArea{
    * prints the entityMap to the console. null spaces are filled with '.'s
    */
   public void printToConsole(){
-    for(int y = 0; y < row; y++){
-      for(int x = 0; x < col; x++){
+    for(int y = 0; y < height; y++){
+      for(int x = 0; x < width; x++){
         if(entityMap[y][x] == null){
           System.out.printf("%-2s ",' ');
         }else {
@@ -164,9 +161,9 @@ public class TextWindow extends JTextArea{
    */
   public void render(){
     this.setText("");
-    for(int y = 0; y < col; y++){
+    for(int y = 0; y < width; y++){
       String str = "";
-      for(int x = 0; x < row; x++) {
+      for(int x = 0; x < height; x++) {
         if (entityMap[y][x] == null) {
           str += " " + '.';
         } else {
@@ -194,20 +191,20 @@ public class TextWindow extends JTextArea{
     this.rogue = rogue;
   }
 
-  public int getRow() {
-    return row;
+  public int getheight() {
+    return height;
   }
 
-  public void setRow(int row) {
-    this.row = row;
+  public void setheight(int height) {
+    this.height = height;
   }
 
-  public int getCol() {
-    return col;
+  public int getwidth() {
+    return width;
   }
 
-  public void setCol(int col) {
-    this.col = col;
+  public void setwidth(int width) {
+    this.width = width;
   }
 
 

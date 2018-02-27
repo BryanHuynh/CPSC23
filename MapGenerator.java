@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MapGenerator {
-    char[][] map = new char[40][50];
+    char[][] map = new char[50][50];
     int roomsize = 7;
     MapGenerator(){
         System.out.println("j = " + map.length);
@@ -11,25 +11,27 @@ public class MapGenerator {
         fillMap(map);
         generateRooms(map);
         removePadding(map);
+        constructPath(map);
         addEntity('x',map);
-        for(int numEnemies = 0; numEnemies < 10; numEnemies++){
+        for(int numEnemies = 0; numEnemies < 50; numEnemies++){
           addEntity('e',map);
         }
-
-        constructPath(map);
         printMap();
+        System.out.println("enemies counted: " + mapCounter('e',map));
     }
 
     public void addEntity(char symbol, char[][] map){
       ArrayList<Point> free = new ArrayList<Point>();
       for(int j = 0; j < map.length; j++){
         for(int i = 0; i < map[0].length; i++){
-          if(map[j][i] == ' ') free.add(new Point(i,j));
+          if(map[j][i] == ' ' && map[j][i] != 'e') free.add(new Point(i,j));
         }
       }
       Random randomizer = new Random();
-      Point pt = free.get(randomizer.nextInt(free.size()));
-      map[pt.getY()][pt.getX()] = symbol;
+      Point freept = free.get(randomizer.nextInt(free.size()));
+      int x = freept.getX();
+      int y = freept.getY();
+      map[y][x] = symbol;
     }
 
     public void generateRooms(char[][] map){
@@ -40,8 +42,8 @@ public class MapGenerator {
                   //int x = rnd.nextInt((length-5-0) + 0);       //generate room length between 0 and length of map - room length
                   //int y = rnd.nextInt((height-5-0) + 0);       //generate room height between 0 and the height of map - height of room
                   ArrayList<Point> free = new ArrayList<>();
-                  for(int j = 5; j < map.length - roomsize; j++){
-                      for(int i = 5; i < map[0].length - roomsize; i++){
+                  for(int j = 2; j < map.length - roomsize; j++){
+                      for(int i = 2; i < map[0].length - roomsize; i++){
                           if(map[j][i] == '.'){
                               boolean isFree = true;
                               for(int jy = 0; jy < roomsize + 1; jy++){
@@ -62,7 +64,7 @@ public class MapGenerator {
                   int y = freept.getY();
 
 
-                  System.out.println(x +", "+ y);
+                  //System.out.println(x +", "+ y);
 
                   boolean flag = false;
                   if(!flag) {
@@ -75,6 +77,18 @@ public class MapGenerator {
                       constuctCorridor(map);
                   }
               }
+
+    }
+
+    public int mapCounter(char symbol, char[][] map){
+      int count = 0;
+      for(int j = 0; j < map.length; j++){
+        for(int i = 0; i < map[0].length; i++){
+          //System.out.print(map[j][i]);
+          if(map[j][i] == symbol) count ++;
+        }
+      }
+      return count;
     }
 
 
@@ -152,19 +166,20 @@ public class MapGenerator {
         // construct template map for a*
         // look for obs
         ArrayList<Point> obstacles = new ArrayList<Point>();
-        for(int j = 0; j < map.length; j++) {
-            for (int i = 0; i < map[0].length; i++) {
+        for(int j = 0; j < map.length; j++){
+          for(int i = 0; i < map[0].length; i++){
                 if(map[j][i] == '#'){
                     obstacles.add(new Point(i,j));
                 }
             }
         }
+        System.out.println(mapCounter('#', map));
 
         int[][] obs = new int[obstacles.size()][obstacles.size()];
         if(obstacles.size() > 0){                       //if there are obs
             for(int x = 0; x < obs[0].length; x++){     //
-                obs[x][0] = obstacles.get(x).getY();
                 obs[x][1] = obstacles.get(x).getX();
+                obs[x][0] = obstacles.get(x).getY();
             }
         }
 
@@ -186,12 +201,17 @@ public class MapGenerator {
                 }
                 //doors.remove(closest);
                 if(closest != null){
-                    ArrayList<Point> path = AStar.test(0, map.length, map[0].length, now.getY(), now.getX(), closest.getY(), closest.getX(), obs);
-                    //replace all points retrieved by A* with P representing paths
-                    for (Point pt : path) {
-                        map[pt.getY()][pt.getX()] = ' ';
+                    try{
+                      ArrayList<Point> path = AStar.test(0, map.length, map[0].length, now.getY(), now.getX(), closest.getY(), closest.getX(), obs);
+                      //replace all points retrieved by A* with P representing paths
+                      for (Point pt : path) {
+                          map[pt.getY()][pt.getX()] = ' ';
+                      }
+                      map[now.getY()][now.getX()] = ' ';
+                    }catch(Exception e){
+                      System.out.println("welp");
                     }
-                    map[now.getY()][now.getX()] = ' ';
+
                 }
 
             }

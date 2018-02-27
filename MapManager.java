@@ -49,7 +49,6 @@ public class MapManager {
         for (int j = 0; j < map.length; j++) {
             for (int i = 0; i < map[0].length; i++) {
                 if (map[j][i] == '#') {
-                    System.out.println("creating ob      |" + i + "       |    " + j);
                     entityMap[j][i] = em.createObstacles(i, j, '#');            //if the 2d char map has an obstacle, turn that obstacle into an actual entity using the entity manager
                 }else if(map[j][i] == 'x'){
                   entityMap[j][i] = em.createPlayer(i, j);
@@ -95,8 +94,8 @@ public class MapManager {
         }
         String[] size = scanner.nextLine().split("\\s");
 
-        Rogue.setRow(Integer.parseInt(size[0]));                                // on the top line of the map, state the number of rows as the first parameter
-        Rogue.setCol(Integer.parseInt(size[1]));                                // on the top line of the map, state the number of cols as the second parameter
+        Rogue.setheight(Integer.parseInt(size[0]));                                // on the top line of the map, state the number of rows as the first parameter
+        Rogue.setwidth(Integer.parseInt(size[1]));                                // on the top line of the map, state the number of cols as the second parameter
 
         char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];        //create a map of size stated on the top line, of type character
         for(int i=0; i < Integer.parseInt(size[0]); i++) {                      //loop through all the line s of the array
