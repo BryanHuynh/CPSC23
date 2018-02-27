@@ -11,14 +11,28 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.lang.Runtime;
-
+import java.awt.event.KeyListener;
+import javax.swing.JTextPane;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.Document;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyleContext;
+import java.awt.Color;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.AttributeSet;
+import javax.swing.JScrollPane;
+import javax.swing.text.SimpleAttributeSet;
 /**
  * window that will render the game for both gui and text-based
  */
-public class TextWindow extends JTextArea{
+public class TextWindow extends JFrame implements KeyListener{
   private Entity[][] entityMap;
   private Rogue rogue;
   private int height, width;
+  private JTextPane tPane = new JTextPane();
+  JScrollPane sp;
+
+
 
   /**
    *
@@ -36,6 +50,49 @@ public class TextWindow extends JTextArea{
     this.setwidth(widths);
     updateEntityMap();
   }
+
+
+
+  /**
+   * initiates the frames required to used the gui
+   */
+  public void initGUI(){
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    tPane.setFont(getProggyFont());
+    this.addKeyListener(this);
+    tPane.addKeyListener(this);
+    sp = new JScrollPane(tPane);
+    this.add(sp);
+    new SmartScroller( sp , SmartScroller.END);
+
+    this.pack();
+    this.setVisible(true);
+  }
+
+
+
+  public void keyPressed(KeyEvent e) {}
+
+
+
+  public void keyReleased(KeyEvent e) {
+    EntityManager em = rogue.getEm();
+      if(e.getKeyCode()== KeyEvent.VK_D)
+        em.movePlayer(1,0, this.getCharacterMap());
+      else if(e.getKeyCode()== KeyEvent.VK_A)
+        em.movePlayer(-1,0, this.getCharacterMap());
+      else if(e.getKeyCode()== KeyEvent.VK_S)
+        em.movePlayer(0,+1, this.getCharacterMap());
+      else if(e.getKeyCode()== KeyEvent.VK_W)
+        em.movePlayer(0,-1, this.getCharacterMap());
+      //System.out.println(this.player.toString());
+      em.update(this.getCharacterMap());
+      System.out.println(em.getPlayer().toString());
+  }
+  public void keyTyped(KeyEvent e) {
+
+  }
+
 
 
   public void update(){
@@ -137,7 +194,7 @@ public class TextWindow extends JTextArea{
    * @return
    */
   public Font getProggyFont(){
-    Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 40);
+    Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 0);
     try{
       f = Font.createFont(Font.TRUETYPE_FONT,
               new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN, 25);
@@ -160,20 +217,60 @@ public class TextWindow extends JTextArea{
    * renders the entityMap to the screen
    */
   public void render(){
-    this.setText("");
-    for(int y = 0; y < width; y++){
+    tPane.setText("");
+    for(int y = 0; y < width - 1; y++){
       String str = "";
-      for(int x = 0; x < height; x++) {
+      for(int x = 0; x < height - 1; x++) {
         if (entityMap[y][x] == null) {
-          str += " " + '.';
-        } else {
-          str += " " + String.valueOf(entityMap[y][x].getSymbol());
+          appendToPane(tPane, str, Color.green);
+          appendToPane(tPane, " .", Color.black);
+          str = "";
+        } else if(entityMap[y][x] instanceof Player){
+          appendToPane(tPane, str, Color.green);
+          appendToPane(tPane," "+String.valueOf(entityMap[y][x].getSymbol()), Color.magenta);
+          str = "";
+        }else if(entityMap[y][x] instanceof Enemy){
+          appendToPane(tPane, str, Color.green);
+          appendToPane(tPane," "+String.valueOf(entityMap[y][x].getSymbol()), Color.red);
+          str = "";
+        }else {
+          if(str == ""){
+            str += " "+String.valueOf(entityMap[y][x].getSymbol());
+          }else if(entityMap[y][x].getSymbol() == str.charAt(0)){
+            str += " "+String.valueOf(entityMap[y][x].getSymbol());
+          }else{
+            appendToPane(tPane, str, Color.green);
+            str = " "+String.valueOf(entityMap[y][x].getSymbol());
+          }
         }
       }
-      this.append(str);
-      this.append("\n");
+      appendToPane(tPane, str, Color.green);
+      str = "";
+      append("\n");
     }
   }
+
+  public void append(String s) {
+   try {
+      Document doc = tPane.getDocument();
+      doc.insertString(doc.getLength(), s, null);
+   } catch(Exception exc) {
+      exc.printStackTrace();
+   }
+}
+
+private void appendToPane(JTextPane tp, String msg, Color c){
+    StyleContext sc = StyleContext.getDefaultStyleContext();
+    AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+    aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Monospaced");
+    aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+    int len = tp.getDocument().getLength();
+    tp.setCaretPosition(len);
+    tp.setCharacterAttributes(aset, false);
+    tp.replaceSelection(msg);
+}
 
   public Entity[][] getEntityMap() {
     return entityMap;

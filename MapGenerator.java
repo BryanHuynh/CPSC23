@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class MapGenerator {
     char[][] map = new char[50][50];
-    int roomsize = 7;
+    int roomsize = 10;
     MapGenerator(){
         System.out.println("j = " + map.length);
 
@@ -42,8 +42,8 @@ public class MapGenerator {
                   //int x = rnd.nextInt((length-5-0) + 0);       //generate room length between 0 and length of map - room length
                   //int y = rnd.nextInt((height-5-0) + 0);       //generate room height between 0 and the height of map - height of room
                   ArrayList<Point> free = new ArrayList<>();
-                  for(int j = 2; j < map.length - roomsize; j++){
-                      for(int i = 2; i < map[0].length - roomsize; i++){
+                  for(int j = 2; j < map.length - roomsize - 1; j++){
+                      for(int i = 2; i < map[0].length - roomsize - 1; i++){
                           if(map[j][i] == '.'){
                               boolean isFree = true;
                               for(int jy = 0; jy < roomsize + 1; jy++){

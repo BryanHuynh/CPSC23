@@ -53,7 +53,7 @@ public class MapManager {
                 }else if(map[j][i] == 'x'){
                   entityMap[j][i] = em.createPlayer(i, j);
                 }else if(map[j][i] == 'e'){
-                  System.out.println("creating enemy      |" + i + "       |    " + j);
+                  //System.out.println("creating enemy      |" + i + "       |    " + j);
 
                   entityMap[j][i] = em.createEnemy(i, j, 'e');
                 }

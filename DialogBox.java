@@ -27,7 +27,7 @@ public class DialogBox {
 		//System.out.println(bar.length());
 		String sentence = "";
 
-
+		/**
 		tw.append(bar + "\n");																//add the top bar to the textbox
 		for(String word: words){															//start looping through the words
 			if((sentence +" " + word).length() < bar.length()){	// check if the line we are creating is too long and can be wrapped to the next line
@@ -41,6 +41,7 @@ public class DialogBox {
 		tw.append("\n");
 
 		tw.append(bar + "\n");																//close the box
+		**/
 	}
 
 	/**

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.util.Random;
 
 /**
  * manages entities: can create entities, update, move player character, and other utils
@@ -80,26 +80,28 @@ public class EntityManager{
      * @param dy
      * @param textArea
      */
-  public void movePlayer(int dx, int dy, TextWindow textArea){
+  public void movePlayer(int dx, int dy, char[][] map){
 	int x = this.player.getX() + dx;
 	int y = this.player.getY() + dy;
-	Character character = textArea.getCharacter(x, y);
-	if(character == null) return;
-	if(character.equals('#'))  return;
-	if(character.equals('c') || character.equals('C')) return;
-    if(character.equals('e')  || character.equals('E') ) return;
+
+  if(x < 0 || y < 0) return;
+  if(x > map[0].length) return;
+  if(y > map.length) return;
+	if(map[y][x] == '#')  return;
+	if(map[y][x] =='c' || map[y][x] =='C') return;
+  if(map[y][x] =='e'  || map[y][x] =='E' ) return;
     this.player.setPosition(x,y);
   }
 
 
-  public void update(){
-    runEnemyAStar();
+  public void update(char[][] map){
+    runEnemyAStar(map);
   }
 
     /**
      * runs the A* method for all enemies
      */
-  public void runEnemyAStar(){
+  public void runEnemyAStar(char[][] map){
       int[][] obs = new int[obstacles.size()][obstacles.size()];
       if(obstacles.size() > 0){
           for(int x = 0; x < obs[0].length; x++){
@@ -108,15 +110,10 @@ public class EntityManager{
           }
       }
       for(Enemy enemy: enemies){
-          System.out.print(Rogue.getwidth() + "|");
-          System.out.print(Rogue.getheight() + "|");
-          System.out.print(enemy.getX() + "|");
-          System.out.print(enemy.getY() + "|");
-          System.out.print(player.getX() + "|");
-          System.out.print(player.getY() + "|");
-          System.out.println();
+        if(getDistanceBetweenEntities(enemy, player) < 3){
+            enemy.setPath(AStar.test(0, Rogue.getwidth() + 1, Rogue.getheight() + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
+        }
 
-          enemy.setPath(AStar.test(0, Rogue.getwidth() + 1, Rogue.getheight() + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
           enemy.step();
       }
   }

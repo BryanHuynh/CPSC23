@@ -10,7 +10,8 @@ import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
-public class Rogue extends JFrame implements KeyListener{
+
+public class Rogue{
   private TextWindow textArea;
   private EntityManager em = new EntityManager();
   private Player player;
@@ -28,13 +29,12 @@ public Rogue(){
   scanner = new Scanner(System.in);
   System.out.println("play the text [yes/no]");
 
-
   if(scanner.hasNext()){
     String in = scanner.nextLine();
     if(in.equalsIgnoreCase("yes")){
       textVersion = true;
     }else if(in.equalsIgnoreCase("no")){
-      initGUI();
+      textArea.initGUI();
       textVersion = false;
     }
   }
@@ -89,7 +89,7 @@ public void randomlyPlaceEnemy(){
       textArea.clearConsole();
       textArea.update();
       playerTalk();
-      em.update();
+      em.update(textArea.getCharacterMap());
       textArea.printToConsole();
       db.renderToConsole();
       System.out.println();
@@ -118,13 +118,13 @@ public void randomlyPlaceEnemy(){
     String input = scanner.nextLine();
 
     if(input.equals("w")){
-      em.movePlayer(0,-1, textArea);
+      em.movePlayer(0,-1, textArea.getCharacterMap());
     }else if(input.equals("a")){
-      em.movePlayer(-1,0, textArea);
+      em.movePlayer(-1,0, textArea.getCharacterMap());
     }else if(input.equals("s")){
-      em.movePlayer(0,+1, textArea);
+      em.movePlayer(0,+1, textArea.getCharacterMap());
     }else if(input.equals("d")){
-      em.movePlayer(1,0, textArea);
+      em.movePlayer(1,0, textArea.getCharacterMap());
     }else if(input.equals("q")){
       textVersion = false;
     }
@@ -167,19 +167,7 @@ public void randomlyPlaceEnemy(){
   }
 
 
-  /**
-   * initiates the frames required to used the gui
-   */
-  public void initGUI(){
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    textArea.setFont(textArea.getProggyFont());
-    this.addKeyListener(this);
-    textArea.addKeyListener(this);
-    this.add(textArea);
-    this.pack();
-    this.setVisible(true);
-  }
 
   /**
    * starts basic things required to run the game, console or gui
@@ -225,26 +213,6 @@ public void randomlyPlaceEnemy(){
     playerTalk();
   }
 
-  public void keyPressed(KeyEvent e) {}
-
-
-
-  public void keyReleased(KeyEvent e) {
-      if(e.getKeyCode()== KeyEvent.VK_D)
-        em.movePlayer(1,0, textArea);
-      else if(e.getKeyCode()== KeyEvent.VK_A)
-        em.movePlayer(-1,0, textArea);
-      else if(e.getKeyCode()== KeyEvent.VK_S)
-        em.movePlayer(0,+1, textArea);
-      else if(e.getKeyCode()== KeyEvent.VK_W)
-        em.movePlayer(0,-1, textArea);
-      //System.out.println(this.player.toString());
-      em.update();
-      System.out.println(em.getPlayer().toString());
-  }
-  public void keyTyped(KeyEvent e) {
-
-  }
 
 
 
