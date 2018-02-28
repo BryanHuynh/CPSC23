@@ -1,14 +1,16 @@
 import java.util.ArrayList;
-
+import java.util.Random;
 
 /**
  * not to be created directly, recommended to be created through EntityManager
  * creates an enemy that will pursue the player
  */
 public class Enemy extends Entity{
-
+  Random rand = new Random();
   private ArrayList<Point> path = new ArrayList<Point>();
   private String dialog = "";
+  int hp = rand.nextInt(20-5) + 5;;
+  int atk = rand.nextInt(20-5) + 5;;;
 
   public Enemy(int x, int y, char symbol){
     super(x, y, symbol);

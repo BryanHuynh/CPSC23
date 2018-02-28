@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -16,11 +15,12 @@ public class Rogue{
   private EntityManager em = new EntityManager();
   private Player player;
   private DialogBox db;
-  private NPC c;
   private Scanner scanner;
   private boolean textVersion;
   private static int height, width;
   private MapManager mm;
+  private Combat combat;
+  private KeyBinding kb = new KeyBinding();
 
 
 public Rogue(){
@@ -82,50 +82,73 @@ public void randomlyPlaceEnemy(){
   System.out.println();
 
   while(textVersion){
-    System.out.print("W moves forward           A moves Left            Q-quit \n");
-    System.out.print("S moves Down              D moves Right");
     if(scanner.hasNext()){
-      textPlayerControl();
-      textArea.clearConsole();
-      textArea.update();
+      String action = scanner.nextLine();
+
+
+      textPlayerControl(action);
       playerTalk();
+      textArea.update();
+      em.update(textArea.getCharacterMap());
+      textArea.clearConsole();
+
+      ArrayList<Enemy> inRange = combat.combatCheck();
+      if(inRange.size() > 0) {
+        combat.startCombat(em.getPlayer(), inRange, action);
+        kb.combat = true;
+      }
+      kb.combat = false;
+      textArea.update();
       em.update(textArea.getCharacterMap());
       textArea.printToConsole();
+      combat.displayEnemy(em.getPlayer(), inRange);
       db.renderToConsole();
-      System.out.println();
+      kb.print();
+
+
+
+
+
     }
   }
 }
+
+
+
 
   /**
    * a temporary system to test out the dialog system mixed with the player proximate, [TO BE REMOVED]
    */
   public void playerTalk(){
-    if(em.getDistanceBetweenEntities(em.getPlayer(), c) == 1){
-      db.setStr("This NPC is talking to you because you are only a block away");
-    }else{
-      db.setStr("There is a theory which states that if ever anyone discovers exactly " +
-              "what the Universe is for and why it is here, it will instantly disappear " +
-              "and be replaced by something even more bizarre and inexplicable. There is " +
-              "another theory which states that this has already happened.");
+    for(NPC c: em.getNpcs()){
+
+      if(em.getDistanceBetweenEntities(em.getPlayer(), c) == 1){
+        db.setStr("This NPC is talking to you because you are only a block away");
+        break;
+      }else{
+        db.setStr("There is a theory which states that if ever anyone discovers exactly " +
+                "what the Universe is for and why it is here, it will instantly disappear " +
+                "and be replaced by something even more bizarre and inexplicable. There is " +
+                "another theory which states that this has already happened.");
+      }
     }
+
   }
 
   /**
-   * recieves input from the console and moves the player by an increment
+   * recieves action from the console and moves the player by an increment
    */
-  public void textPlayerControl(){
-    String input = scanner.nextLine();
+  public void textPlayerControl(String action){
 
-    if(input.equals("w")){
+    if(action.equals("w")){
       em.movePlayer(0,-1, textArea.getCharacterMap());
-    }else if(input.equals("a")){
+    }else if(action.equals("a")){
       em.movePlayer(-1,0, textArea.getCharacterMap());
-    }else if(input.equals("s")){
+    }else if(action.equals("s")){
       em.movePlayer(0,+1, textArea.getCharacterMap());
-    }else if(input.equals("d")){
+    }else if(action.equals("d")){
       em.movePlayer(1,0, textArea.getCharacterMap());
-    }else if(input.equals("q")){
+    }else if(action.equals("q")){
       textVersion = false;
     }
     System.out.println(em.getPlayer().toString());
@@ -179,15 +202,9 @@ public void randomlyPlaceEnemy(){
     Rogue.height = mm.getMapLength();
     Rogue.width = mm.getMapHeight();
     mm.createMapEntities();
-    //randomlyPlacePlayer();
-    //randomlyPlaceEnemy();
     textArea = new TextWindow(height + 1, width + 1, this);
-
     db = new DialogBox(textArea);
-    //generateheightOfObstacles();
-    c = em.createNPC(5,4,'c');
-    Enemy e = em.createEnemy(24,24,'e');
-
+    combat = new Combat(em);
   }
 
 
@@ -249,13 +266,6 @@ public void randomlyPlaceEnemy(){
     this.db = db;
   }
 
-  public NPC getC() {
-    return c;
-  }
-
-  public void setC(NPC c) {
-    this.c = c;
-  }
 
   public Scanner getScanner() {
     return scanner;

@@ -30,7 +30,6 @@ public class EntityManager{
     return player;
   }
 
-
     /**
      * creates an obstacle and adds to the entities and obstacle arraylist
      * @param x
@@ -102,16 +101,20 @@ public class EntityManager{
      * runs the A* method for all enemies
      */
   public void runEnemyAStar(char[][] map){
-      int[][] obs = new int[obstacles.size()][obstacles.size()];
-      if(obstacles.size() > 0){
-          for(int x = 0; x < obs[0].length; x++){
-              obs[x][0] = obstacles.get(x).getY();
-              obs[x][1] = obstacles.get(x).getX();
-          }
-      }
+
       for(Enemy enemy: enemies){
         if(getDistanceBetweenEntities(enemy, player) < 3){
+            int[][] obs = new int[entities.size()][entities.size()];
+            if(obstacles.size() > 0){
+                for(int x = 0; x < entities.size(); x++){
+                    if(entities.get(x).equals(enemy)) continue;
+                    if(entities.get(x).equals(player)) continue;
+                    obs[x][0] = entities.get(x).getY();
+                    obs[x][1] = entities.get(x).getX();
+                }
+            }
             enemy.setPath(AStar.test(0, Rogue.getwidth() + 1, Rogue.getheight() + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
+            if(enemy.getPath().size() > 0) enemy.getPath().remove(0);
         }
 
           enemy.step();

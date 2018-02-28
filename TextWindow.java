@@ -30,9 +30,6 @@ public class TextWindow extends JFrame implements KeyListener{
   private Rogue rogue;
   private int height, width;
   private JTextPane tPane = new JTextPane();
-  JScrollPane sp;
-
-
 
   /**
    *
@@ -61,9 +58,7 @@ public class TextWindow extends JFrame implements KeyListener{
     tPane.setFont(getProggyFont());
     this.addKeyListener(this);
     tPane.addKeyListener(this);
-    sp = new JScrollPane(tPane);
-    this.add(sp);
-    new SmartScroller( sp , SmartScroller.END);
+    this.add(tPane);
 
     this.pack();
     this.setVisible(true);

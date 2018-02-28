@@ -1,6 +1,7 @@
 public class Player extends Entity{
 
-
+  int hp = 100;
+  int atk = 50;
   public Player(int x, int y, char symbol){
     super(x ,y , symbol);
   }

@@ -13,8 +13,11 @@ public class MapGenerator {
         removePadding(map);
         constructPath(map);
         addEntity('x',map);
-        for(int numEnemies = 0; numEnemies < 50; numEnemies++){
+        for(int numEnemies = 0; numEnemies < 10; numEnemies++){
           addEntity('e',map);
+        }
+        for(int numNPC = 0; numNPC < 7; numNPC++){
+          addEntity('c',map);
         }
         printMap();
         System.out.println("enemies counted: " + mapCounter('e',map));
