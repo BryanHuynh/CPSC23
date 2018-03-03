@@ -11,14 +11,97 @@ public class MapManager {
     private Rogue rogue;
     private char[][] map;
 
+    private Entity[][] entityMap;
+    private int height, width;
+
     /**
      *
      * @param rogue the game
      */
     MapManager(Rogue rogue){
+
         this.rogue = rogue;
         map = randomlyGenMap();
-        //map = mapLoad();
+        this.height  = getMapHeight() +1;
+        this.width = getMapLength() +1;
+    }
+
+
+
+    public void update(){
+        updateEntityMap();
+    }
+
+
+    /**
+     * refreshes the entity map. has a priority system.
+     * player>enemy>npc>obstacles
+     */
+    private void updateEntityMap(){
+        entityMap = new Entity[height][width];
+
+        EntityManager em = rogue.getEm();
+
+
+        for(NPC n: em.getNpcs()){
+            entityMap[n.getY()][n.getX()] = n;
+        }
+
+        for(Enemy en: em.getEnemies()){
+            entityMap[en.getY()][en.getX()] = en;
+        }
+
+
+        for(Obstacle ob: em.getObstacles()){
+            entityMap[ob.getY()][ob.getX()] = ob;
+        }
+        entityMap[em.getPlayer().getY()][em.getPlayer().getX()] = em.getPlayer();
+    }
+
+    /**
+     * get a map from the entitiyMap but only the symbols expressed for each entity
+     * @return a 2d array of entity symbols that are currently on the EntityMap
+     */
+    public char[][] getCharacterMap(){
+        char[][] characterMap = new char[height][width];
+
+        for(int j= 0; j < characterMap.length; j++){
+            for(int i= 0; i < characterMap[0].length; i++){
+                characterMap[j][i] = '.';
+            }
+        }
+
+        EntityManager em = rogue.getEm();
+
+        for(NPC n: em.getNpcs()){
+            characterMap[n.getY()][n.getX()] = n.getSymbol();
+        }
+
+        for(Obstacle ob: em.getObstacles()){
+            characterMap[ob.getY()][ob.getX()] = ob.getSymbol();
+        }
+
+        for(Enemy en: em.getEnemies()){
+            characterMap[en.getY()][en.getX()] = en.getSymbol();
+        }
+
+        return characterMap;
+    }
+
+
+    /**
+     * gets the symbol of the entity at a current location
+     * @param x
+     * @param y
+     * @return
+     */
+    public Character getCharacter(int x, int y){
+        char[][] characterMap = getCharacterMap();
+        try {
+            return characterMap[y][x];
+        }catch(Exception e){
+            return null;
+        }
     }
 
     public char[][] randomlyGenMap(){
@@ -105,5 +188,41 @@ public class MapManager {
         return array;
     }
 
+
+    public Rogue getRogue() {
+        return rogue;
+    }
+
+    public void setRogue(Rogue rogue) {
+        this.rogue = rogue;
+    }
+
+    public void setMap(char[][] map) {
+        this.map = map;
+    }
+
+    public Entity[][] getEntityMap() {
+        return entityMap;
+    }
+
+    public void setEntityMap(Entity[][] entityMap) {
+        this.entityMap = entityMap;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
 }

@@ -4,7 +4,7 @@
 public class NPC extends Entity {
 
 
-	private String dialog = "";
+	private String dialog = "HELLO I AM AN NPC";
 	public NPC(int x, int y, char symbol){
 		super(x ,y , symbol);
 	}
@@ -31,7 +31,7 @@ public class NPC extends Entity {
 	}
 
 	public String getDialog() {
-		return "";
+		return dialog;
 	}
 
 	public void setDialog(String dialog) {
