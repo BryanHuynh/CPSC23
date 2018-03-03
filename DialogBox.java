@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import javax.swing.JTextPane;
 
 /**
  * can print to a console or a JTextArea.
@@ -7,41 +8,42 @@ import java.util.ArrayList;
 public class DialogBox {
 	private TextWindow tw;							//the location that -giving the game is running gui- will print to
 	private String str = "text";				//the text that we will be printing
-
+	ArrayList<JTextPane> panes = new ArrayList<>();
 	/**
 	 *
 	 *
 	 * @param tw the location that the gui will print to
 	 */
 	public DialogBox(TextWindow tw){
+		for(int i =0 ; i < 2; i++){
+			panes.add(new JTextPane());
+		}
 		this.tw = tw;
 	}
+
+
+  public void shiftTPane(){
+    JTextPane pane = panes.get(0);
+    panes.remove(0);
+    panes.add(pane);
+    tw.remove(pane);
+    System.out.print("Shift-");
+
+    tw.add(panes.get(0));
+    tw.invalidate();
+    tw.validate();
+    tw.repaint();
+  }
 
 	/**
 	 * renders the str field to the textwindow, inside a box.
 	 * function auto wraps str
 	 */
 	public void render(){
-		String[] words = str.split(" ");											//split the line to be printed into an array of words
-		String bar = "-----------------------------------------------------";	//arbituary size of the bar that will box the textbox
-		//System.out.println(bar.length());
-		String sentence = "";
 
-
-		tw.append(bar + "\n");																//add the top bar to the textbox
-		for(String word: words){															//start looping through the words
-			if((sentence +" " + word).length() < bar.length()){	// check if the line we are creating is too long and can be wrapped to the next line
-				sentence += " "+  word;														//if the line we creating isn't too long then we can appending it to the same line
-				tw.append(" "+word);
-			}else{
-				tw.append("\n");																	//create a new line
-				sentence = word;																	// since the line was too long with the word attached, we throw the word onto the next line
-			}
-		}
-		tw.append("\n");
-
-		tw.append(bar + "\n");																//close the box
-
+		JTextPane tp = panes.get(1);
+		tp.setText(str);
+		shiftTPane();
 	}
 
 	/**

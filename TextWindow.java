@@ -22,6 +22,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.AttributeSet;
 import javax.swing.JScrollPane;
 import javax.swing.text.SimpleAttributeSet;
+import java.util.ArrayList;
+import java.awt.Dimension;
 /**
  * window that will render the game for both gui and text-based
  */
@@ -29,7 +31,7 @@ public class TextWindow extends JFrame implements KeyListener{
   private Entity[][] entityMap;
   private Rogue rogue;
   private int height, width;
-  private JTextPane tPane = new JTextPane();
+  ArrayList<JTextPane> tPanes = new ArrayList<JTextPane>();
 
   /**
    *
@@ -54,12 +56,18 @@ public class TextWindow extends JFrame implements KeyListener{
    * initiates the frames required to used the gui
    */
   public void initGUI(){
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    tPane.setFont(getProggyFont());
-    this.addKeyListener(this);
-    tPane.addKeyListener(this);
-    this.add(tPane);
+    for(int i = 0; i < 2; i++){
+      JTextPane tPane = new JTextPane();
+      tPane.setBounds( 0, 0, 200, 200 );
+      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      tPane.setMaximumSize(new Dimension(200,200));
+      tPane.setFont(getProggyFont());
+      tPane.addKeyListener(this);
+      tPanes.add(tPane);
+    }
 
+    this.addKeyListener(this);
+    this.add(tPanes.get(0));
     this.pack();
     this.setVisible(true);
   }
@@ -82,7 +90,7 @@ public class TextWindow extends JFrame implements KeyListener{
         em.movePlayer(0,-1, this.getCharacterMap());
       //System.out.println(this.player.toString());
       em.update(this.getCharacterMap());
-      System.out.println(em.getPlayer().toString());
+      System.out.println("key registered: ");
   }
   public void keyTyped(KeyEvent e) {
 
@@ -207,11 +215,26 @@ public class TextWindow extends JFrame implements KeyListener{
     System.out.print("\033[H\033[2J");
   }
 
+  public void shiftTPane(){
+    JTextPane pane = tPanes.get(0);
+    tPanes.remove(0);
+    tPanes.add(pane);
+    this.remove(pane);
+    System.out.print("Shift-");
+
+    this.add(tPanes.get(0));
+    tPanes.get(0).grabFocus();
+    this.invalidate();
+    this.validate();
+    this.repaint();
+  }
+
   /**
    * exclusively used for the GUI version.
    * renders the entityMap to the screen
    */
   public void render(){
+    JTextPane tPane = tPanes.get(1);
     tPane.setText("");
     for(int y = 0; y < width - 1; y++){
       String str = "";
@@ -243,16 +266,35 @@ public class TextWindow extends JFrame implements KeyListener{
       str = "";
       append("\n");
     }
+
+    shiftTPane();
   }
 
   public void append(String s) {
    try {
-      Document doc = tPane.getDocument();
+      Document doc = tPanes.get(1).getDocument();
       doc.insertString(doc.getLength(), s, null);
    } catch(Exception exc) {
       exc.printStackTrace();
    }
-}
+ }
+
+ public void appendToPaneDefault(String msg){
+   JTextPane tp = this.tPanes.get(1);
+    Color c = Color.black;
+     StyleContext sc = StyleContext.getDefaultStyleContext();
+     AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+     aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Monospaced");
+     aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+     int len = tp.getDocument().getLength();
+     tp.setCaretPosition(len);
+     tp.setCharacterAttributes(aset, false);
+     tp.replaceSelection(msg);
+ }
+
+
 
 private void appendToPane(JTextPane tp, String msg, Color c){
     StyleContext sc = StyleContext.getDefaultStyleContext();

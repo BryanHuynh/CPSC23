@@ -168,6 +168,7 @@ public void randomlyPlaceEnemy(){
   }
 
 
+
   /**
    * gameloop for the gui
    */
@@ -183,7 +184,7 @@ public void randomlyPlaceEnemy(){
       update(delta);
       render();
       try {
-        Thread.sleep(15);
+        Thread.sleep(100);
       }catch(Exception e){
       }
      }
@@ -212,6 +213,7 @@ public void randomlyPlaceEnemy(){
    * rendering the game
    */
   public void render(){
+
     textArea.render();
     db.render();
   }
