@@ -11,9 +11,11 @@ public class Enemy extends Entity{
   private String dialog = "";
   int hp = rand.nextInt(20-5) + 5;;
   int atk = rand.nextInt(20-5) + 5;;;
+  EnemyGUI gui;
 
   public Enemy(int x, int y, char symbol){
     super(x, y, symbol);
+     gui = new EnemyGUI(this);
   }
 
 	/**
@@ -36,6 +38,7 @@ public class Enemy extends Entity{
 	 */
 	public void update(double delta){
 		super.update(delta);
+		gui.update();
 		alternateXTime += delta/1000;
 
 		if(alternateXTime >= 0.2) {

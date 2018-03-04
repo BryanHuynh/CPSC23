@@ -1,14 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Scanner;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Rogue {
     private TextWindow textArea;
@@ -44,7 +36,7 @@ public class Rogue {
         Rogue.height = mm.getMapLength();
         Rogue.width = mm.getMapHeight();
         mm.createMapEntities();
-        combat = new Combat(em);
+
     }
 
 
@@ -58,8 +50,10 @@ public class Rogue {
             if (in.equalsIgnoreCase("yes")) {
                 textVersion = true;
                 textArea = new TextWindowConsole(height + 1, width + 1, this);
+                combat = new CombatConsole(em);
             } else if (in.equalsIgnoreCase("no")) {
                 textArea = new TextWindowGUI(height + 1, width + 1, this);
+                combat = new CombatGUI(em);
                 textVersion = false;
             }
         }
@@ -96,7 +90,7 @@ public class Rogue {
                 mm.update();
                 em.update(mm.getCharacterMap());
                 textArea.render(getMm().getEntityMap());
-                combat.displayEnemy(em.getPlayer(), inRange);
+                combat.render(em.getPlayer(), inRange);
                 db.render();
                 kb.print();
 
@@ -109,7 +103,6 @@ public class Rogue {
      * recieves action from the console and moves the player by an increment
      */
     public void textPlayerControl(String action) {
-
         if (action.equalsIgnoreCase("w")) {
             em.movePlayer(0, -1, mm.getCharacterMap());
         } else if (action.equalsIgnoreCase("a")) {
@@ -123,13 +116,17 @@ public class Rogue {
         }
         System.out.println(em.getPlayer().toString());
         em.update(mm.getCharacterMap());
+        if(textVersion == false){
+            gameStep();
+        }
     }
 
 
-
-
-
-
+    public void gameStep(){
+        ((TextWindowGUI) textArea).getFrame().remove(((CombatGUI)combat).panel);
+        ((CombatGUI)combat).setUpTabs(combat.combatCheck());
+        ((TextWindowGUI) textArea).getFrame().add(((CombatGUI)combat).panel, BorderLayout.SOUTH);
+    }
 
 
     /**
@@ -150,6 +147,8 @@ public class Rogue {
      */
     private void gameLoopGUI() {
         db = new DialogBoxGUI(getTextArea());
+        ((TextWindowGUI) textArea).getFrame().add(((CombatGUI)combat).panel, BorderLayout.SOUTH);
+
         long now = System.currentTimeMillis();
         long delta = 0;
         while (true) {
@@ -187,6 +186,9 @@ public class Rogue {
         totalTime += delta / 1000000000;
         em.update(delta);
         db.setStr(em.playerTalk());
+
+
+
     }
 
 

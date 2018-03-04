@@ -188,6 +188,8 @@ public class MapGenerator {
 
 
         // submit a*
+        System.out.println("before a*");
+        printMap(map);
         while(doors.size() != 0) {
             Point now = doors.get(0);
             doors.remove(now);
@@ -205,6 +207,10 @@ public class MapGenerator {
                 //doors.remove(closest);
                 if(closest != null){
                     try{
+
+
+
+
                       ArrayList<Point> path = AStar.test(0, map.length, map[0].length, now.getY(), now.getX(), closest.getY(), closest.getX(), obs);
                       //replace all points retrieved by A* with P representing paths
                       for (Point pt : path) {
@@ -212,7 +218,7 @@ public class MapGenerator {
                       }
                       map[now.getY()][now.getX()] = ' ';
                     }catch(Exception e){
-                      System.out.println("welp");
+                      System.out.println("if you see this message just cry and start it again");
                     }
 
                 }
@@ -221,6 +227,21 @@ public class MapGenerator {
         }
 
     }
+
+
+    public char[][] mapConvertForAstar(char[][] map){
+        for(int j = 0; j < map.length; j++){
+            for(int i = 0; i < map[0].length; i++){
+                if(map[j][i] == '#') map[j][i] = 'O';
+                if(map[j][i] == ' ') map[j][i] = 'O';
+            }
+        }
+        return map;
+    }
+
+
+
+
 
     public void fillMap(char[][] map){
         for(int j = 0; j < map.length; j++){
@@ -231,6 +252,15 @@ public class MapGenerator {
     }
 
     public void printMap(){
+        for(int j = 0; j < map.length; j++){
+            for(int i =0; i < map[0].length; i++){
+                System.out.printf("%-2s ",map[j][i]);
+            }
+            System.out.println();
+        }
+    }
+
+    public void printMap(char[][] map){
         for(int j = 0; j < map.length; j++){
             for(int i =0; i < map[0].length; i++){
                 System.out.printf("%-2s ",map[j][i]);
