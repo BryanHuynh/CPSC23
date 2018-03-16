@@ -3,6 +3,7 @@ public class Entity{
   private int x, y;
   private char symbol = ' ';
 
+private boolean visable = true;
 
   public Entity(int x, int y, char symbol){
     this.x = x;
@@ -84,4 +85,11 @@ public class Entity{
 	}
 
 
+	public boolean isVisable() {
+		return visable;
+	}
+
+	public void setVisable(boolean visable) {
+		this.visable = visable;
+	}
 }

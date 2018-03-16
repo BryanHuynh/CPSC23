@@ -11,11 +11,12 @@ public class EntityManager {
     private ArrayList<NPC> npcs = new ArrayList<NPC>();
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+    private NameGenerator nameGenerator;
 
     private Player player;
 
     EntityManager() {
-
+        nameGenerator = new NameGenerator("src/Names.txt");
     }
 
     /**
@@ -56,6 +57,7 @@ public class EntityManager {
      */
     public NPC createNPC(int x, int y, char symbol) {
         NPC npc = new NPC(x, y, symbol);
+        npc.setName(nameGenerator.getAName());
         entities.add(npc);
         npcs.add(npc);
         return npc;
@@ -90,10 +92,9 @@ public class EntityManager {
         if (x < 0 || y < 0) return;
         if (x > map[0].length) return;
         if (y > map.length) return;
-        if (map[y][x] == '#') return;
-        if (map[y][x] == 'c' || map[y][x] == 'C') return;
-        if (map[y][x] == 'e' || map[y][x] == 'E') return;
-        this.player.setPosition(x, y);
+        if (map[y][x] == '.'){
+            this.player.setPosition(x, y);
+        }
     }
 
 
@@ -106,10 +107,20 @@ public class EntityManager {
                 return c.getDialog();
             }
         }
-        return ("There is a theory which states that if ever anyone discovers exactly " +
-                "what the Universe is for and why it is here, it will instantly disappear " +
-                "and be replaced by something even more bizarre and inexplicable. There is " +
-                "another theory which states that this has already happened.");
+        return "";
+    }
+
+    /**
+     * get recruit if possible
+     *
+     */
+    public NPC recuitment(){
+        for (NPC c : getNpcs()) {
+            if (getDistanceBetweenEntities(getPlayer(), c) == 1) {
+                return c;
+            }
+        }
+        return null;
     }
 
 

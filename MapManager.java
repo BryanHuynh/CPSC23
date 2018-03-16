@@ -74,7 +74,9 @@ public class MapManager {
         EntityManager em = rogue.getEm();
 
         for(NPC n: em.getNpcs()){
-            characterMap[n.getY()][n.getX()] = n.getSymbol();
+            if(n.isVisable()){
+                characterMap[n.getY()][n.getX()] = n.getSymbol();
+            }
         }
 
         for(Obstacle ob: em.getObstacles()){

@@ -13,7 +13,11 @@ public class TextWindowConsole extends TextWindow {
                 if(entityMap[y][x] == null){
                     System.out.printf("%-2s ",' ');
                 }else {
-                    System.out.printf("%-2s ", String.valueOf(entityMap[y][x].getSymbol()));
+                    if(entityMap[y][x].isVisable()){
+                        System.out.printf("%-2s ", String.valueOf(entityMap[y][x].getSymbol()));
+                    }else{
+                        System.out.printf("%-2s ",' ');
+                    }
                 }
             }
             System.out.println();

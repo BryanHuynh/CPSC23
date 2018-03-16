@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.text.Document;
 import java.awt.*;
 import java.io.File;
@@ -65,7 +64,7 @@ public class DialogBoxGUI extends DialogBox{
         Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 0);
         try{
             f = Font.createFont(Font.TRUETYPE_FONT,
-                    new FileInputStream(new File("src/ProggyClean.ttf"))).deriveFont(Font.PLAIN,35);
+                    new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN,35);
         }catch(Exception e){
             System.out.println(e);
 

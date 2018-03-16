@@ -182,7 +182,7 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
         Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 0);
         try{
             f = Font.createFont(Font.TRUETYPE_FONT,
-                    new FileInputStream(new File("src/ProggyClean.ttf"))).deriveFont(Font.PLAIN, 10);
+                    new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN, 10);
         }catch(Exception e){
             System.out.println(e);
 
