@@ -207,10 +207,6 @@ public class MapGenerator {
                 //doors.remove(closest);
                 if(closest != null){
                     try{
-
-
-
-
                       ArrayList<Point> path = AStar.test(0, map.length, map[0].length, now.getY(), now.getX(), closest.getY(), closest.getX(), obs);
                       //replace all points retrieved by A* with P representing paths
                       for (Point pt : path) {

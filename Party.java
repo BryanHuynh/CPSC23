@@ -4,6 +4,11 @@ public abstract class Party {
     private ArrayList<NPC> partyMembers = new ArrayList<>();
     private Player player;
 
+    /**
+     * NPCs that are found can be recruited to become party of your team to defeat the enemy
+     * Party allows you to add and remove team members along with modifying their layout
+     * @param player
+     */
     Party(Player player){
         this.player = player;
 
@@ -12,7 +17,7 @@ public abstract class Party {
     public abstract void render();
 
     /**
-     * recruit an npc
+     * recruit an npc into your party.
      * @param npc
      * @param action
      * @return
@@ -24,6 +29,7 @@ public abstract class Party {
         }
         if(action.equalsIgnoreCase("r")){
             addMember(npc);
+            npc.setVisable(false);                      //remove them from the map
             return true;
         }
         return false;
@@ -35,6 +41,7 @@ public abstract class Party {
      */
     public void addMember(NPC member){
         partyMembers.add(member);
+        member.setVisable(false);
     }
 
     /**
@@ -54,7 +61,7 @@ public abstract class Party {
 
         for(NPC member: partyMembers){
             NPC memberClone = member.clone();
-            memberClone.setAtk(member.getAtk());
+            memberClone.setAtk(member.getAtk());                //cloning things over that are random upon creation
             memberClone.setName(member.getName());
             memberClone.setAccuracy(member.getAccuracy());
             clone.add(memberClone);
@@ -62,5 +69,8 @@ public abstract class Party {
         }
         return clone;
     }
+
+
+
 
 }

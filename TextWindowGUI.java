@@ -19,30 +19,18 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
     }
 
 
-    public void keyPressed(KeyEvent e) {}
-
+    public void keyPressed(KeyEvent e) {
+    }
 
 
     public void keyReleased(KeyEvent e) {
         //EntityManager em = getRogue().getEm();
         //MapManager mm = getRogue().getMm();
-        System.out.println((char)(e.getKeyCode()));
-        getRogue().textPlayerControl(String.valueOf((char)(e.getKeyCode())));
-        /**
+        System.out.println((char) (e.getKeyCode()));
+        getRogue().textPlayerControl(String.valueOf((char) (e.getKeyCode())));
 
-        if(e.getKeyCode()== KeyEvent.VK_D)
-            em.movePlayer(1,0, mm.getCharacterMap());
-        else if(e.getKeyCode()== KeyEvent.VK_A)
-            em.movePlayer(-1,0, mm.getCharacterMap());
-        else if(e.getKeyCode()== KeyEvent.VK_S)
-            em.movePlayer(0,+1, mm.getCharacterMap());
-        else if(e.getKeyCode()== KeyEvent.VK_W)
-            em.movePlayer(0,-1, mm.getCharacterMap());
-        //System.out.println(this.player.toString());
-
-        System.out.println("key registered: ");
-         */
     }
+
     public void keyTyped(KeyEvent e) {
 
     }
@@ -60,7 +48,7 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
         mapPanel.repaint();
     }
 
-    public void setTextPaneToBlack(JTextPane pane){
+    public void setTextPaneToBlack(JTextPane pane) {
         pane.setOpaque(false);
         UIManager.put("pane.disabledBackground", Color.WHITE);
     }
@@ -103,6 +91,10 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
             String str = "";
             for (int x = 0; x < getWidths() - 1; x++) {
                 if (entityMap[y][x] == null) {
+                    appendToPane(tPane, str, Color.green);
+                    appendToPane(tPane, " .", Color.black);
+                    str = "";
+                } else if (!entityMap[y][x].isVisable()) {
                     appendToPane(tPane, str, Color.green);
                     appendToPane(tPane, " .", Color.black);
                     str = "";
@@ -178,12 +170,12 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
      *
      * @return
      */
-    public Font getProggyFont(){
+    public Font getProggyFont() {
         Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 0);
-        try{
+        try {
             f = Font.createFont(Font.TRUETYPE_FONT,
                     new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN, 10);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
 
         }

@@ -52,11 +52,10 @@ public class Rogue {
             String in = scanner.nextLine();
             if (in.equalsIgnoreCase("yes")) {
                 textVersion = true;
-                textArea = new TextWindowConsole(height + 1, width + 1, this);
-                combat = new CombatConsole(em);
+
             } else if (in.equalsIgnoreCase("no")) {
                 textArea = new TextWindowGUI(height + 1, width + 1, this);
-                combat = new CombatGUI(em);
+                combat = new CombatGUI(em, party);
                 textVersion = false;
             }
         }
@@ -69,6 +68,8 @@ public class Rogue {
      */
     public void textVersionInit() {
         party = new PartyConsole(em.getPlayer());
+        textArea = new TextWindowConsole(height + 1, width + 1, this);
+        combat = new CombatConsole(em, party);
         db = new DialogBoxConsole();            // create intance of dialogbox to console
         textArea.clearConsole();                //clear the screen
         mm.update();
@@ -79,72 +80,92 @@ public class Rogue {
 
     boolean inventoryScreen = false;
     boolean gameScreen = false;
-    public void textVersionLoop(){
-        while(textVersion){
+    boolean battleScreen = false;
+
+    public void textVersionLoop() {
+        while (textVersion) {
 
             while (gameScreen) {
+                ArrayList<Enemy> inRange = combat.combatCheck();
                 textArea.render(getMm().getEntityMap());//render the screen to show the map
                 db.render();                            //render the dialog box
+                if(inRange.size() > 0){
+                    System.out.println("ENEMY IN RANGE!");
+                    ((CombatConsole) combat).render(em.getPlayer(), inRange);
+                }
 
                 party.render();                 //render the party members stats
-                ArrayList<Enemy> inRange = combat.combatCheck();
-                combat.render(em.getPlayer(), inRange);
+
+                System.out.println("Enemies in range: " + inRange.size());
                 System.out.println();
 
                 kb.print();                     //keyboard instructions
                 if (scanner.hasNext()) {            //check if there is a command
                     String action = scanner.nextLine(); //save command to action variable
-                    if(action.equalsIgnoreCase("i")){
+                    if (action.equalsIgnoreCase("i")) {
                         gameScreen = false;
                         inventoryScreen = true;
                         break;
+                    } else if (inRange.size() > 0 && isNumeric(action)) { //start combat if enemy in range and action is a number
+                        if (Integer.valueOf(action) < inRange.size()) {   //does the enemy exist to the corresponding number
+                            ((CombatConsole) combat).battle(inRange.get(Integer.valueOf(action)));
+                        }
                     }
+
                     textPlayerControl(action);      //move the character if it is applicable
                     db.setStr(em.playerTalk());     //set the dialog box if there is chance for player to talk to NPC
                     mm.update();                    // update the map
                     em.update(mm.getCharacterMap());//update the entity manager with the new map
                     textArea.clearConsole();        //clear the screen
-                    recruitmentControl(action);           // look if there is NPC to recruit;
+
+                    //recruitmentControl(action);           // look if there is NPC to recruit;
 
 
-                    if (inRange.size() > 0) {
-                        combat.startCombat(em.getPlayer(), inRange, action);
-                        kb.combat = true;
-                    }
-                    kb.combat = false;
                     mm.update();
                     em.update(mm.getCharacterMap());
 
                 }
             }
-            while(inventoryScreen) {
+            while (inventoryScreen) {
                 if (scanner.hasNext()) {
                     String action = scanner.nextLine(); //save command to action variable
-                    if(action.equalsIgnoreCase("exit")){
+                    if (action.equalsIgnoreCase("exit")) {
                         gameScreen = true;
                         inventoryScreen = false;
+
                         break;
                     }
                 }
+
             }
         }
 
 
     }
 
-    public void recruitmentControl(String action){
+    public void recruitmentControl(String action) {
         NPC recruit = em.recuitment();
-        if(recruit != null){
-            if(recruit.isVisable()){
+        if (recruit != null) {
+            if (recruit.isVisable()) {
                 System.out.println("Recruit available!");
                 boolean recruited = party.lookForRecruitment(recruit, action);
-                if(recruited) {
+                if (recruited) {
                     recruit.setVisable(false);
                     System.out.println("RECRUITED!");
                     mm.update();
                 }
             }
         }
+    }
+
+
+    public boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -163,21 +184,21 @@ public class Rogue {
             textVersion = false;
             gameScreen = false;
             inventoryScreen = false;
-
             return;
         }
+        recruitmentControl(action);
         System.out.println(em.getPlayer().toString());
         em.update(mm.getCharacterMap());
-        if(textVersion == false){
+        if (textVersion == false) {
             gameStep();
         }
     }
 
 
-    public void gameStep(){
-        ((TextWindowGUI) textArea).getFrame().remove(((CombatGUI)combat).panel);
-        ((CombatGUI)combat).setUpTabs(combat.combatCheck());
-        ((TextWindowGUI) textArea).getFrame().add(((CombatGUI)combat).panel, BorderLayout.SOUTH);
+    public void gameStep() {
+        ((TextWindowGUI) textArea).getFrame().remove(((CombatGUI) combat).panel);
+        ((CombatGUI) combat).setUpTabs(combat.combatCheck());
+        ((TextWindowGUI) textArea).getFrame().add(((CombatGUI) combat).panel, BorderLayout.SOUTH);
     }
 
 
@@ -190,6 +211,10 @@ public class Rogue {
                 gameLoopGUI();
             }
         };
+        party = new PartyGUI(em.getPlayer());
+        db = new DialogBoxGUI(getTextArea());
+
+        ((TextWindowGUI) textArea).getFrame().add((((PartyGUI) party).getPanel()), BorderLayout.LINE_START);
         loop.start();
     }
 
@@ -198,9 +223,6 @@ public class Rogue {
      * gameloop for the gui
      */
     private void gameLoopGUI() {
-        db = new DialogBoxGUI(getTextArea());
-        ((TextWindowGUI) textArea).getFrame().add(((CombatGUI)combat).panel, BorderLayout.SOUTH);
-
         long now = System.currentTimeMillis();
         long delta = 0;
         while (true) {
@@ -223,6 +245,7 @@ public class Rogue {
     public void renderGUI() {
         textArea.render(getMm().getEntityMap());
         db.render();
+        party.render();
     }
 
     double totalTime = 0.0;
@@ -238,7 +261,6 @@ public class Rogue {
         totalTime += delta / 1000000000;
         em.update(delta);
         db.setStr(em.playerTalk());
-
 
 
     }

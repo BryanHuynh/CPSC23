@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class NameGenerator {
-    Random rand = new Random();
-    ArrayList<String> names;
+    private Random rand = new Random();
+    private ArrayList<String> names;
 
     Scanner scanner;
     NameGenerator(String filePath){

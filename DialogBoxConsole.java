@@ -30,4 +30,6 @@ public class DialogBoxConsole extends DialogBox{
         System.out.println(bar);														//close the box
     }
 
+
+
 }

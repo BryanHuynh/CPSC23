@@ -1,3 +1,16 @@
+
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Scanner;
+
+
+
 import java.util.*;
 //This is not out code.
 //this is from http://www.codebytes.in/2015/02/a-shortest-path-finding-algorithm.html by Jatin Thakur
@@ -205,11 +218,8 @@ public class AStar {
         return path;
     }
 
-    public static void main(String[] args) throws Exception{
-        test(1, 5, 5, 0, 0, 3, 2, new int[][]{{0,4},{2,2},{3,1},{3,3}});
-        test(2, 5, 5, 0, 0, 4, 4, new int[][]{{0,4},{2,2},{3,1},{3,3}});
-        test(3, 7, 7, 2, 1, 5, 4, new int[][]{{4,1},{4,3},{5,3},{2,3}});
 
-        test(1, 5, 5, 0, 0, 4, 4, new int[][]{{3,4},{3,3},{4,3}});
-    }
+
+
+
 }

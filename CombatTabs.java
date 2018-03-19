@@ -14,7 +14,6 @@ public class CombatTabs {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.add(attackButton);
         panel.add(enemy.gui.panel);
-
     }
 
     public void update(){

@@ -90,8 +90,8 @@ public class EntityManager {
         int y = this.player.getY() + dy;
 
         if (x < 0 || y < 0) return;
-        if (x > map[0].length) return;
-        if (y > map.length) return;
+        if (x >= map[0].length) return;
+        if (y >= map.length) return;
         if (map[y][x] == '.'){
             this.player.setPosition(x, y);
         }
@@ -104,7 +104,9 @@ public class EntityManager {
     public String playerTalk() {
         for (NPC c : getNpcs()) {
             if (getDistanceBetweenEntities(getPlayer(), c) == 1) {
-                return c.getDialog();
+                if(c.isVisable()){
+                    return c.getDialog();
+                }
             }
         }
         return "";

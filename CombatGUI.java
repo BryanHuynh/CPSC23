@@ -10,8 +10,8 @@ public class CombatGUI extends Combat {
 
 
 
-    public CombatGUI(EntityManager em) {
-        super(em);
+    public CombatGUI(EntityManager em, Party party) {
+        super(em, party);
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
@@ -32,6 +32,9 @@ public class CombatGUI extends Combat {
         }
     }
 
+    public void battle(){
+
+    }
 
     public void damageEnemy(Enemy enemy){
         enemy.hp -= em.getPlayer().atk;
@@ -51,8 +54,8 @@ public class CombatGUI extends Combat {
         em.createEnemy(0, 0, 'e');
         em.createEnemy(1, 2, 'e');
         em.createEnemy(1, 3, 'e');
-
-        CombatGUI cg = new CombatGUI(em);
+        Party party = new PartyConsole(em.getPlayer());         //to be changed
+        CombatGUI cg = new CombatGUI(em, party);
 
         frame.add(cg.panel);
 

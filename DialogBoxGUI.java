@@ -24,13 +24,14 @@ public class DialogBoxGUI extends DialogBox{
      */
     public void render(){
         ta.setText("DIALOG BOX \n");
-        String[] words = getStr().split(" ");											//split the line to be printed into an array of words
+        String string = getStr().replace("\n", " ");
+        String[] words = string.split(" ");											//split the line to be printed into an array of words
         String bar = "-----------------------------------------------------";	//arbituary size of the bar that will box the textbox
         //System.out.println(bar.length());
         String sentence = "";
         append(bar + "\n");																//add the top bar to the textbox
         for(String word: words){															//start looping through the words
-            if((sentence +" " + word).length() < bar.length()){	// check if the line we are creating is too long and can be wrapped to the next line
+            if((sentence +" " + word).length() < bar.length() + 5){	// check if the line we are creating is too long and can be wrapped to the next line
                 sentence += " "+  word;														//if the line we creating isn't too long then we can appending it to the same line
                 append(" "+word);
             }else{
@@ -38,7 +39,7 @@ public class DialogBoxGUI extends DialogBox{
                 sentence = word;																	// since the line was too long with the word attached, we throw the word onto the next line
             }
         }
-        append("\n");
+        append(sentence + "\n");
         append(bar + "\n");																//close the box
 
         tw.getFrame().add(dialogPanel, BorderLayout.LINE_END);
