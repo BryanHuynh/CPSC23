@@ -97,12 +97,12 @@ public class MapManager {
      * @param y
      * @return
      */
-    public Character getCharacter(int x, int y){
+    public char getCharacter(int x, int y){
         char[][] characterMap = getCharacterMap();
         try {
             return characterMap[y][x];
         }catch(Exception e){
-            return null;
+            return ' ';
         }
     }
 

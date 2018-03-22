@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Combat {
     EntityManager em;
-    private Party party;
+    protected Party party;
     /**
      * handles the combat involved with the player and enemies
      * @param em
@@ -33,52 +33,8 @@ public class Combat {
         return inRange;
     }
 
-    /*
-    /**
-     *
-     * @param player
-     * @param enemies
-     * @param action
-
-    public void startCombat(Player player, ArrayList<Enemy> enemies, String action) {
-        render(em.getPlayer(), enemies);
-        action(enemies, action);
-    }
-
-    public void render(Player player, ArrayList<Enemy> enemies){
-
-    }
-
-    /**
-     * passing in a number reference the enemy in the list. attack that enemy
-     * killing them causes them to be removed from the map
-     * @param enemies
-     * @param action
-
-    public void action(ArrayList<Enemy> enemies, String action) {
-        System.out.println(isNumeric(action));
-        if (isNumeric(action)) {                                        // check if the action is a number that corresponds to an enemy
-            int target = (int) Double.parseDouble(action);
 
 
-
-
-
-
-
-
-
-
-
-            if (enemies.get(target).hp <= 0) {
-                //toBeRemoved.add(enemies.get(target));
-                em.getEntities().remove(enemies.get(target));
-                em.getEnemies().remove(enemies.get(target));
-            }
-        }
-        toBeRemoved = new ArrayList<Enemy>();
-    }
-    */
 
 
 

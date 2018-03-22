@@ -23,10 +23,15 @@ public class DialogBoxGUI extends DialogBox{
      * function auto wraps str
      */
     public void render(){
+        if(super.getStr().equals("")){
+            ta.setText("");
+            return;
+
+        }
         ta.setText("DIALOG BOX \n");
         String string = getStr().replace("\n", " ");
         String[] words = string.split(" ");											//split the line to be printed into an array of words
-        String bar = "-----------------------------------------------------";	//arbituary size of the bar that will box the textbox
+        String bar = "-------------------------";	//arbituary size of the bar that will box the textbox
         //System.out.println(bar.length());
         String sentence = "";
         append(bar + "\n");																//add the top bar to the textbox

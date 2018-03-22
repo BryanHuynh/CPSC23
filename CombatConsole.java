@@ -25,8 +25,8 @@ public class CombatConsole extends Combat {
 
         for (Enemy enemy : enemies) {
             lines.set(0, lines.get(0) + String.format(formatTitle, "enemy(" + enemies.indexOf(enemy) + ")"));
-            lines.set(1, lines.get(1) + String.format(formatTitle, "hp: +" + String.valueOf(enemy.hp)));
-            lines.set(2, lines.get(2) + String.format(formatTitle, "atk: +" + String.valueOf(enemy.atk)));
+            lines.set(1, lines.get(1) + String.format(formatTitle, "hp: +" + String.valueOf(enemy.getHp())));
+            lines.set(2, lines.get(2) + String.format(formatTitle, "atk: +" + String.valueOf(enemy.getAtk())));
             Point pt = new Point(enemy.getX() - player.getX(), player.getY() - enemy.getY());
             lines.set(3, lines.get(3) + String.format(formatTitle, "x: " + String.valueOf(pt.getX())));
             lines.set(4, lines.get(4) + String.format(formatTitle, "y: " + String.valueOf(pt.getY())));
@@ -51,8 +51,8 @@ public class CombatConsole extends Combat {
 
 
         lines.set(0, lines.get(0) + String.format(formatTitle, "enemy(" + ")"));
-        lines.set(1, lines.get(1) + String.format(formatTitle, "hp: +" + String.valueOf(enemy.hp)));
-        lines.set(2, lines.get(2) + String.format(formatTitle, "atk: +" + String.valueOf(enemy.atk)));
+        lines.set(1, lines.get(1) + String.format(formatTitle, "hp: +" + String.valueOf(enemy.getHp())));
+        lines.set(2, lines.get(2) + String.format(formatTitle, "atk: +" + String.valueOf(enemy.getAtk())));
         Point pt = new Point(enemy.getX() - player.getX(), player.getY() - enemy.getY());
         lines.set(3, lines.get(3) + String.format(formatTitle, "x: " + String.valueOf(pt.getX())));
         lines.set(4, lines.get(4) + String.format(formatTitle, "y: " + String.valueOf(pt.getY())));
@@ -80,10 +80,10 @@ public class CombatConsole extends Combat {
             if (scanner.hasNext()) {                                                      //get player action
                 String action = scanner.nextLine();
                 if (action.equalsIgnoreCase("attack")) {
-                    enemy.hp -= player.atk;
+                    enemy.setHp(enemy.getHp() - player.atk);
                     System.out.println("Player Attacked Enemy for: " + player.atk);
                     render(player, enemy);
-                    if (enemy.hp <= 0) {                                                          //if npc is dead then stop loop
+                    if (enemy.getHp() <= 0) {                                                          //if npc is dead then stop loop
                         running = false;
                         em.getEntities().remove(enemy);
                         em.getEnemies().remove(enemy);
@@ -97,10 +97,10 @@ public class CombatConsole extends Combat {
                     if (scanner.hasNext()) {
                         String action = scanner.nextLine();
                         if (action.equalsIgnoreCase("attack")) {
-                            enemy.hp -= member.getAtk();
+                            enemy.setHp(enemy.getHp() - player.atk);
                             System.out.println(member.getName() + " Attacked Enemy for: " + member.getAtk());
                             render(player, enemy);
-                            if (enemy.hp <= 0) {                                                          //if npc is dead then stop loop
+                            if (enemy.getHp() <= 0) {                                                          //if npc is dead then stop loop
                                 running = false;
                                 em.getEntities().remove(enemy);
                                 em.getEnemies().remove(enemy);
@@ -111,7 +111,7 @@ public class CombatConsole extends Combat {
                 }
             }
 
-            if (enemy.hp <= 0) {                                                          //if npc is dead then stop llop
+            if (enemy.getHp() <= 0) {                                                          //if npc is dead then stop llop
                 running = false;
                 em.getEntities().remove(enemy);
                 em.getEnemies().remove(enemy);

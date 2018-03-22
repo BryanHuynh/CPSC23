@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -10,24 +11,35 @@ import java.util.ArrayList;
 public class TextWindowGUI extends TextWindow implements KeyListener {
 
     private JFrame frame = new JFrame();
+    private JLayeredPane jLayeredPane = new JLayeredPane();
     private ArrayList<JTextPane> tPanes = new ArrayList<>();
     private JPanel mapPanel = new JPanel();
+
+    public JLayeredPane getjLayeredPane() {
+        return jLayeredPane;
+    }
+
+    public void setjLayeredPane(JLayeredPane jLayeredPane) {
+        this.jLayeredPane = jLayeredPane;
+    }
 
     public TextWindowGUI(int height, int width, Rogue rogue) {
         super(height, width, rogue);
         initGUI();
+
     }
 
 
     public void keyPressed(KeyEvent e) {
-    }
-
-
-    public void keyReleased(KeyEvent e) {
         //EntityManager em = getRogue().getEm();
         //MapManager mm = getRogue().getMm();
         System.out.println((char) (e.getKeyCode()));
         getRogue().textPlayerControl(String.valueOf((char) (e.getKeyCode())));
+    }
+
+
+    public void keyReleased(KeyEvent e) {
+
 
     }
 
@@ -62,6 +74,7 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
     public void initGUI() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBackground(Color.black);
+        frame.setPreferredSize(new Dimension(1080,720));
         for (int i = 0; i < 2; i++) {
             JTextPane tPane = new JTextPane();
 
@@ -73,8 +86,17 @@ public class TextWindowGUI extends TextWindow implements KeyListener {
         }
 
         //frame.addKeyListener(this);
+        Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setMaximumSize(DimMax);
+
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mapPanel.add(tPanes.get(0));
-        frame.add(mapPanel, BorderLayout.CENTER);
+        frame.add(jLayeredPane,BorderLayout.CENTER);
+        jLayeredPane.setBackground(Color.black);
+        jLayeredPane.setBounds(0,0,800,800);
+        mapPanel.setBounds(0,0,800,800);
+        jLayeredPane.add(mapPanel,BorderLayout.CENTER, JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane.setOpaque(true);
         frame.pack();
         frame.setVisible(true);
     }

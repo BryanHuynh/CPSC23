@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -196,9 +197,7 @@ public class Rogue {
 
 
     public void gameStep() {
-        ((TextWindowGUI) textArea).getFrame().remove(((CombatGUI) combat).panel);
         ((CombatGUI) combat).setUpTabs(combat.combatCheck());
-        ((TextWindowGUI) textArea).getFrame().add(((CombatGUI) combat).panel, BorderLayout.SOUTH);
     }
 
 
@@ -213,8 +212,13 @@ public class Rogue {
         };
         party = new PartyGUI(em.getPlayer());
         db = new DialogBoxGUI(getTextArea());
-
-        ((TextWindowGUI) textArea).getFrame().add((((PartyGUI) party).getPanel()), BorderLayout.LINE_START);
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.black);
+        panel.setOpaque(true);
+        panel.setLayout(new FlowLayout());
+        panel.add(((PartyGUI) party).getPanel());
+        panel.add(((CombatGUI) combat).panel);
+        ((TextWindowGUI) textArea).getFrame().add(panel, BorderLayout.LINE_START);
         loop.start();
     }
 
@@ -243,6 +247,9 @@ public class Rogue {
      * rendering the game
      */
     public void renderGUI() {
+        if(((CombatGUI) combat).battleState){
+            ((CombatGUI) combat).battle(((TextWindowGUI) textArea).getjLayeredPane());
+        }
         textArea.render(getMm().getEntityMap());
         db.render();
         party.render();
@@ -261,8 +268,6 @@ public class Rogue {
         totalTime += delta / 1000000000;
         em.update(delta);
         db.setStr(em.playerTalk());
-
-
     }
 
 

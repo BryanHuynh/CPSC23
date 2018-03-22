@@ -4,6 +4,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,6 +32,34 @@ public class PartyGUI extends Party {
         if(!textPanes.containsKey(npc.getName())){  //check if there already exist a JTextPane for an npc. Prevents from constantly making new TextPanes
             textPanes.put(npc.getName(), pane);
             panel.add(pane);
+
+            pane.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
         }else{
             pane = textPanes.get(npc.getName());    //if there is an associated pane to an npc, just reuse
             if(doesTextAreaRequireUpdate(npc, pane.getText())){ //check if there's anything that would require an update to be made
@@ -195,4 +225,6 @@ public class PartyGUI extends Party {
         }
 
     }
+
+
 }
