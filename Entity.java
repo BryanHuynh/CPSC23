@@ -1,7 +1,7 @@
 public class Entity{
 
-  private int x, y;
-  private char symbol = ' ';
+  protected int x, y;
+  protected char symbol = ' ';
 
 private boolean visable = true;
 

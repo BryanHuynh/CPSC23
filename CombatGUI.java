@@ -145,17 +145,6 @@ public class CombatGUI extends Combat {
     }
 
 
-    public void damageEnemy(Enemy enemy, int damage) {
-        enemy.setHp(enemy.getHp() - damage);
-        if (enemy.getHp() <= 0) {
-            em.getEntities().remove(enemy);
-            em.getEnemies().remove(enemy);
-            panel.remove(textPanes.get(enemy));
-            panel.revalidate();
-        }
-    }
-
-
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         EntityManager em = new EntityManager();

@@ -44,6 +44,23 @@ public abstract class Party {
         member.setVisable(false);
     }
 
+    public void damageCharacter(EntityCharacter character, int damage){
+        for(EntityCharacter members: partyMembers){
+            if(members.getName().equals(character.getName())){
+                members.damage(damage);
+                System.out.println(members.name + " was Damaged");
+            }
+        }
+    }
+
+    public void removeDeadMembers(){
+        for(NPC npc: partyMembers){
+            if(npc.getHp() <= 0){
+                removeMember(npc);
+            }
+        }
+    }
+
     /**
      * removes a member from the party
      * @param member
@@ -64,6 +81,7 @@ public abstract class Party {
             memberClone.setAtk(member.getAtk());                //cloning things over that are random upon creation
             memberClone.setName(member.getName());
             memberClone.setAccuracy(member.getAccuracy());
+            memberClone.setHp(member.getHp());
             clone.add(memberClone);
 
         }

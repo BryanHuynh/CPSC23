@@ -12,12 +12,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BattleScreenGUI extends JPanel {
     private Party party;
     private Enemy enemy;
     private ArrayList<CharacterMenu> characterMenus = new ArrayList<>();
     private JPanel center;
+    private JPanel south;
 
     public BattleScreenGUI(LayoutManager layout, boolean isDoubleBuffered, Party party, Enemy enemy) {
         super(layout, isDoubleBuffered);
@@ -27,15 +29,15 @@ public class BattleScreenGUI extends JPanel {
         center.setBounds(0, 0, 300, 300);
         this.add(center, BorderLayout.CENTER);
         center.add(new CharacterMenu(enemy));
-        JPanel south = new JPanel();
+        south = new JPanel();
         south.setLayout(new BoxLayout(south, BoxLayout.X_AXIS));
-	if(party.getPartyList().size() >0){
-        	for (NPC npc : party.getPartyList()) {
-            		CharacterMenu cm = new CharacterMenu(npc);
-            		characterMenus.add(cm);
-            		south.add(cm);
-        	}
-	}
+
+        for (NPC npc : party.getPartyList()) {
+            CharacterMenu cm = new CharacterMenu(npc);
+            characterMenus.add(cm);
+            south.add(cm);
+        }
+
         this.add(south, BorderLayout.SOUTH);
 
     }
@@ -46,7 +48,11 @@ public class BattleScreenGUI extends JPanel {
     public void loop() {
         while (enemy.getHp() > 0) {
             if (!wait) {
+
+                System.out.println("PARTY SIZE: " + party.getPartyList().size());
+
                 JPanel sMenu = selectionMenu();
+                System.out.println("TURN: " +  turn);
                 characterMenus.get(turn).add(sMenu);
                 wait = true;
 
@@ -56,37 +62,89 @@ public class BattleScreenGUI extends JPanel {
     }
 
 
+    public void update(){
+        south.removeAll();
+        characterMenus.removeAll(characterMenus);
+
+        for (NPC npc : party.getPartyList()) {
+            System.out.println(padLeft(""+ npc.getHp(), 15));
+            CharacterMenu cm = new CharacterMenu(npc);
+            characterMenus.add(cm);
+            south.add(cm);
+        }
+        south.revalidate();
+        this.revalidate();
+    }
+
     public void endWait() {
-        wait = false;
         characterMenus.get(turn).remove(1);
         turn++;
         if (turn > party.getPartyList().size() -1) {
+            enemyTurn();
+            //party.removeDeadMembers();
+            update();
             turn = 0;
         }
         center.remove(0);
         center.add(new CharacterMenu(enemy));
 
+        wait = false;
     }
 
+
+    public void enemyTurn(){
+        Random rand = new Random();
+        EntityCharacter target = party.getPartyList().get(rand.nextInt(party.getPartyList().size()));
+        boolean isAttack = enemy.getChance();
+        if(isAttack){
+            party.damageCharacter(target, enemy.getAtk());
+            System.out.println("" + target.getName() + " was attacked for " + enemy.getAtk() + ".");
+            System.out.println("" + target.getName() + " HP is now " + target.getHp() + ".");
+        }else{
+            System.out.println("Enemy missed.");
+        }
+    }
+
+    public String padLeft(String s, int n) {
+        return String.format("%1$" + n + "s", s);
+    }
 
     public JPanel selectionMenu() {
         JPanel menu = new JPanel();
         menu.setLayout(new GridLayout(2, 2));
-        ActionListener al = new ActionListener() {
+        ActionListener attackEvent = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                enemy.setHp(enemy.getHp() - party.getPartyList().get(turn).getAtk());
+                enemy.damage(party.getPartyList().get(turn).getAtk());
+                endWait();
 
+            }
+        };
+
+        ActionListener runEvent = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enemy.damage(party.getPartyList().get(turn).getAtk());
+                endWait();
+
+            }
+        };
+
+        ActionListener itemEvent = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enemy.damage(party.getPartyList().get(turn).getAtk());
                 endWait();
             }
         };
+
         JButton attackButton = new JButton("|Attack|");
         JButton itemButton = new JButton("|items|");
         JButton runButton = new JButton("|run|");
         JButton blockButton = new JButton("|block|");
-        attackButton.addActionListener(al);
-        itemButton.addActionListener(al);
-        runButton.addActionListener(al);
+        attackButton.addActionListener(attackEvent);
+        itemButton.addActionListener(itemEvent);
+        runButton.addActionListener(runEvent);
 
         menu.add(attackButton);
 
@@ -168,7 +226,7 @@ public class BattleScreenGUI extends JPanel {
         party.addMember(em.createNPC(0, 0, 'c'));
         party.addMember(em.createNPC(0, 0, 'c'));
         Enemy enemy = em.createEnemy(0, 0, 'e');
-        enemy.setHp(100);
+        enemy.setHp(10000);
 
         BattleScreenGUI bsg = new BattleScreenGUI(new BorderLayout(), true, party, enemy);
         frame.setSize(1080, 720);

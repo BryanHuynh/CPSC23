@@ -16,6 +16,27 @@ public class EntityCharacter extends Entity {
     }
 
 
+    public void damage(int damage){
+        hp -= damage;
+    }
+
+    @Override
+    public EntityCharacter clone(){
+        EntityCharacter en = new EntityCharacter(x,y, symbol);
+        en.atk = atk;
+        en.name = name;
+        en.weapon = weapon;
+        en.accuracy = accuracy;
+        en.hp = hp;
+        return en;
+    }
+
+    public boolean getChance()
+    {
+        return Math.random() >= 1.0 - accuracy;
+    }
+
+
     public int getHp() {
         return hp;
     }

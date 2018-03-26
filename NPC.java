@@ -20,6 +20,7 @@ public class NPC extends EntityCharacter {
         super(x, y, symbol);
     }
 
+
     private double alternateXTime = 0.0;
 
 

@@ -38,6 +38,7 @@ public class Combat {
 
 
 
+
     public Party getParty() {
         return party;
     }
