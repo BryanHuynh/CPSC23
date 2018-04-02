@@ -59,7 +59,11 @@ public class Enemy extends EntityCharacter {
      * @return
      */
     public ArrayList<Point> getPath() {
-        return this.path;
+        ArrayList<Point> pathClone = new ArrayList<>();
+        for(Point point: path){
+            pathClone.add(point.clone());
+        }
+        return path;
     }
 
     /**
@@ -71,31 +75,10 @@ public class Enemy extends EntityCharacter {
         this.path = path;
     }
 
-    public void addPointToPath(Point point) {
-        path.add(point);
-    }
-
-    public void addPointToPath(int x, int y) {
-        path.add(new Point(x, y));
-    }
-
     /**
      * Returns value of dialog
      *
      * @return
      */
-    public String getDialog() {
-        return this.dialog;
-    }
-
-    /**
-     * Sets new value of dialog
-     *
-     * @param
-     */
-    public void setDialog(String dialog) {
-        this.dialog = dialog;
-    }
-
 
 }

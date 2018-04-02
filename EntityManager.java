@@ -63,6 +63,16 @@ public class EntityManager {
         return npc;
     }
 
+
+
+    public void damageEnemy(Enemy en, int damage){
+        for(Enemy enemy: enemies ){
+            if(en.equals(enemy)){
+                enemy.damage(damage);
+            }
+        }
+    }
+
     /**
      * creates an Enemy and adds to the entities and Enemy arraylist
      *
@@ -110,6 +120,19 @@ public class EntityManager {
             }
         }
         return "";
+    }
+
+    public void removeEnemy(Enemy enemy){
+        enemies.remove(enemy);
+        entities.remove(enemy);
+    }
+
+    public void removeDeadEnemies(){
+        for(Enemy enemy: enemies){
+            if(enemy.getHp() <= 0){
+                removeEnemy(enemy);
+            }
+        }
     }
 
     /**
@@ -192,37 +215,20 @@ public class EntityManager {
         this.player = player;
     }
 
-
     public ArrayList<Entity> getEntities() {
-        return entities;
-    }
-
-    public void setEntities(ArrayList<Entity> entities) {
-        this.entities = entities;
+        return new ArrayList<>(entities);
     }
 
     public ArrayList<NPC> getNpcs() {
-        return npcs;
-    }
-
-    public void setNpcs(ArrayList<NPC> npcs) {
-        this.npcs = npcs;
+        return new ArrayList<>(npcs);
     }
 
     public ArrayList<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    public void setEnemies(ArrayList<Enemy> enemies) {
-        this.enemies = enemies;
+        return new ArrayList<>(enemies);
     }
 
     public ArrayList<Obstacle> getObstacles() {
-        return obstacles;
-    }
-
-    public void setObstacles(ArrayList<Obstacle> obstacles) {
-        this.obstacles = obstacles;
+        return new ArrayList<>(obstacles);
     }
 
 

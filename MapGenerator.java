@@ -2,21 +2,28 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MapGenerator {
-    char[][] map = new char[50][50];
-    int roomsize = 10;
-    MapGenerator(){
-        System.out.println("j = " + map.length);
-
-        System.out.println("i = " + map[0].length);
+    char[][] map;
+    private int roomsize = 10;
+    private int numOfEnemies = 10;
+    private int numOfNpcs = 10;
+    /**
+     * randomly generates a map
+     */
+    MapGenerator(int length, int height, int roomsize, int numOfEnemies, int numOfNpcs){
+        map = new char[height][length];
+        this.roomsize = roomsize;
+        this.numOfEnemies = numOfEnemies;
+        this.numOfNpcs = numOfNpcs;
         fillMap(map);
         generateRooms(map);
         removePadding(map);
         constructPath(map);
         addEntity('x',map);
-        for(int numEnemies = 0; numEnemies < 10; numEnemies++){
+
+        for(int numEnemies = 0; numEnemies < numOfEnemies; numEnemies++){
           addEntity('e',map);
         }
-        for(int numNPC = 0; numNPC < 7; numNPC++){
+        for(int numNPC = 0; numNPC < numOfNpcs; numNPC++){
           addEntity('c',map);
         }
         printMap();
@@ -59,7 +66,7 @@ public class MapGenerator {
                       }
                   }
                   if(free.size() <= 0){
-                    map = new MapGenerator().map;
+                    map = new MapGenerator(map.length, map[0].length, roomsize, numOfEnemies, numOfNpcs).map;
                   }
                   Random randomizer = new Random();
                   Point freept = free.get(randomizer.nextInt(free.size()));
@@ -266,7 +273,7 @@ public class MapGenerator {
     }
 
     public static void main(String[] args){
-        new MapGenerator();
+        new MapGenerator(50,50, 10, 25, 25);
     }
 
 }

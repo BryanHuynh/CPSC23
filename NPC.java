@@ -21,6 +21,8 @@ public class NPC extends EntityCharacter {
     }
 
 
+
+
     private double alternateXTime = 0.0;
 
 
@@ -50,7 +52,7 @@ public class NPC extends EntityCharacter {
     }
 
     public String getDialog() {
-        return "Hello traveler, I'm " + name + "\n I have " + atk + " damage and I use a " + weapon + " \n I would love to join your party (R to recruit)";
+        return "Hello traveler, I'm " + name + " I have " + atk + " damage and I use a " + weapon + "  I would love to join your party (R to recruit)";
     }
 
 

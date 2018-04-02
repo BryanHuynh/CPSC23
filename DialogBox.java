@@ -1,4 +1,4 @@
-public class DialogBox {
+public abstract class DialogBox {
 
 
     private String str = "DIALOG BOX";

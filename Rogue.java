@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Rogue {
-    private TextWindow textArea;
+    private MapDisplay textArea;
     private EntityManager em = new EntityManager();
     private Player player;
     private Scanner scanner;
@@ -17,9 +17,9 @@ public class Rogue {
     private KeyBinding kb = new KeyBinding();
 
 
-    public Rogue() {
+    public Rogue(int length, int height, int roomsize, int numOfEnemies, int numOfNpcs) {
 
-        init();
+        init(length, height, roomsize, numOfEnemies, numOfNpcs);
         scanner = new Scanner(System.in);
         textVersion = getVersionFromUser();
         if (textVersion) {
@@ -35,12 +35,12 @@ public class Rogue {
     /**
      * starts basic things required to run the game, console or gui
      */
-    public void init() {
-        mm = new MapManager(this);
+    public void init(int length, int height, int roomsize, int numOfEnemies, int numOfNpcs) {
+        mm = new MapManager(this, length, height, roomsize, numOfEnemies, numOfNpcs);
         Rogue.height = mm.getMapLength();
         Rogue.width = mm.getMapHeight();
         mm.createMapEntities();                 // entities are created on the map
-
+        em.getPlayer().setHp(1000);
     }
 
 
@@ -55,8 +55,7 @@ public class Rogue {
                 textVersion = true;
 
             } else if (in.equalsIgnoreCase("no")) {
-                textArea = new TextWindowGUI(height + 1, width + 1, this);
-                combat = new CombatGUI(em, party);
+                textArea = new MapDisplayGUI(height + 1, width + 1, this);
                 textVersion = false;
             }
         }
@@ -69,7 +68,7 @@ public class Rogue {
      */
     public void textVersionInit() {
         party = new PartyConsole(em.getPlayer());
-        textArea = new TextWindowConsole(height + 1, width + 1, this);
+        textArea = new MapDisplayConsole(height + 1, width + 1, this);
         combat = new CombatConsole(em, party);
         db = new DialogBoxConsole();            // create intance of dialogbox to console
         textArea.clearConsole();                //clear the screen
@@ -81,7 +80,6 @@ public class Rogue {
 
     boolean inventoryScreen = false;
     boolean gameScreen = false;
-    boolean battleScreen = false;
 
     public void textVersionLoop() {
         while (textVersion) {
@@ -119,7 +117,6 @@ public class Rogue {
                     em.update(mm.getCharacterMap());//update the entity manager with the new map
                     textArea.clearConsole();        //clear the screen
 
-                    //recruitmentControl(action);           // look if there is NPC to recruit;
 
 
                     mm.update();
@@ -198,7 +195,11 @@ public class Rogue {
 
     public void gameStep() {
         ((CombatGUI) combat).setUpTabs(combat.combatCheck());
+        party.removeDeadMembers();
     }
+
+    Window gui = new Window();
+
 
 
     /**
@@ -211,14 +212,17 @@ public class Rogue {
             }
         };
         party = new PartyGUI(em.getPlayer());
-        db = new DialogBoxGUI(getTextArea());
+        combat = new CombatGUI(em, party);
+        db = new DialogBoxGUI();
         JPanel panel = new JPanel();
         panel.setBackground(Color.black);
         panel.setOpaque(true);
         panel.setLayout(new FlowLayout());
         panel.add(((PartyGUI) party).getPanel());
         panel.add(((CombatGUI) combat).panel);
-        ((TextWindowGUI) textArea).getFrame().add(panel, BorderLayout.LINE_START);
+        gui.add(panel, BorderLayout.LINE_START);
+        gui.add(((DialogBoxGUI) db).getDialogPanel(), BorderLayout.LINE_END);
+        gui.add(((MapDisplayGUI) textArea).getMapPanel(), BorderLayout.CENTER);
         loop.start();
     }
 
@@ -243,16 +247,34 @@ public class Rogue {
     }
 
 
+    public void gameEnd(){
+        if(em.getPlayer().getHp() <= 0){
+            System.out.println("HERO IS DEAD. GAME OVER");
+        }
+    }
+
+
     /**
      * rendering the game
      */
     public void renderGUI() {
         if(((CombatGUI) combat).battleState){
-            ((CombatGUI) combat).battle(((TextWindowGUI) textArea).getjLayeredPane());
+            ((MapDisplayGUI) textArea).getMapPanel().setVisible(false);
+            ((CombatGUI) combat).battle(gui.getContentPane());
+
+        }else{
+            ((MapDisplayGUI) textArea).getMapPanel().setVisible(true);
+            ((MapDisplayGUI) textArea).getMapPanel().requestFocusInWindow();
         }
-        textArea.render(getMm().getEntityMap());
         db.render();
         party.render();
+        textArea.render(getMm().getEntityMap());
+
+
+
+
+
+
     }
 
     double totalTime = 0.0;
@@ -264,6 +286,7 @@ public class Rogue {
      * @param delta
      */
     public void update(double delta) {
+        gameEnd();
         mm.update();
         totalTime += delta / 1000000000;
         em.update(delta);
@@ -271,20 +294,9 @@ public class Rogue {
     }
 
 
-    public TextWindow getTextArea() {
-        return textArea;
-    }
-
-    public void setTextArea(TextWindow textArea) {
-        this.textArea = textArea;
-    }
 
     public EntityManager getEm() {
         return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
     }
 
     public Player getPlayer() {
@@ -293,31 +305,6 @@ public class Rogue {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public DialogBox getDb() {
-        return db;
-    }
-
-    public void setDb(DialogBox db) {
-        this.db = db;
-    }
-
-
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    public boolean isTextVersion() {
-        return textVersion;
-    }
-
-    public void setTextVersion(boolean textVersion) {
-        this.textVersion = textVersion;
     }
 
     public static int getheight() {
@@ -338,18 +325,6 @@ public class Rogue {
 
     public MapManager getMm() {
         return mm;
-    }
-
-    public void setMm(MapManager mm) {
-        this.mm = mm;
-    }
-
-    public double getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(double totalTime) {
-        this.totalTime = totalTime;
     }
 
 }

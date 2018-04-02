@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class CombatGUI extends Combat {
     JPanel panel;
-    ArrayList<JPanel> panels = new ArrayList<>();
     private HashMap<Enemy, JTextPane> textPanes = new HashMap<>();
     public boolean battleState = false;
     public Enemy target = null;
@@ -20,7 +19,6 @@ public class CombatGUI extends Combat {
         super(em, party);
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setOpaque(false);
         panel.setBackground(Color.BLACK);
     }
 
@@ -126,22 +124,18 @@ public class CombatGUI extends Combat {
     /**
      * initiate battle system for the gui
      */
-    public void battle(JLayeredPane layeredPane) {
+    public void battle(Container container) {
         System.out.println("BATTLE");
-
-        BattleScreenGUI panel = new BattleScreenGUI(new BorderLayout(), true, party, target);
-        panel.setBounds(0,0, 700, 700);
-        layeredPane.add(panel, BorderLayout.CENTER, JLayeredPane.DRAG_LAYER);
-        layeredPane.revalidate();
-
-        while (battleState) {
-
-
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-            }
-        }
+        BattleScreenGUI panel = new BattleScreenGUI(new BorderLayout(), true, party, target, em);
+        panel.setBounds(0,0, 1080, 720);
+        container.add(panel, BorderLayout.CENTER);
+        panel.grabFocus();
+        panel.requestFocus();
+        container.revalidate();
+        panel.loop();
+        battleState = false;
+        container.remove(panel);
+        return;
     }
 
 

@@ -4,50 +4,67 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 
-public class DialogBoxGUI extends DialogBox{
-    private TextWindowGUI tw;
-    private JPanel dialogPanel = new JPanel();
-    private JTextPane ta = new JTextPane();
+public class DialogBoxGUI extends DialogBox {
 
-    DialogBoxGUI(TextWindow tw){
-        this.tw = (TextWindowGUI) tw;
+    private JPanel dialogPanel = new JPanel();
+    private JTextArea ta = new JTextArea();
+
+    DialogBoxGUI() {
+
         setTextPaneToBlack(ta);
         dialogPanel.setBackground(Color.black);
         dialogPanel.add(ta, BorderLayout.LINE_START);
         ta.setFont(getProggyFont());
-        ((TextWindowGUI) tw).getFrame().add(dialogPanel, BorderLayout.LINE_END);
+        ta.setSize(1000,500);
+        ta.setMaximumSize(new Dimension(500,720));
+        ta.setPreferredSize(new Dimension(500,720));
+        ta.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+    }
+
+    public JPanel getDialogPanel() {
+        return dialogPanel;
+    }
+
+    public void setDialogPanel(JPanel dialogPanel) {
+        this.dialogPanel = dialogPanel;
     }
 
     /**
      * renders the str field to the textwindow, inside a box.
      * function auto wraps str
      */
-    public void render(){
-        if(super.getStr().equals("")){
+    public void render() {
+        if (super.getStr().equals("")) {
             ta.setText("");
             return;
 
         }
         ta.setText("DIALOG BOX \n");
         String string = getStr().replace("\n", " ");
-        String[] words = string.split(" ");											//split the line to be printed into an array of words
-        String bar = "-------------------------";	//arbituary size of the bar that will box the textbox
+        String[] words = string.split(" ");                                            //split the line to be printed into an array of words
+        String bar = "-----------------------------------";    //arbituary size of the bar that will box the textbox
+        //append(bar + "\n");
+        /*
         //System.out.println(bar.length());
         String sentence = "";
-        append(bar + "\n");																//add the top bar to the textbox
-        for(String word: words){															//start looping through the words
-            if((sentence +" " + word).length() < bar.length() + 5){	// check if the line we are creating is too long and can be wrapped to the next line
-                sentence += " "+  word;														//if the line we creating isn't too long then we can appending it to the same line
-                append(" "+word);
-            }else{
-                append("\n");																	//create a new line
-                sentence = word;																	// since the line was too long with the word attached, we throw the word onto the next line
+        append(bar + "\n");                                                                //add the top bar to the textbox
+        for (String word : words) {                                                            //start looping through the words
+            if ((sentence + " " + word).length() < bar.length() + 5) {    // check if the line we are creating is too long and can be wrapped to the next line
+                sentence += " " + word;                                                        //if the line we creating isn't too long then we can appending it to the same line
+                append(" " + word);
+            } else {
+                append("\n");                                                                    //create a new line
+                sentence = word;                                                                    // since the line was too long with the word attached, we throw the word onto the next line
             }
         }
         append(sentence + "\n");
-        append(bar + "\n");																//close the box
+        */
+        ta.setLineWrap(true);
+        ta.setWrapStyleWord(true);
+        ta.setText(string);
+        //append(bar + "\n");                                                                //close the box
 
-        tw.getFrame().add(dialogPanel, BorderLayout.LINE_END);
+
     }
 
     public void append(String s) {
@@ -66,20 +83,55 @@ public class DialogBoxGUI extends DialogBox{
      *
      * @return
      */
-    public Font getProggyFont(){
+    public Font getProggyFont() {
         Font f = new Font("Monospace", Font.LAYOUT_NO_START_CONTEXT, 0);
-        try{
+        try {
             f = Font.createFont(Font.TRUETYPE_FONT,
-                    new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN,35);
-        }catch(Exception e){
+                    new FileInputStream(new File("ProggyClean.ttf"))).deriveFont(Font.PLAIN, 35);
+        } catch (Exception e) {
             System.out.println(e);
 
         }
         return f;
     }
 
-    public void setTextPaneToBlack(JTextPane pane){
+    public void setTextPaneToBlack(JTextArea pane) {
         pane.setOpaque(false);
         UIManager.put("pane.disabledBackground", Color.WHITE);
+    }
+
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setSize(1080, 720);
+        DialogBoxGUI db = new DialogBoxGUI();
+        frame.add(db.getDialogPanel(), BorderLayout.CENTER);
+        db.setStr("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG ");
+        db.render();
+        NameGenerator nameGenerator = new NameGenerator("src/Names.txt");
+        long period = 0;
+        long now = System.currentTimeMillis();
+        long delta = 0;
+        while (true) {
+            delta = System.currentTimeMillis() - now;
+            now = System.currentTimeMillis();
+            period += delta;
+
+            db.render();
+            if (period >= 1000) {
+                System.out.println("tick");
+                period = 0;
+                db.setStr(nameGenerator.getAName());
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+
     }
 }

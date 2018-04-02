@@ -1,5 +1,4 @@
-import org.junit.Test;
-import static org.junit.Assert.*;
+
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -10,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import org.junit.Test;
 
 import java.util.*;
 //This is not out code.

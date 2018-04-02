@@ -4,11 +4,12 @@ public class EntityCharacter extends Entity {
 
     Random rand = new Random();
     protected int hp = rand.nextInt(20 - 5) + 5;
-
+    protected boolean blocking = false;
+    protected boolean isDead = false;
 
     protected String name = "Character";
     protected int atk = rand.nextInt(20 - 5) + 5;
-    protected double accuracy = rand.nextInt(100 - 1) + 1;
+    protected double accuracy = rand.nextInt(100 - 50) + 50;
     protected String weapon = "Wooden Sword";
 
     public EntityCharacter(int x, int y, char symbol) {
@@ -23,17 +24,30 @@ public class EntityCharacter extends Entity {
     @Override
     public EntityCharacter clone(){
         EntityCharacter en = new EntityCharacter(x,y, symbol);
-        en.atk = atk;
-        en.name = name;
-        en.weapon = weapon;
-        en.accuracy = accuracy;
-        en.hp = hp;
+        en.setAtk(atk);
+        en.setName(name);
+        en.setWeapon(weapon);
+        en.setAccuracy(accuracy);
+        en.setHp(hp);
+        en.setBlocking(blocking);
+        en.setX(x);
+        en.setY(y);
+        en.setSymbol(symbol);
+        en.setVisable(isVisable());
         return en;
+    }
+
+    public boolean isBlocking() {
+        return blocking;
+    }
+
+    public void setBlocking(boolean blocking) {
+        this.blocking = blocking;
     }
 
     public boolean getChance()
     {
-        return Math.random() >= 1.0 - accuracy;
+        return Math.random() >= 1.0 - (accuracy/100);
     }
 
 
@@ -46,11 +60,19 @@ public class EntityCharacter extends Entity {
     }
 
     public String getName() {
-        return name;
+        return new String(name);
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public int getAtk() {
@@ -70,7 +92,7 @@ public class EntityCharacter extends Entity {
     }
 
     public String getWeapon() {
-        return weapon;
+        return new String(weapon);
     }
 
     public void setWeapon(String weapon) {

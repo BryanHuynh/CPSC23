@@ -1,8 +1,9 @@
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 
 public abstract class Party {
-    private ArrayList<NPC> partyMembers = new ArrayList<>();
-    private Player player;
+    protected ArrayList<EntityCharacter> partyMembers = new ArrayList<>();
+    protected Player player;
 
     /**
      * NPCs that are found can be recruited to become party of your team to defeat the enemy
@@ -11,7 +12,7 @@ public abstract class Party {
      */
     Party(Player player){
         this.player = player;
-
+        partyMembers.add(player);
     }
 
     public abstract void render();
@@ -35,6 +36,42 @@ public abstract class Party {
         return false;
     }
 
+
+    public EntityCharacter getMember(String name){
+        for(EntityCharacter member: partyMembers){
+            if(member.getName().equals(name)) return member;
+        }
+        return null;
+    }
+
+
+
+
+    /**
+     * returns all members that have hp > 0
+     * @return
+     */
+    public ArrayList<EntityCharacter> getLivePartyMembers(){
+        ArrayList<EntityCharacter> clone = new ArrayList<>(partyMembers);
+        ArrayList<EntityCharacter> aliveList = new ArrayList<>();
+        for(EntityCharacter member: clone){
+            if(member.getHp() >= 0){
+                aliveList.add(member);
+            }
+        }
+        return aliveList;
+    }
+
+    public boolean isPartyDead(){
+        boolean dead = true;
+        for(EntityCharacter member: partyMembers){
+            if(member.getHp() > 0){
+                dead = false;
+            }
+        }
+        return dead;
+    }
+
     /**
      * adds a new entity to the party
      * @param member
@@ -44,6 +81,11 @@ public abstract class Party {
         member.setVisable(false);
     }
 
+    /**
+     * damage a member of a party
+     * @param character
+     * @param damage
+     */
     public void damageCharacter(EntityCharacter character, int damage){
         for(EntityCharacter members: partyMembers){
             if(members.getName().equals(character.getName())){
@@ -53,11 +95,33 @@ public abstract class Party {
         }
     }
 
+    /**
+     * removes members of party that have less than 0 hp
+     */
     public void removeDeadMembers(){
-        for(NPC npc: partyMembers){
+        for(EntityCharacter npc: partyMembers){
             if(npc.getHp() <= 0){
-                removeMember(npc);
+                npc.setDead(true);
             }
+        }
+    }
+
+    /**
+     * toggles the member to blocking
+     * @param index
+     */
+    public void setToBlock(int index){
+        partyMembers.get(index).setBlocking(true);
+        System.out.println(partyMembers.get(index).getName() + " is blocking "+ partyMembers.get(index).isBlocking());
+    }
+
+
+    /**
+     * resets all members to stop blocking
+     */
+    public void resetBlock(){
+        for(EntityCharacter member: partyMembers){
+            member.setBlocking(false);
         }
     }
 
@@ -65,7 +129,7 @@ public abstract class Party {
      * removes a member from the party
      * @param member
      */
-    public void removeMember(NPC member){
+    public void removeMember(EntityCharacter member){
         partyMembers.remove(member);
     }
 
@@ -73,19 +137,14 @@ public abstract class Party {
      * returns a clone of the party list. any modifications should be done through instance of party class
      * @return
      */
-    public ArrayList<NPC> getPartyList(){
-        ArrayList<NPC> clone = new ArrayList<>();
+    public ArrayList<EntityCharacter> getPartyList(){
+        ArrayList<EntityCharacter> clone = new ArrayList<>();
 
-        for(NPC member: partyMembers){
-            NPC memberClone = member.clone();
-            memberClone.setAtk(member.getAtk());                //cloning things over that are random upon creation
-            memberClone.setName(member.getName());
-            memberClone.setAccuracy(member.getAccuracy());
-            memberClone.setHp(member.getHp());
-            clone.add(memberClone);
+        for(EntityCharacter member: partyMembers){
+            clone.add(member.clone());
 
         }
-        return clone;
+        return new ArrayList<>(partyMembers);
     }
 
 

@@ -20,6 +20,10 @@ public class Point{
   	return Math.sqrt(dx + dy);
   }
 
+  public Point clone(){
+  	return new Point(x,y);
+  }
+
 	/**
 	* Returns value of x
 	* @return

@@ -12,14 +12,6 @@ private boolean visable = true;
   }
 
 
-  public void moveX(int x){
-    this.x = x;
-  }
-
-  public void moveY(int y){
-    this.y = y;
-  }
-
   @Override
   public String toString(){
     return "x:" + x + " y:" + y + " symbol:" + symbol;

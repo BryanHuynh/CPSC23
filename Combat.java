@@ -16,7 +16,6 @@ public class Combat {
         this.party = party;
     }
 
-    ArrayList<Enemy> toBeRemoved = new ArrayList<Enemy>();
 
 
     /**
@@ -27,27 +26,11 @@ public class Combat {
         ArrayList<Enemy> inRange = new ArrayList<Enemy>();
         for (Enemy enemy : em.getEnemies()) {
             if (em.getDistanceBetweenEntities(em.getPlayer(), enemy) < 2) {
-                inRange.add(enemy);
+                if(enemy.isVisable()){
+                    inRange.add(enemy);
+                }
             }
         }
         return inRange;
     }
-
-
-
-
-
-
-
-    public Party getParty() {
-        return party;
-    }
-
-    public void setParty(Party party) {
-        this.party = party;
-    }
-
-
-
-
 }
