@@ -1,4 +1,5 @@
 import javax.swing.text.html.parser.Entity;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 public abstract class Party {
@@ -113,6 +114,14 @@ public abstract class Party {
     public void setToBlock(int index){
         partyMembers.get(index).setBlocking(true);
         System.out.println(partyMembers.get(index).getName() + " is blocking "+ partyMembers.get(index).isBlocking());
+    }
+
+    public void setToBlock(EntityCharacter member){
+        for(EntityCharacter partMember: partyMembers){
+            if(member.getName().equalsIgnoreCase(partMember.name)){
+                partMember.setBlocking(true);
+            }
+        }
     }
 
 

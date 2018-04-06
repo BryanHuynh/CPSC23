@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class CombatConsole extends Combat {
-
+    private String feed = "";
     /**
      * mainly used to printout the status of combat to the console
      *
@@ -59,7 +59,6 @@ public class CombatConsole extends Combat {
         lines.set(4, lines.get(4) + String.format(formatTitle, "weapon: " + enemy.getWeapon()));
 
 
-
         for (String line : lines) {
             System.out.println(line);
         }
@@ -68,23 +67,25 @@ public class CombatConsole extends Combat {
 
     public void action(Scanner scanner, Enemy enemy, EntityCharacter member) {
 
-        System.out.println(member.getName() + " actions: -attack(" + member.getAtk() + ")");
+        System.out.println(member.getName() + " actions: A(" + member.getAtk() + ")");
+        System.out.println(member.getName() + " block: B(" + member.getAtk() + ")");
+
         if (scanner.hasNext()) {
             String action = scanner.nextLine();
-            if (action.equalsIgnoreCase("attack")) {
+            if (action.equalsIgnoreCase("a")) {
                 boolean isHit = member.getChance();
                 if (isHit) {
                     em.damageEnemy(enemy, member.getAtk());
-                    System.out.println(member.getName() + " Attacked Enemy for: " + member.atk);
+                    feed = member.getName() + " Attacked Enemy for: " + member.atk;
                 } else {
-                    System.out.println(member.getName() + " missed");
+                    feed = (member.getName() + " missed");
                 }
-
-                render(enemy);
-                party.render();
+            }else if(action.equalsIgnoreCase("b")){
+                party.setToBlock(member);
+                feed = member.getName() + " is blocking";
+            }else{
+                feed = "";
             }
-            render(enemy);
-            party.render();
         }
     }
 
@@ -92,7 +93,9 @@ public class CombatConsole extends Combat {
         if (enemy.getHp() <= 0) {                                                          //if npc is dead then stop llop
             em.getEntities().remove(enemy);
             em.getEnemies().remove(enemy);
+            em.removeEnemy(enemy);
             System.out.println("ENEMY WAS DEFEATED!");
+
             return false;
         }
         return true;
@@ -106,15 +109,27 @@ public class CombatConsole extends Combat {
         if (enemyAttacks) {
             if (!target.isBlocking()) {
                 party.damageCharacter(target, enemy.getAtk());
-                System.out.println(target.getName() + " was attacked for " + enemy.getAtk());
+                feed = target.getName() + " was attacked for " + enemy.getAtk();
+                party.removeDeadMembers();
+                if(target.isDead){
+                    feed += "\n " + target.getName() + " DIED!";
+                }
             } else {
-                System.out.println(target.getName() + " blocked an attack");
+               feed = target.getName() + " blocked an attack";
             }
         } else {
             System.out.println("Enemy Missed an attack");
         }
-        party.render();
+        //render(enemy);
+        //party.render();
 
+    }
+
+
+    public void clear() {
+        for (int i = 0; i < 3; i++) {
+            System.out.println("---------------------------------------");
+        }
     }
 
 
@@ -127,19 +142,27 @@ public class CombatConsole extends Combat {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {
-            render(enemy);
-            party.render();
             if (party.getPartyList().size() > 0) {
                 for (EntityCharacter member : party.getLivePartyMembers()) {                           // get member action
+                    clear();
+                    System.out.println(feed);
+                    clear();
+                    render(enemy);
+                    party.render();
                     action(scanner, enemy, member);
+
                     running = isEnemyAlive(enemy);
-                    if(!running) return;
+
+                    if (!running) return;
+
                 }
             }
-
+            clear();
+            System.out.println(feed);
+            clear();
             enemyTurn(enemy);
-            if(party.getLivePartyMembers().size() <= 0) running = false;
-
+            if (party.getLivePartyMembers().size() <= 0) running = false;
+            party.resetBlock();
         }
 
     }
@@ -148,6 +171,9 @@ public class CombatConsole extends Combat {
     public static void main(String args[]) {
         EntityManager em = new EntityManager();
         em.createPlayer(0, 0);
+        em.getPlayer().setAtk(1);
+        em.getPlayer().setHp(1000);
+
         Party party = new PartyConsole(em.getPlayer());
         party.addMember(em.createNPC(0, 0, 'c'));
 

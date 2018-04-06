@@ -1,9 +1,4 @@
-import javafx.scene.control.Button;
-
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicButtonListener;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -22,8 +17,10 @@ public class BattleScreenGUI extends JPanel {
     private JPanel south;
     private JTextPane updateFeed = new JTextPane();
     private EntityManager em;
+
     /**
      * handles the interaction between party members and the enemy via combat
+     *
      * @param layout
      * @param isDoubleBuffered
      * @param party
@@ -37,7 +34,7 @@ public class BattleScreenGUI extends JPanel {
         this.enemy = enemy;
         center = new JPanel();
         center.setBackground(Color.black);
-        this.setPreferredSize(new Dimension(500,720));
+        this.setPreferredSize(new Dimension(500, 720));
         center.setBounds(0, 0, 300, 300);
         this.add(center, BorderLayout.NORTH);
         this.add(updateFeed, BorderLayout.CENTER);
@@ -54,8 +51,9 @@ public class BattleScreenGUI extends JPanel {
         }
 
         this.add(south, BorderLayout.SOUTH);
-
     }
+
+
 
     private int turn = 0;
     private boolean wait = false;
@@ -67,16 +65,16 @@ public class BattleScreenGUI extends JPanel {
     public void loop() {
 
         while (enemy.getHp() > 0) {
-            if(party.isPartyDead()){
+            if (party.isPartyDead()) {
                 return;
             }
             if (!wait) {
                 JPanel sMenu = selectionMenu();
-                System.out.println("TURN: " +  turn);
-                if(party.getPartyList().get(turn).getHp() > 0){
+                System.out.println("TURN: " + turn);
+                if (party.getPartyList().get(turn).getHp() > 0) {
                     characterMenus.get(turn).add(sMenu);
                     wait = true;
-                }else{
+                } else {
                     System.out.println(party.getPartyList().get(turn).getName() + " is dead");
                     updateTurn();
                 }
@@ -90,11 +88,10 @@ public class BattleScreenGUI extends JPanel {
 
     /**
      * updates the turn to the next character
-     *
      */
-    public void updateTurn(){
+    public void updateTurn() {
         turn++;
-        if (turn > party.getPartyList().size() -1) {
+        if (turn > party.getPartyList().size() - 1) {
             enemyTurn();
             update();
             turn = 0;
@@ -106,7 +103,7 @@ public class BattleScreenGUI extends JPanel {
     /**
      * updates the gui with the updates of the party and enemy
      */
-    public void update(){
+    public void update() {
         south.removeAll();
         characterMenus.removeAll(characterMenus);
         for (EntityCharacter member : party.getPartyList()) {
@@ -135,27 +132,27 @@ public class BattleScreenGUI extends JPanel {
      * when all members have finished making their move. the Enemy can attack
      * also deals with enemy chance hit rate and blocking
      */
-    public void enemyTurn(){
+    public void enemyTurn() {
         Random rand = new Random();
         EntityCharacter target = party.getLivePartyMembers().get(rand.nextInt(party.getLivePartyMembers().size()));
         boolean isAttack = enemy.getChance();
-        if(isAttack){
-            if(!target.isBlocking()){
+        if (isAttack) {
+            if (!target.isBlocking()) {
                 System.out.println(target.getName() + " status of blocking: " + target.isBlocking());
                 party.damageCharacter(target, enemy.getAtk());
                 appendToPane(updateFeed, target.getName() + " was hit for " + enemy.getAtk(), Color.red);
                 appendBlank(updateFeed);
-                if(party.getMember(target.getName()).getHp() <= 0){
-                    appendToPane(updateFeed, target.getName() + " IS DEAD!" , Color.red);
+                if (party.getMember(target.getName()).getHp() <= 0) {
+                    appendToPane(updateFeed, target.getName() + " IS DEAD!", Color.red);
                     party.removeDeadMembers();
                     appendBlank(updateFeed);
                 }
-            }else{
+            } else {
                 System.out.println(target.getName() + " Blocked the attack");
                 appendToPane(updateFeed, target.getName() + " Blocked the attack", Color.green);
                 appendBlank(updateFeed);
             }
-        }else{
+        } else {
             System.out.println("Enemy missed.");
             appendToPane(updateFeed, "Enemy Missed.", Color.green);
             appendBlank(updateFeed);
@@ -164,11 +161,9 @@ public class BattleScreenGUI extends JPanel {
     }
 
 
-
-
-
     /**
      * a menu that attaches to the members to do actions like attacking, items and blocking
+     *
      * @return
      */
     public JPanel selectionMenu() {
@@ -181,12 +176,12 @@ public class BattleScreenGUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 EntityCharacter member = party.getPartyList().get(turn);
                 boolean isHit = member.getChance();
-                if(isHit){
+                if (isHit) {
                     em.damageEnemy(enemy, member.getAtk());
                     appendToPane(updateFeed, member.getName() + " hit enemy for " + member.getAtk(), Color.green);
                     appendBlank(updateFeed);
 
-                }else{
+                } else {
                     appendToPane(updateFeed, member.getName() + " missed", Color.RED);
                     appendBlank(updateFeed);
                 }
@@ -207,7 +202,7 @@ public class BattleScreenGUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 party.setToBlock(turn);
-                appendToPane(updateFeed, party.getPartyList().get(turn).getName() + " is blocking " , Color.gray);
+                appendToPane(updateFeed, party.getPartyList().get(turn).getName() + " is blocking ", Color.gray);
                 appendBlank(updateFeed);
 
                 endWait();
@@ -233,19 +228,22 @@ public class BattleScreenGUI extends JPanel {
 
     /**
      * customize the button to be black. matching the appearance of the game
+     *
      * @param button
      * @param color
      */
-    public void setButtonAppearance(JButton button, Color color){
+    public void setButtonAppearance(JButton button, Color color) {
         button.setBackground(Color.black);
         button.setBorder(BorderFactory.createLineBorder(Color.white));
         button.setForeground(color);
-        button.setFocusPainted(false);}
+        button.setFocusPainted(false);
+    }
 
     public class CharacterMenu extends JPanel {
 
         /**
          * a class that returns a JPanel consisting of the formatted player stats
+         *
          * @param character
          */
         CharacterMenu(EntityCharacter character) {
@@ -257,6 +255,7 @@ public class BattleScreenGUI extends JPanel {
 
         /**
          * loads character stats onto a jtextpane
+         *
          * @param character
          * @return
          */
@@ -265,12 +264,10 @@ public class BattleScreenGUI extends JPanel {
             int padding = 15;
             appendToPane(pane, "|" + padLeft(character.getName(), 10 - 1) + "|", Color.orange);
 
-            if(character.isDead){
+            if (character.isDead) {
                 appendToPane(pane, " DEAD! ", Color.red);
                 appendToPane(pane, "\n", Color.black);
             }
-
-
 
 
             appendToPane(pane, "\n", Color.black);
@@ -304,6 +301,7 @@ public class BattleScreenGUI extends JPanel {
 
     /**
      * moves everything to the left in a string with padding
+     *
      * @param s
      * @param n
      * @return
@@ -312,11 +310,13 @@ public class BattleScreenGUI extends JPanel {
         return String.format("%1$" + n + "s", s);
     }
 
-    public void appendBlank(JTextPane tp){
+    public void appendBlank(JTextPane tp) {
         appendToPane(tp, "\n", Color.black);
     }
+
     /**
      * adds text to a JTextPane
+     *
      * @param tp
      * @param msg
      * @param c
@@ -337,6 +337,7 @@ public class BattleScreenGUI extends JPanel {
 
     /**
      * for debugging purposes and testing
+     *
      * @param args
      */
     public static void main(String[] args) {

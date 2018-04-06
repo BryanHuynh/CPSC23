@@ -19,7 +19,7 @@ public class MapDisplayGUI extends MapDisplay implements KeyListener {
 
     public void keyPressed(KeyEvent e) {
         System.out.println((char) (e.getKeyCode()));
-        getRogue().textPlayerControl(String.valueOf((char) (e.getKeyCode())));
+        getRogue().playerControl(String.valueOf((char) (e.getKeyCode())));
     }
 
 

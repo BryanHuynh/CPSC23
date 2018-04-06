@@ -1,4 +1,7 @@
+import javafx.scene.shape.Path;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -64,10 +67,9 @@ public class EntityManager {
     }
 
 
-
-    public void damageEnemy(Enemy en, int damage){
-        for(Enemy enemy: enemies ){
-            if(en.equals(enemy)){
+    public void damageEnemy(Enemy en, int damage) {
+        for (Enemy enemy : enemies) {
+            if (en.equals(enemy)) {
                 enemy.damage(damage);
             }
         }
@@ -102,7 +104,7 @@ public class EntityManager {
         if (x < 0 || y < 0) return;
         if (x >= map[0].length) return;
         if (y >= map.length) return;
-        if (map[y][x] == '.'){
+        if (map[y][x] == '.') {
             this.player.setPosition(x, y);
         }
     }
@@ -114,7 +116,7 @@ public class EntityManager {
     public String playerTalk() {
         for (NPC c : getNpcs()) {
             if (getDistanceBetweenEntities(getPlayer(), c) == 1) {
-                if(c.isVisable()){
+                if (c.isVisable()) {
                     return c.getDialog();
                 }
             }
@@ -122,14 +124,15 @@ public class EntityManager {
         return "";
     }
 
-    public void removeEnemy(Enemy enemy){
+    public void removeEnemy(Enemy enemy) {
         enemies.remove(enemy);
         entities.remove(enemy);
+        enemy.setVisable(false);
     }
 
-    public void removeDeadEnemies(){
-        for(Enemy enemy: enemies){
-            if(enemy.getHp() <= 0){
+    public void removeDeadEnemies() {
+        for (Enemy enemy : enemies) {
+            if (enemy.getHp() <= 0) {
                 removeEnemy(enemy);
             }
         }
@@ -137,9 +140,8 @@ public class EntityManager {
 
     /**
      * get recruit if possible
-     *
      */
-    public NPC recuitment(){
+    public NPC recuitment() {
         for (NPC c : getNpcs()) {
             if (getDistanceBetweenEntities(getPlayer(), c) == 1) {
                 return c;
@@ -159,17 +161,27 @@ public class EntityManager {
     public void runEnemyAStar(char[][] map) {
 
         for (Enemy enemy : enemies) {
-            if (getDistanceBetweenEntities(enemy, player) < 3) {
-                int[][] obs = new int[entities.size()][entities.size()];
-                if (obstacles.size() > 0) {
-                    for (int x = 0; x < entities.size(); x++) {
-                        if (entities.get(x).equals(enemy)) continue;
-                        if (entities.get(x).equals(player)) continue;
-                        obs[x][0] = entities.get(x).getY();
-                        obs[x][1] = entities.get(x).getX();
-                    }
+            if (getDistanceBetweenEntities(enemy, player) < 5) {
+                Point[] oblist = new Point[obstacles.size() + npcs.size() + enemies.size()];
+
+                for (int x = 0; x < obstacles.size(); x++) {
+                    oblist[x] = new Point(obstacles.get(x).getY(), obstacles.get(x).getX());
                 }
-                enemy.setPath(AStar.test(0, Rogue.getwidth() + 1, Rogue.getheight() + 1, enemy.getY(), enemy.getX(), player.getY(), player.getX(), obs));
+                for (int x = 0; x < npcs.size(); x++) {
+                    oblist[obstacles.size() + x] = new Point(npcs.get(x).getY(), npcs.get(x).getX());
+                }
+                for (int x = 0; x < enemies.size(); x++) {
+                    if(enemy.equals(enemies.get(x))) continue;
+                    oblist[obstacles.size() + npcs.size() + x] = new Point(enemies.get(x).getY(), enemies.get(x).getX());
+                }
+
+
+                ArrayList<Point> path = new PathFinder(Rogue.getwidth() + 1, Rogue.getheight() + 1, new Point(enemy.getY(), enemy.getX()), new Point(player.getY(), player.getX()), oblist).moves;
+
+                Collections.reverse(path);
+                path.remove(0);
+                enemy.setPath(path);
+
                 if (enemy.getPath().size() > 0) enemy.getPath().remove(0);
             }
 
