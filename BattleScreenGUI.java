@@ -9,7 +9,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BattleScreenGUI extends JPanel {
+public class BattleScreenGUI extends BattleScreen{
+    private JPanel panel = new JPanel(new BorderLayout(), true );
     private Party party;
     private Enemy enemy;
     private ArrayList<CharacterMenu> characterMenus = new ArrayList<>();
@@ -17,29 +18,26 @@ public class BattleScreenGUI extends JPanel {
     private JPanel south;
     private JTextPane updateFeed = new JTextPane();
     private EntityManager em;
+    private boolean ran = false;
 
     /**
      * handles the interaction between party members and the enemy via combat
-     *
-     * @param layout
-     * @param isDoubleBuffered
      * @param party
      * @param enemy
      */
-    public BattleScreenGUI(LayoutManager layout, boolean isDoubleBuffered, Party party, Enemy enemy, EntityManager em) {
-        super(layout, isDoubleBuffered);
-        this.setBackground(Color.black);
+    public BattleScreenGUI(Party party, Enemy enemy, EntityManager em) {
+        super(party, enemy, em);
+        panel.setBackground(Color.black);
         this.em = em;
         this.party = party;
         this.enemy = enemy;
         center = new JPanel();
         center.setBackground(Color.black);
-        this.setPreferredSize(new Dimension(500, 720));
-        center.setBounds(0, 0, 300, 300);
-        this.add(center, BorderLayout.NORTH);
-        this.add(updateFeed, BorderLayout.CENTER);
+        panel.add(center, BorderLayout.NORTH);
+        panel.add(updateFeed, BorderLayout.CENTER);
 
         updateFeed.setBackground(Color.BLACK);
+        //updateFeed.setPreferredSize(new Dimension(500,720));
         center.add(new CharacterMenu(enemy));
         south = new JPanel();
         south.setLayout(new BoxLayout(south, BoxLayout.X_AXIS));
@@ -50,13 +48,17 @@ public class BattleScreenGUI extends JPanel {
             south.add(cm);
         }
 
-        this.add(south, BorderLayout.SOUTH);
+        panel.add(south, BorderLayout.SOUTH);
     }
-
 
 
     private int turn = 0;
     private boolean wait = false;
+
+    @Override
+    public void battle() {
+        loop();
+    }
 
     /**
      * loops through every character giving them a chance to act. the loop stops when the enemy is dead or the entire party
@@ -64,7 +66,7 @@ public class BattleScreenGUI extends JPanel {
      */
     public void loop() {
 
-        while (enemy.getHp() > 0) {
+        while (enemy.getHp() > 0 && !ran) {
             if (party.isPartyDead()) {
                 return;
             }
@@ -80,9 +82,11 @@ public class BattleScreenGUI extends JPanel {
                 }
 
             }
-            revalidate();
+            panel.revalidate();
         }
-        enemy.setVisable(false);
+        if (enemy.getHp() <= 0) {
+            enemy.setVisable(false);
+        }
     }
 
 
@@ -112,7 +116,7 @@ public class BattleScreenGUI extends JPanel {
             south.add(cm);
         }
         south.revalidate();
-        this.revalidate();
+        panel.revalidate();
     }
 
     /**
@@ -162,7 +166,7 @@ public class BattleScreenGUI extends JPanel {
 
 
     /**
-     * a menu that attaches to the members to do actions like attacking, items and blocking
+     * a menu that attaches to the members to do actions like attacking, skips and blocking
      *
      * @return
      */
@@ -191,9 +195,19 @@ public class BattleScreenGUI extends JPanel {
         };
 
 
-        ActionListener itemEvent = new ActionListener() {
+        ActionListener skipEvent = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                endWait();
+            }
+        };
+
+
+        ActionListener runEvent = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ran = party.attemptEscape();
+                if (!ran) appendToPane(updateFeed, "escape failed! \n", Color.red);
                 endWait();
             }
         };
@@ -204,24 +218,26 @@ public class BattleScreenGUI extends JPanel {
                 party.setToBlock(turn);
                 appendToPane(updateFeed, party.getPartyList().get(turn).getName() + " is blocking ", Color.gray);
                 appendBlank(updateFeed);
-
                 endWait();
             }
         };
 
-
+        JButton runButton = new JButton("Run");
         JButton attackButton = new JButton("Attack");
-        JButton itemButton = new JButton("Items");
+        JButton skipButton = new JButton("Skip");
         JButton blockButton = new JButton("Block");
         setButtonAppearance(attackButton, Color.RED);
-        setButtonAppearance(itemButton, Color.MAGENTA);
+        setButtonAppearance(skipButton, Color.MAGENTA);
         setButtonAppearance(blockButton, Color.LIGHT_GRAY);
+        setButtonAppearance(runButton, Color.WHITE);
+        runButton.addActionListener(runEvent);
         attackButton.addActionListener(attackEvent);
-        itemButton.addActionListener(itemEvent);
+        skipButton.addActionListener(skipEvent);
         blockButton.addActionListener(blockEvent);
         menu.add(attackButton);
-        menu.add(itemButton);
+        menu.add(skipButton);
         menu.add(blockButton);
+        menu.add(runButton);
         return menu;
     }
 
@@ -334,6 +350,13 @@ public class BattleScreenGUI extends JPanel {
         tp.replaceSelection(msg);
     }
 
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    public void setPanel(JPanel panel) {
+        this.panel = panel;
+    }
 
     /**
      * for debugging purposes and testing
@@ -357,10 +380,10 @@ public class BattleScreenGUI extends JPanel {
         enemy.setHp(100);
         enemy.setAccuracy(75);
         enemy.setAtk(100);
-        BattleScreenGUI bsg = new BattleScreenGUI(new BorderLayout(), true, party, enemy, em);
+        BattleScreenGUI bsg = new BattleScreenGUI(party, enemy, em);
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(bsg);
+        frame.add(bsg.getPanel());
         frame.setVisible(true);
         bsg.loop();
     }

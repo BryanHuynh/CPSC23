@@ -36,8 +36,6 @@ public class Enemy extends EntityCharacter {
      * @param delta
      */
     public void update(double delta) {
-        super.update(delta);
-
         alternateXTime += delta / 1000;
 
         if (alternateXTime >= 0.2) {

@@ -13,7 +13,9 @@ public class Point{
     this.y = y;
   }
 
-
+  public boolean equals(Point pt2){
+  	return pt2.getX() == x && pt2.getY() == y;
+  }
   public double getDistance(Point point){
   	double dx = Math.pow(point.getX() - x, 2);
 	double dy = Math.pow(point.getY() - y, 2);

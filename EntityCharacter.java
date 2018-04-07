@@ -37,6 +37,11 @@ public class EntityCharacter extends Entity {
         return en;
     }
 
+    @Override
+    public void update(double delta) {
+
+    }
+
     public boolean isBlocking() {
         return blocking;
     }

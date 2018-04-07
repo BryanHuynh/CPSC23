@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class CombatConsole extends Combat {
     private String feed = "";
     /**
-     * mainly used to printout the status of combat to the console
+     * mainly used to printout the status of enemies
      *
      * @param em
      * @param party
@@ -65,121 +65,5 @@ public class CombatConsole extends Combat {
 
     }
 
-    public void action(Scanner scanner, Enemy enemy, EntityCharacter member) {
 
-        System.out.println(member.getName() + " actions: A(" + member.getAtk() + ")");
-        System.out.println(member.getName() + " block: B(" + member.getAtk() + ")");
-
-        if (scanner.hasNext()) {
-            String action = scanner.nextLine();
-            if (action.equalsIgnoreCase("a")) {
-                boolean isHit = member.getChance();
-                if (isHit) {
-                    em.damageEnemy(enemy, member.getAtk());
-                    feed = member.getName() + " Attacked Enemy for: " + member.atk;
-                } else {
-                    feed = (member.getName() + " missed");
-                }
-            }else if(action.equalsIgnoreCase("b")){
-                party.setToBlock(member);
-                feed = member.getName() + " is blocking";
-            }else{
-                feed = "";
-            }
-        }
-    }
-
-    public boolean isEnemyAlive(Enemy enemy) {
-        if (enemy.getHp() <= 0) {                                                          //if npc is dead then stop llop
-            em.getEntities().remove(enemy);
-            em.getEnemies().remove(enemy);
-            em.removeEnemy(enemy);
-            System.out.println("ENEMY WAS DEFEATED!");
-
-            return false;
-        }
-        return true;
-    }
-
-
-    public void enemyTurn(Enemy enemy) {
-        Random rand = new Random();
-        EntityCharacter target = party.getLivePartyMembers().get(rand.nextInt(party.getLivePartyMembers().size()));
-        boolean enemyAttacks = enemy.getChance();
-        if (enemyAttacks) {
-            if (!target.isBlocking()) {
-                party.damageCharacter(target, enemy.getAtk());
-                feed = target.getName() + " was attacked for " + enemy.getAtk();
-                party.removeDeadMembers();
-                if(target.isDead){
-                    feed += "\n " + target.getName() + " DIED!";
-                }
-            } else {
-               feed = target.getName() + " blocked an attack";
-            }
-        } else {
-            System.out.println("Enemy Missed an attack");
-        }
-        //render(enemy);
-        //party.render();
-
-    }
-
-
-    public void clear() {
-        for (int i = 0; i < 3; i++) {
-            System.out.println("---------------------------------------");
-        }
-    }
-
-
-    /**
-     * starts a loop, containing battle sequences
-     *
-     * @param enemy
-     */
-    public void battle(Enemy enemy) {
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
-        while (running) {
-            if (party.getPartyList().size() > 0) {
-                for (EntityCharacter member : party.getLivePartyMembers()) {                           // get member action
-                    clear();
-                    System.out.println(feed);
-                    clear();
-                    render(enemy);
-                    party.render();
-                    action(scanner, enemy, member);
-
-                    running = isEnemyAlive(enemy);
-
-                    if (!running) return;
-
-                }
-            }
-            clear();
-            System.out.println(feed);
-            clear();
-            enemyTurn(enemy);
-            if (party.getLivePartyMembers().size() <= 0) running = false;
-            party.resetBlock();
-        }
-
-    }
-
-
-    public static void main(String args[]) {
-        EntityManager em = new EntityManager();
-        em.createPlayer(0, 0);
-        em.getPlayer().setAtk(1);
-        em.getPlayer().setHp(1000);
-
-        Party party = new PartyConsole(em.getPlayer());
-        party.addMember(em.createNPC(0, 0, 'c'));
-
-        CombatConsole combat = new CombatConsole(em, party);
-        combat.battle(em.createEnemy(0, 0, 'e'));
-
-
-    }
 }

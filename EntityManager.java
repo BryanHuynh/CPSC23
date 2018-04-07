@@ -150,6 +150,27 @@ public class EntityManager {
         return null;
     }
 
+    public void step(Enemy enemy){
+        if (enemy.getPath().size() > 0) {
+            Point pt = enemy.getPath().get(enemy.getPath().size() - 1);
+            if(!isSpaceOccupied(pt.getX(), pt.getY())){
+                enemy.setX(pt.getX());
+                enemy.setY(pt.getY());
+                enemy.getPath().remove(enemy.getPath().size() - 1);
+            }else{
+                return;
+            }
+        }
+    }
+
+
+    public boolean isSpaceOccupied(int x, int y){
+        for(Enemy entity: enemies){
+            if(entity.getPosition().equals(new Point(x,y))) return true;
+        }
+        return false;
+
+    }
 
     public void update(char[][] map) {
         runEnemyAStar(map);
@@ -161,31 +182,50 @@ public class EntityManager {
     public void runEnemyAStar(char[][] map) {
 
         for (Enemy enemy : enemies) {
-            if (getDistanceBetweenEntities(enemy, player) < 5) {
-                Point[] oblist = new Point[obstacles.size() + npcs.size() + enemies.size()];
+            if(getDistanceBetweenEntities(enemy, player) <= 1) continue;
+            if (getDistanceBetweenEntities(enemy, player) < 20) {
 
-                for (int x = 0; x < obstacles.size(); x++) {
-                    oblist[x] = new Point(obstacles.get(x).getY(), obstacles.get(x).getX());
+                ArrayList<Point> obs = new ArrayList<>();
+                for (Obstacle ob : obstacles) {
+                    obs.add(new Point(ob.getY(), ob.getX()));
                 }
-                for (int x = 0; x < npcs.size(); x++) {
-                    oblist[obstacles.size() + x] = new Point(npcs.get(x).getY(), npcs.get(x).getX());
+                for (NPC ob : npcs) {
+                    if (!ob.isVisable()) continue;
+                    obs.add(new Point(ob.getY(), ob.getX()));
                 }
-                for (int x = 0; x < enemies.size(); x++) {
-                    if(enemy.equals(enemies.get(x))) continue;
-                    oblist[obstacles.size() + npcs.size() + x] = new Point(enemies.get(x).getY(), enemies.get(x).getX());
+                /**
+                for (Enemy ob : enemies) {
+                    if (!ob.isVisable()) continue;
+                    if (ob.equals(enemy)) continue;
+                    obs.add(new Point(ob.getY(), ob.getX()));
+                }
+                 */
+
+                Point[] oblist = new Point[obs.size()];
+                for (int i = 0; i < obs.size(); i++) {
+                    oblist[i] = obs.get(i);
+                }
+                try {
+                    ArrayList<Point> path = new PathFinder(Rogue.getwidth() + 1, Rogue.getheight() + 1, new Point(enemy.getY(), enemy.getX()), new Point(player.getY(), player.getX()), oblist).moves;
+                    Collections.reverse(path);
+                    enemy.setPath(path);
+                } catch (Exception e) {
+                    System.out.println("no path found");
                 }
 
 
-                ArrayList<Point> path = new PathFinder(Rogue.getwidth() + 1, Rogue.getheight() + 1, new Point(enemy.getY(), enemy.getX()), new Point(player.getY(), player.getX()), oblist).moves;
+                if (enemy.getPath().size() > 0) {
+                    enemy.getPath().remove(0);
+                    enemy.getPath().remove(0);
+                }
 
-                Collections.reverse(path);
-                path.remove(0);
-                enemy.setPath(path);
 
-                if (enemy.getPath().size() > 0) enemy.getPath().remove(0);
+
+                ;
             }
 
-            enemy.step();
+            step(enemy);
+
         }
     }
 

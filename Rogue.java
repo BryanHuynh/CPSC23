@@ -8,13 +8,14 @@ public abstract class Rogue {
     protected EntityManager em = new EntityManager();
     protected Player player;
     protected Scanner scanner;
-    protected boolean textVersion;
     protected static int height, width;
     protected MapManager mm;
     protected Combat combat;
     protected Party party;
     protected DialogBox db;
     protected KeyBinding kb = new KeyBinding();
+    protected BattleScreen bs;
+    protected boolean running;
 
 
     public Rogue(int length, int height, int roomsize, int numOfEnemies, int numOfNpcs) {
@@ -30,12 +31,12 @@ public abstract class Rogue {
         Rogue.height = mm.getMapLength();
         Rogue.width = mm.getMapHeight();
         mm.createMapEntities();                 // entities are created on the map
-        em.getPlayer().setHp(1000);
+        em.getPlayer().setHp(10);
+        em.getPlayer().setAccuracy(95);
     }
 
 
 
-    boolean inventoryScreen = false;
     boolean gameScreen = false;
 
 
@@ -77,10 +78,7 @@ public abstract class Rogue {
         } else if (action.equalsIgnoreCase("d")) {
             em.movePlayer(1, 0, mm.getCharacterMap());
         } else if (action.equalsIgnoreCase("q")) {
-            textVersion = false;
             gameScreen = false;
-            inventoryScreen = false;
-            return;
         }
         recruitmentControl(action);
         em.update(mm.getCharacterMap());
@@ -90,20 +88,25 @@ public abstract class Rogue {
     public void gameEnd(){
         if(em.getPlayer().getHp() <= 0){
             System.out.println("HERO IS DEAD. GAME OVER");
+            running = false;
+            synchronized (this){
+                System.out.println("Notified");
+                notify();
+            }
+
         }
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
     public EntityManager getEm() {
         return em;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public static int getheight() {

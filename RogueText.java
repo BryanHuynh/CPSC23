@@ -13,6 +13,12 @@ public class RogueText extends Rogue {
      * game loop used for the text version of the game
      */
     public void textVersionInit() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                textVersionLoop();
+            }
+        });
         party = new PartyConsole(em.getPlayer());
         mapDisplay = new MapDisplayConsole(height + 1, width + 1, this);
         combat = new CombatConsole(em, party);
@@ -22,19 +28,23 @@ public class RogueText extends Rogue {
         mapDisplay.render(getMm().getEntityMap());//render the screen to show the map
         db.render();                            //render the dialog box
         System.out.println();
+        gameScreen = true;
+        thread.start();
     }
 
 
     public void textVersionLoop() {
 
 
-        while (gameScreen) {
+        while (running) {
+            gameEnd();
             ArrayList<Enemy> inRange = combat.combatCheck();
             mapDisplay.render(getMm().getEntityMap());//render the screen to show the map
             db.render();                            //render the dialog box
             if (inRange.size() > 0) {
                 System.out.println("ENEMY IN RANGE!");
                 ((CombatConsole) combat).render(em.getPlayer(), inRange);
+
             }
 
             party.render();                 //render the party members stats
@@ -45,13 +55,10 @@ public class RogueText extends Rogue {
             kb.print();                     //keyboard instructions
             if (scanner.hasNext()) {            //check if there is a command
                 String action = scanner.nextLine(); //save command to action variable
-                if (action.equalsIgnoreCase("i")) {
-                    gameScreen = false;
-                    inventoryScreen = true;
-                    break;
-                } else if (inRange.size() > 0 && isNumeric(action)) { //start combat if enemy in range and action is a number
+                if (inRange.size() > 0 && isNumeric(action)) { //start combat if enemy in range and action is a number
                     if (Integer.valueOf(action) < inRange.size()) {   //does the enemy exist to the corresponding number
-                        ((CombatConsole) combat).battle(inRange.get(Integer.valueOf(action)));
+                        bs = new BattleScreenConsole(em,party, inRange.get(Integer.valueOf(action)),(CombatConsole)combat);
+                        bs.battle();
                     }
                 }
 
@@ -67,18 +74,7 @@ public class RogueText extends Rogue {
 
             }
         }
-        while (inventoryScreen) {
-            if (scanner.hasNext()) {
-                String action = scanner.nextLine(); //save command to action variable
-                if (action.equalsIgnoreCase("exit")) {
-                    gameScreen = true;
-                    inventoryScreen = false;
 
-                    break;
-                }
-            }
-
-        }
     }
 
 

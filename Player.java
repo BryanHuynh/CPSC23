@@ -6,8 +6,19 @@ public class Player extends EntityCharacter{
   }
   double alternateXTime = 0.0;
 
+
+  public Player clone(){
+    Player clone = new Player(x,y, symbol);
+    clone.setAccuracy(accuracy);
+    clone.setHp(hp);
+    clone.setAtk(atk);
+    clone.setBlocking(blocking);
+    clone.setName(name);
+    clone.setVisable(isVisable());
+    return clone;
+  }
+
   public void update(double delta){
-    super.update(delta);
     alternateXTime += delta/1000;
 
     if(alternateXTime >= 0.2) {

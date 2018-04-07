@@ -73,6 +73,26 @@ public abstract class Party {
         return dead;
     }
 
+
+
+    public boolean attemptEscape(){
+        double escapeChance = escapeChance();
+        return Math.random() >= 1.0 - (escapeChance);
+    }
+
+
+    /**
+     * get the chance they have to escape
+     * @return
+     */
+    public double escapeChance(){
+        double sum = 0;
+        for(EntityCharacter member: partyMembers){
+            sum += member.getAccuracy() / 100;
+        }
+        return sum/partyMembers.size();
+    }
+
     /**
      * adds a new entity to the party
      * @param member

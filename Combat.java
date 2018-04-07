@@ -25,7 +25,7 @@ public class Combat {
     public ArrayList<Enemy> combatCheck() {
         ArrayList<Enemy> inRange = new ArrayList<Enemy>();
         for (Enemy enemy : em.getEnemies()) {
-            if (em.getDistanceBetweenEntities(em.getPlayer(), enemy) < 2) {
+            if (em.getDistanceBetweenEntities(em.getPlayer(), enemy) <= 1.5) {
                 if(enemy.isVisable()){
                     inRange.add(enemy);
                 }

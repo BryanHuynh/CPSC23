@@ -125,16 +125,8 @@ public class CombatGUI extends Combat {
      * initiate battle system for the gui
      */
     public void battle(Container container) {
-        System.out.println("BATTLE");
-        BattleScreenGUI panel = new BattleScreenGUI(new BorderLayout(), true, party, target, em);
-        panel.setBounds(0,0, 1080, 720);
-        container.add(panel, BorderLayout.CENTER);
-        panel.grabFocus();
-        panel.requestFocus();
-        container.revalidate();
-        panel.loop();
-        battleState = false;
-        container.remove(panel);
+
+
         return;
     }
 

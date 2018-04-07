@@ -492,70 +492,74 @@ public class PathFinder {
         this.moves.add(sSpot);
     }
 
-    public char[][] mazeMove(int[][][] mazeAndDValues, char[][] map) throws ArrayIndexOutOfBoundsException, StackOverflowError{
-        /* This is the actual method that makes our S character move. It does so by checking
-         * the D Values around where S currently is, and moving in that direction.
-         * */
-        int[] sSpot = this.findS(map);
+    public char[][] mazeMove(int[][][] mazeAndDValues, char[][] map) throws ArrayIndexOutOfBoundsException, StackOverflowError {
+        try {
+            /* This is the actual method that makes our S character move. It does so by checking
+             * the D Values around where S currently is, and moving in that direction.
+             * */
+            int[] sSpot = this.findS(map);
 
-        int atS = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-        int[] dValues = new int[4];
-        dValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 1][0]; // right
-        dValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 1][0]; // left
-        dValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1]][0]; // up
-        dValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1]][0]; // down
+            int atS = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+            int[] dValues = new int[4];
+            dValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 1][0]; // right
+            dValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 1][0]; // left
+            dValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1]][0]; // up
+            dValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1]][0]; // down
 
-        if (findLowest(dValues, atS, map, mazeAndDValues)[0] != 7) {
+            if (findLowest(dValues, atS, map, mazeAndDValues)[0] != 7) {
 
 
-            if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 0) {
-                //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
-                map[sSpot[0]][sSpot[1]] = '.';
-                map[sSpot[0]][sSpot[1] + 1] = 'S';
-                mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
+                if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 0) {
+                    //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
+                    map[sSpot[0]][sSpot[1]] = '.';
+                    map[sSpot[0]][sSpot[1] + 1] = 'S';
+                    mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
+                    this.count += 1;
+                    movesTracker(map);
+                    //System.out.println();
+                    mazeUpdate(map);
+                    mazeMove(mazeAndDValues, map);
+                } else if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 1) {
+                    //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
+                    map[sSpot[0]][sSpot[1]] = '.';
+                    map[sSpot[0]][sSpot[1] - 1] = 'S';
+                    mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
+                    this.count += 1;
+                    movesTracker(map);
+                    //System.out.println();
+                    mazeUpdate(map);
+                    mazeMove(mazeAndDValues, map);
+                } else if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 2) {
+                    //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
+                    map[sSpot[0]][sSpot[1]] = '.';
+                    map[sSpot[0] - 1][sSpot[1]] = 'S';
+                    mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
+                    this.count += 1;
+                    movesTracker(map);
+                    //System.out.println();
+                    mazeUpdate(map);
+                    mazeMove(mazeAndDValues, map);
+                } else if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 3) {
+                    //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
+                    map[sSpot[0]][sSpot[1]] = '.';
+                    map[sSpot[0] + 1][sSpot[1]] = 'S';
+                    mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
+                    this.count += 1;
+                    movesTracker(map);
+                    //System.out.println();
+                    mazeUpdate(map);
+                    mazeMove(mazeAndDValues, map);
+                }
+            } else {
                 this.count += 1;
                 movesTracker(map);
-                //System.out.println();
-                mazeUpdate(map);
-                mazeMove(mazeAndDValues, map);
-            } else if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 1) {
-                //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
-                map[sSpot[0]][sSpot[1]] = '.';
-                map[sSpot[0]][sSpot[1] - 1] = 'S';
-                mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
-                this.count += 1;
-                movesTracker(map);
-                //System.out.println();
-                mazeUpdate(map);
-                mazeMove(mazeAndDValues, map);
-            } else if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 2) {
-                //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
-                map[sSpot[0]][sSpot[1]] = '.';
-                map[sSpot[0] - 1][sSpot[1]] = 'S';
-                mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
-                this.count += 1;
-                movesTracker(map);
-                //System.out.println();
-                mazeUpdate(map);
-                mazeMove(mazeAndDValues, map);
-            } else if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 3) {
-                //System.out.println(mazeAndDValues[sSpot[0]][sSpot[1]][0]);
-                map[sSpot[0]][sSpot[1]] = '.';
-                map[sSpot[0] + 1][sSpot[1]] = 'S';
-                mazeAndDValues[sSpot[0]][sSpot[1]][0] += 10;
-                this.count += 1;
-                movesTracker(map);
-                //System.out.println();
-                mazeUpdate(map);
-                mazeMove(mazeAndDValues, map);
+
             }
-        } else {
-            this.count += 1;
-            movesTracker(map);
-
+            return map;
+        } catch (StackOverflowError e) {
         }
-        return map;
 
+        return map;
     }
 
 

@@ -1,13 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class RogueGUI extends Rogue {
     private double totalTime = 0.0;
-    private Window gui = new Window();
+    private JFrame gui;
 
 
-    public RogueGUI(int length, int height, int roomsize, int numOfEnemies, int numOfNpcs) {
+    public RogueGUI(int length, int height, int roomsize, int numOfEnemies, int numOfNpcs, JFrame frame) {
         super(length, height, roomsize, numOfEnemies, numOfNpcs);
+        this.gui = frame;
+
+        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gui.getContentPane().setBackground(Color.black);
+        Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        gui.setMaximumSize(DimMax);
+        gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
 
@@ -17,7 +26,11 @@ public class RogueGUI extends Rogue {
     public void runGameLoop() {
         Thread loop = new Thread() {
             public void run() {
-                gameLoopGUI();
+                try {
+                    gameLoopGUI();
+                } catch (InterruptedException e) {
+
+                }
             }
         };
         mapDisplay = new MapDisplayGUI(height + 1, width + 1, this);
@@ -33,16 +46,17 @@ public class RogueGUI extends Rogue {
         gui.add(panel, BorderLayout.LINE_START);
         gui.add(((DialogBoxGUI) db).getDialogPanel(), BorderLayout.LINE_END);
         gui.add(((MapDisplayGUI) mapDisplay).getMapPanel(), BorderLayout.CENTER);
+        running = true;
         loop.start();
     }
 
     /**
      * gameloop for the gui
      */
-    private void gameLoopGUI() {
+    private void gameLoopGUI() throws InterruptedException {
         long now = System.currentTimeMillis();
         long delta = 0;
-        while (true) {
+        while (running) {
             delta = System.currentTimeMillis() - now;
             now = System.currentTimeMillis();
             totalTime += delta;
@@ -53,6 +67,7 @@ public class RogueGUI extends Rogue {
             } catch (Exception e) {
             }
         }
+        gui.setVisible(false);
     }
 
     /**
@@ -74,7 +89,15 @@ public class RogueGUI extends Rogue {
     public void renderGUI() {
         if (((CombatGUI) combat).battleState) {
             ((MapDisplayGUI) mapDisplay).getMapPanel().setVisible(false);
-            ((CombatGUI) combat).battle(gui.getContentPane());
+            BattleScreenGUI bs = new BattleScreenGUI(party, ((CombatGUI) combat).target, em);
+            bs.getPanel().setBounds(0, 0, 1080, 720);
+            gui.getContentPane().add(bs.getPanel(), BorderLayout.CENTER);
+            bs.getPanel().grabFocus();
+            bs.getPanel().requestFocus();
+            gui.getContentPane().revalidate();
+            bs.battle();
+            ((CombatGUI) combat).battleState = false;
+            gui.getContentPane().remove(bs.getPanel());
             mapDisplay.render(getMm().getEntityMap());
             gameStep();
         } else {
@@ -94,9 +117,8 @@ public class RogueGUI extends Rogue {
 
     public void playerControl(String action) {
         super.playerControl(action);
-        if (textVersion == false) {
-            gameStep();
-        }
+        gameStep();
+
     }
 
 
