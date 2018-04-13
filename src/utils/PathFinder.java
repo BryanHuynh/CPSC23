@@ -172,315 +172,320 @@ public class PathFinder {
 
 
         int dupeLowestIndex = this.findDupeLowestIndex(nums, lowest);
+        try {
 
-        if (dupeLowestIndex != 8) { // Checks to see if lowest number is in list twice, returns second index
-            if (index == 0) { // Checking right side
-                switch (dupeLowestIndex) {
-                    case 1:
-                        rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
-                        rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        rightLowest = this.findLowest(rightDValues)[1];
 
-                        leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
-                        leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        leftLowest = this.findLowest(leftDValues)[1];
+            if (dupeLowestIndex != 8) { // Checks to see if lowest number is in list twice, returns second index
+                if (index == 0) { // Checking right side
+                    switch (dupeLowestIndex) {
+                        case 1:
+                            rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
+                            rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            rightLowest = this.findLowest(rightDValues)[1];
 
-                        if (rightLowest < leftLowest) {
-                            returns[0] = 0;
-                            returns[1] = rightLowest;
-                            return returns;
-                        } else if (leftLowest < rightLowest) {
-                            returns[0] = 1;
-                            returns[1] = leftLowest;
-                            return returns;
-                        }
+                            leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
+                            leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            leftLowest = this.findLowest(leftDValues)[1];
 
-                        break;
-                    case 2:
-                        rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
-                        rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        rightLowest = this.findLowest(rightDValues)[1];
+                            if (rightLowest < leftLowest) {
+                                returns[0] = 0;
+                                returns[1] = rightLowest;
+                                return returns;
+                            } else if (leftLowest < rightLowest) {
+                                returns[0] = 1;
+                                returns[1] = leftLowest;
+                                return returns;
+                            }
 
-                        upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
-                        upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        upLowest = this.findLowest(upDValues)[1];
+                            break;
+                        case 2:
+                            rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
+                            rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            rightLowest = this.findLowest(rightDValues)[1];
 
-                        if (rightLowest < upLowest) {
-                            returns[0] = 0;
-                            returns[1] = rightLowest;
-                            return returns;
-                        } else if (upLowest < rightLowest) {
-                            returns[0] = 2;
-                            returns[1] = upLowest;
-                            return returns;
-                        }
+                            upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
+                            upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            upLowest = this.findLowest(upDValues)[1];
 
-                        break;
-                    case 3:
-                        rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
-                        rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        rightLowest = this.findLowest(rightDValues)[1];
+                            if (rightLowest < upLowest) {
+                                returns[0] = 0;
+                                returns[1] = rightLowest;
+                                return returns;
+                            } else if (upLowest < rightLowest) {
+                                returns[0] = 2;
+                                returns[1] = upLowest;
+                                return returns;
+                            }
 
-                        downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
-                        downLowest = this.findLowest(downDValues)[1];
+                            break;
+                        case 3:
+                            rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
+                            rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            rightLowest = this.findLowest(rightDValues)[1];
 
-                        if (rightLowest < downLowest) {
-                            returns[0] = 0;
-                            returns[1] = rightLowest;
-                            return returns;
-                        } else if (downLowest < rightLowest) {
-                            returns[0] = 3;
-                            returns[1] = downLowest;
-                            return returns;
-                        }
-                        break;
+                            downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
+                            downLowest = this.findLowest(downDValues)[1];
+
+                            if (rightLowest < downLowest) {
+                                returns[0] = 0;
+                                returns[1] = rightLowest;
+                                return returns;
+                            } else if (downLowest < rightLowest) {
+                                returns[0] = 3;
+                                returns[1] = downLowest;
+                                return returns;
+                            }
+                            break;
+                    }
+                }
+                if (index == 1) {
+                    switch (dupeLowestIndex) {
+                        case 0:
+                            leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
+                            leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            leftLowest = this.findLowest(leftDValues)[1];
+
+                            rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
+                            rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            rightLowest = this.findLowest(rightDValues)[1];
+
+                            if (leftLowest < rightLowest) {
+                                returns[0] = 1;
+                                returns[1] = leftLowest;
+                                return returns;
+                            } else if (rightLowest < leftLowest) {
+                                returns[0] = 0;
+                                returns[1] = rightLowest;
+                                return returns;
+                            }
+
+                            break;
+
+                        case 2:
+                            leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
+                            leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            leftLowest = this.findLowest(leftDValues)[1];
+
+                            upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
+                            upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            upLowest = this.findLowest(upDValues)[1];
+
+                            if (leftLowest < upLowest) {
+                                returns[0] = 1;
+                                returns[1] = leftLowest;
+                                return returns;
+                            } else if (upLowest < leftLowest) {
+                                returns[0] = 2;
+                                returns[1] = upLowest;
+                                return returns;
+                            }
+                            break;
+
+                        case 3:
+                            leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
+                            leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            leftLowest = this.findLowest(leftDValues)[1];
+
+                            downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
+                            downLowest = this.findLowest(downDValues)[1];
+
+                            if (leftLowest < downLowest) {
+                                returns[0] = 1;
+                                returns[1] = leftLowest;
+                                return returns;
+                            } else if (downLowest < leftLowest) {
+                                returns[0] = 3;
+                                returns[1] = downLowest;
+                                return returns;
+                            }
+
+                            break;
+                    }
+                }
+                if (index == 2) {
+                    switch (dupeLowestIndex) {
+                        case 0:
+                            upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
+                            upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            upLowest = this.findLowest(upDValues)[1];
+
+                            rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
+                            rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            rightLowest = this.findLowest(rightDValues)[1];
+
+                            if (upLowest < rightLowest) {
+                                returns[0] = 2;
+                                returns[1] = upLowest;
+                                return returns;
+                            } else if (rightLowest < upLowest) {
+                                returns[0] = 0;
+                                returns[1] = rightLowest;
+                                return returns;
+                            }
+
+
+                            break;
+                        case 1:
+                            upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
+                            upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            upLowest = this.findLowest(upDValues)[1];
+
+                            leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
+                            leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            leftLowest = this.findLowest(leftDValues)[1];
+
+                            if (upLowest < leftLowest) {
+                                returns[0] = 2;
+                                returns[1] = upLowest;
+                                return returns;
+                            } else if (leftLowest < upLowest) {
+                                returns[0] = 1;
+                                returns[1] = leftLowest;
+                                return returns;
+                            }
+
+                            break;
+                        case 3:
+                            upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
+                            upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            upLowest = this.findLowest(upDValues)[1];
+
+                            downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
+                            downLowest = this.findLowest(downDValues)[1];
+
+                            if (upLowest < downLowest) {
+                                returns[0] = 2;
+                                returns[1] = upLowest;
+                                return returns;
+                            } else if (downLowest < upLowest) {
+                                returns[0] = 3;
+                                returns[1] = downLowest;
+                                return returns;
+                            }
+
+                            break;
+                    }
+                }
+                if (index == 3) {
+                    switch (dupeLowestIndex) {
+                        case 0:
+                            downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
+                            downLowest = this.findLowest(downDValues)[1];
+
+                            rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
+                            rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            rightLowest = this.findLowest(rightDValues)[1];
+
+                            if (downLowest < rightLowest) {
+                                returns[0] = 3;
+                                returns[1] = downLowest;
+                                return returns;
+                            } else if (rightLowest < downLowest) {
+                                returns[0] = 0;
+                                returns[1] = rightLowest;
+                                return returns;
+                            }
+                            break;
+                        case 1:
+                            downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
+                            downLowest = this.findLowest(downDValues)[1];
+
+                            leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
+                            leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            leftLowest = this.findLowest(leftDValues)[1];
+
+                            if (downLowest < leftLowest) {
+                                returns[0] = 3;
+                                returns[1] = downLowest;
+                                return returns;
+                            } else if (leftLowest < downLowest) {
+                                returns[0] = 1;
+                                returns[1] = leftLowest;
+                                return returns;
+                            }
+
+
+                            break;
+                        case 2:
+                            downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
+                            downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
+                            downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
+                            downLowest = this.findLowest(downDValues)[1];
+
+                            upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
+                            upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
+                            upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
+                            upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
+                            upLowest = this.findLowest(upDValues)[1];
+
+
+                            if (downLowest < upLowest) {
+                                returns[0] = 3;
+                                returns[1] = downLowest;
+                                return returns;
+                            } else if (upLowest < downLowest) {
+                                returns[0] = 2;
+                                returns[1] = upLowest;
+                                return returns;
+                            }
+
+
+                            break;
+                    }
                 }
             }
-            if (index == 1) {
-                switch (dupeLowestIndex) {
-                    case 0:
-                        leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
-                        leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        leftLowest = this.findLowest(leftDValues)[1];
-
-                        rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
-                        rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        rightLowest = this.findLowest(rightDValues)[1];
-
-                        if (leftLowest < rightLowest) {
-                            returns[0] = 1;
-                            returns[1] = leftLowest;
-                            return returns;
-                        } else if (rightLowest < leftLowest) {
-                            returns[0] = 0;
-                            returns[1] = rightLowest;
-                            return returns;
-                        }
-
-                        break;
-
-                    case 2:
-                        leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
-                        leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        leftLowest = this.findLowest(leftDValues)[1];
-
-                        upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
-                        upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        upLowest = this.findLowest(upDValues)[1];
-
-                        if (leftLowest < upLowest) {
-                            returns[0] = 1;
-                            returns[1] = leftLowest;
-                            return returns;
-                        } else if (upLowest < leftLowest) {
-                            returns[0] = 2;
-                            returns[1] = upLowest;
-                            return returns;
-                        }
-                        break;
-
-                    case 3:
-                        leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
-                        leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        leftLowest = this.findLowest(leftDValues)[1];
-
-                        downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
-                        downLowest = this.findLowest(downDValues)[1];
-
-                        if (leftLowest < downLowest) {
-                            returns[0] = 1;
-                            returns[1] = leftLowest;
-                            return returns;
-                        } else if (downLowest < leftLowest) {
-                            returns[0] = 3;
-                            returns[1] = downLowest;
-                            return returns;
-                        }
-
-                        break;
-                }
-            }
-            if (index == 2) {
-                switch (dupeLowestIndex) {
-                    case 0:
-                        upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
-                        upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        upLowest = this.findLowest(upDValues)[1];
-
-                        rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
-                        rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        rightLowest = this.findLowest(rightDValues)[1];
-
-                        if (upLowest < rightLowest) {
-                            returns[0] = 2;
-                            returns[1] = upLowest;
-                            return returns;
-                        } else if (rightLowest < upLowest) {
-                            returns[0] = 0;
-                            returns[1] = rightLowest;
-                            return returns;
-                        }
-
-
-                        break;
-                    case 1:
-                        upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
-                        upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        upLowest = this.findLowest(upDValues)[1];
-
-                        leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
-                        leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        leftLowest = this.findLowest(leftDValues)[1];
-
-                        if (upLowest < leftLowest) {
-                            returns[0] = 2;
-                            returns[1] = upLowest;
-                            return returns;
-                        } else if (leftLowest < upLowest) {
-                            returns[0] = 1;
-                            returns[1] = leftLowest;
-                            return returns;
-                        }
-
-                        break;
-                    case 3:
-                        upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
-                        upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        upLowest = this.findLowest(upDValues)[1];
-
-                        downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
-                        downLowest = this.findLowest(downDValues)[1];
-
-                        if (upLowest < downLowest) {
-                            returns[0] = 2;
-                            returns[1] = upLowest;
-                            return returns;
-                        } else if (downLowest < upLowest) {
-                            returns[0] = 3;
-                            returns[1] = downLowest;
-                            return returns;
-                        }
-
-                        break;
-                }
-            }
-            if (index == 3) {
-                switch (dupeLowestIndex) {
-                    case 0:
-                        downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
-                        downLowest = this.findLowest(downDValues)[1];
-
-                        rightDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1] + 2][0];
-                        rightDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        rightDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        rightDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        rightLowest = this.findLowest(rightDValues)[1];
-
-                        if (downLowest < rightLowest) {
-                            returns[0] = 3;
-                            returns[1] = downLowest;
-                            return returns;
-                        } else if (rightLowest < downLowest) {
-                            returns[0] = 0;
-                            returns[1] = rightLowest;
-                            return returns;
-                        }
-                        break;
-                    case 1:
-                        downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
-                        downLowest = this.findLowest(downDValues)[1];
-
-                        leftDValues[0] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        leftDValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 2][0];
-                        leftDValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        leftDValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        leftLowest = this.findLowest(leftDValues)[1];
-
-                        if (downLowest < leftLowest) {
-                            returns[0] = 3;
-                            returns[1] = downLowest;
-                            return returns;
-                        } else if (leftLowest < downLowest) {
-                            returns[0] = 1;
-                            returns[1] = leftLowest;
-                            return returns;
-                        }
-
-
-                        break;
-                    case 2:
-                        downDValues[0] = mazeAndDValues[sSpot[0] + 1][sSpot[1] + 1][0];
-                        downDValues[1] = mazeAndDValues[sSpot[0] + 1][sSpot[1] - 1][0];
-                        downDValues[2] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        downDValues[3] = mazeAndDValues[sSpot[0] + 2][sSpot[1]][0];
-                        downLowest = this.findLowest(downDValues)[1];
-
-                        upDValues[0] = mazeAndDValues[sSpot[0] - 1][sSpot[1] + 1][0];
-                        upDValues[1] = mazeAndDValues[sSpot[0] - 1][sSpot[1] - 1][0];
-                        upDValues[2] = mazeAndDValues[sSpot[0] - 2][sSpot[1]][0];
-                        upDValues[3] = mazeAndDValues[sSpot[0]][sSpot[1]][0];
-                        upLowest = this.findLowest(upDValues)[1];
-
-
-                        if (downLowest < upLowest) {
-                            returns[0] = 3;
-                            returns[1] = downLowest;
-                            return returns;
-                        } else if (upLowest < downLowest) {
-                            returns[0] = 2;
-                            returns[1] = upLowest;
-                            return returns;
-                        }
-
-
-                        break;
-                }
-            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
         }
 
         return returns;
@@ -507,8 +512,9 @@ public class PathFinder {
             dValues[1] = mazeAndDValues[sSpot[0]][sSpot[1] - 1][0]; // left
             dValues[2] = mazeAndDValues[sSpot[0] - 1][sSpot[1]][0]; // up
             dValues[3] = mazeAndDValues[sSpot[0] + 1][sSpot[1]][0]; // down
-
-            if (findLowest(dValues, atS, map, mazeAndDValues)[0] != 7) {
+            int[] findLowestList = findLowest(dValues, atS, map, mazeAndDValues);
+            if(findLowestList == null) return null;
+            if (findLowestList[0] != 7) {
 
 
                 if (findLowest(dValues, atS, map, mazeAndDValues)[0] == 0) {
@@ -559,9 +565,9 @@ public class PathFinder {
             }
             return map;
         } catch (StackOverflowError e) {
+            return null;
         }
 
-        return map;
     }
 
 
@@ -590,9 +596,9 @@ public class PathFinder {
                     spotsAndDValues[row][column][0] = distanceFromEnd;
                 }
             }
-
         }
-        mazeMove(spotsAndDValues, map); /* Because the 3 dimensional list with spots and their distance
+        mazeMove(spotsAndDValues, map);
+        /* Because the 3 dimensional list with spots and their distance
 		values is right here, and is a parameter of MazeMove, we just call mazeMove from within
 		this function */
     }

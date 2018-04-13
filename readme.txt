@@ -2,6 +2,7 @@ Hello there! Thank you for trying out our project "Rogue"! Follow these instruct
 
 System requirements:
 - Java 8 (including JDK 8)
+#Source code can be found in the src folder
 
 How to run:
 1. After downloading the file you should get a compressed folder in whichever destination you chose to download it in
