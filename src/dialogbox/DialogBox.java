@@ -2,12 +2,12 @@ package dialogbox;
 
 public abstract class DialogBox {
 
-
+    /**
+     * used to show text information to the user
+     */
     private String str = "DIALOG BOX";
 
-    public void render(){
-        System.out.println("YOU SHOULDN'T SEE THIS MESSAGE");
-    }
+    public abstract void render();
 
     public String getStr() {
         return str;
